@@ -1,6 +1,19 @@
-from calendar import c
 import numpy as np
 import scipy.stats
+
+# import modin.pandas as pd
+# import ray
+# ray.init()
+# print('done')
+import pandas as pd
+
+
+import metrics
+
+def read_data(filename):     # reads a matrix from file and returns it in BOOL type
+    ds = pd.read_csv(filename, sep='\t', index_col=0)
+    M = ds.values
+    return M 
 
 def prob_superset(p_i, p):
     assert p_i.shape[1] == 1 and p_i.shape[0] == p.shape[0]
@@ -19,7 +32,6 @@ def prob_empty_intersect(p_i, p):
     return np.prod(1-p_i*p, axis=0)
 
 def pick_pivot(prob_mat):
-    # TODO: pick pivot 
     # Return (pivot, index in prob_mat)
     
     # This picks column that maximizes the expected number of 1s
@@ -33,10 +45,6 @@ def forward_pass(pivot, prob_mat):
     num_rows = prob_mat.shape[0]
     column_map = np.array(range(prob_mat.shape[1])) # column_map[i] gives index of column in original prob_mat
 
-    # print("Forward Pass")
-    # print(f"Prob mat: \n{prob_mat}")
-    # print(f"Pivot: \n{pivot}")
-
     while prob_mat.shape[1] > 0: # While columns remaining.
         p_empty_intersect = prob_empty_intersect(pivot, prob_mat)
         p_other = 1 - p_empty_intersect
@@ -49,15 +57,12 @@ def forward_pass(pivot, prob_mat):
             min_entropy_col = prob_mat[:, min_idx].reshape((num_rows, 1))
             pivot = 1 - (1-pivot)*(1-min_entropy_col) # Probabilistic union
             assert pivot.shape == (prob_mat.shape[0], 1)
-            # print(f'Min entropy col: {min_idx}, {min_entropy_col}')
         prob_mat = np.delete(prob_mat, min_idx, 1)
         column_map = np.delete(column_map, min_idx)
-
-        # print('disjoints, column map, pivot', disjoints, column_map, pivot)
     subsets = 1 - disjoints
-    return disjoints, subsets
+    return disjoints, subsets, pivot
 
-def determine_col(disjoints, subsets, prob_mat):
+def determine_col(disjoints, subsets, prob_mat, pivot_union, fpr, fnr, true_prior):
     assert disjoints.shape == (1, prob_mat.shape[1])
     assert subsets.shape == disjoints.shape
     assert np.all(disjoints == 1 - subsets)
@@ -65,12 +70,26 @@ def determine_col(disjoints, subsets, prob_mat):
     # print(f"disjoints: {disjoints}, subsets: {subsets}")
     # print(f"prob mat: \n{prob_mat}")
 
-    prob_change_disjoints = 1 - np.prod(1-prob_mat*disjoints, axis=1)
-    prob_change_subsets   = 1 - np.prod(1 - prob_mat*subsets,   axis=1)
+    # prob_change_disjoints = 1 - np.prod(1 - prob_mat*disjoints, axis=1)
+    # prob_change_subsets   = 1 - np.prod(1 - prob_mat*subsets, axis=1)
     # print('prob change disjoints', prob_change_disjoints)
     # print('prob change subsets', prob_change_subsets)
 
-    true_col = (prob_change_disjoints <= prob_change_subsets).reshape((prob_mat.shape[0], 1))
+    p10 = fnr*true_prior[1] / (fnr*true_prior[1] + (1-fpr)*true_prior[0])
+    p11 = 1 - (fpr*true_prior[0])/(fpr*true_prior[0]+(1-fnr)*true_prior[1])
+    all0s_p = 1 - np.power(1 - p10, np.sum(subsets) + 1)
+    all1s_p = 1 - np.power(1 - p11, np.sum(subsets) + 1)
+    # print(f'p10: {p10}, p11: {p11}, {(all0s_p + all1s_p)/2}, {all0s_p}, {1/2}')
+    # thresh = all1s_p
+    thresh = (all0s_p + all1s_p)/2
+    # thresh = all0s_p
+    # thresh = 1/2
+
+    pr1_d = np.prod(1 - prob_mat * disjoints, axis=1)
+    pr1_s = pivot_union.reshape((len(pivot_union),))
+    true_col = (pr1_d*pr1_s > thresh).reshape((prob_mat.shape[0], 1))
+
+    # true_col = (prob_change_disjoints <= prob_change_subsets).reshape((prob_mat.shape[0], 1))
     # print('true col', true_col)
     return true_col.astype(int)
     
@@ -90,10 +109,6 @@ def prob_measure(x, Y, fpr, fnr):
     p10 = fnr
     p11 = 1-fnr
     element_probs = (1-x)*(1-Y)*p00 + x*(1-Y)*p01 + (1-x)*Y*p10 + x*Y*p11
-    # print(x)
-    # print(Y)
-    # print('element probs')
-    # print(element_probs)
     assert element_probs.shape == Y.shape
     probs = np.prod(element_probs, axis=0)
     assert probs.shape == (Y.shape[1],)
@@ -112,50 +127,106 @@ def reconstruct(measured, fpr, fnr, true_prior):
         pivot, pivot_idx = pick_pivot(prob_mat)
         prob_mat = np.delete(prob_mat, pivot_idx, 1)
 
-        disjoints, subsets = forward_pass(pivot, prob_mat)
+        disjoints, subsets, pivot_union = forward_pass(pivot, prob_mat)
 
-        true_col = determine_col(disjoints, subsets, prob_mat)
+        true_col = determine_col(disjoints, subsets, prob_mat, pivot_union, fpr, fnr, true_prior)
 
         prob_mat = backward_pass(prob_mat, true_col, disjoints, subsets)
 
         completed_cols[:, completed_cols_i] = true_col.reshape((true_col.shape[0],))
         completed_cols_i += 1
 
-    # TODO: last column
     completed_cols[:, -1] = np.around(prob_mat).reshape((prob_mat.shape[0],))
-    print('Completed Cols')
-    print(completed_cols)
 
     reconstructed = np.empty_like(measured)
     for i in range(measured.shape[1]):
         prob_measured = prob_measure(measured[:, i].reshape((measured.shape[0], 1)), completed_cols, fpr, fnr)
-        # print(measured[:, i].reshape((measured.shape[0], 1)))
-        # print(completed_cols)
-        # print(prob_measured)
         max_idx = np.argmax(prob_measured)
         reconstructed[:, i] = completed_cols[:, max_idx]
         completed_cols = np.delete(completed_cols, max_idx, 1)
 
     return reconstructed
 
+
+# ## Test with actual data
+# # file_name  = "simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000"
+# file_name = "simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000"
+# true_data_filename = "data/" + file_name + ".SC.before_FP_FN_NA"
+# measured_data_filename = "data/" + file_name + ".SC"
+# true_data = read_data(true_data_filename)
+# measured_data = read_data(measured_data_filename)
+# # Set missing entries in measured data to true values (only considering false positives and negatives right now).
+# missing_entries = measured_data == 3
+# measured_data[missing_entries] = true_data[missing_entries]
+
+# fpr = 0.001 # False positive rate.
+# fnr = 0.2 # False negative rate.
+# # Priors
+# true_prior = np.array([1/2, 0])
+# true_prior[1] = 1 - true_prior[0]
+
+# reconstructed = reconstruct(measured_data, fpr, fnr, true_prior)
+
+# print(f"Number of elements in matrix: {true_data.shape[0] * true_data.shape[1]}")
+# metrics.isPtree(reconstructed)
+# metrics.compareAD(true_data, reconstructed)
+# metrics.compareDF(true_data, reconstructed)
+# print(f"Number of differences: {metrics.num_diffs(true_data, reconstructed)}")
+
 # for basic testing
+
 rng = np.random.default_rng()
 
-N = 4
-M = 4
+def corrupt(M, fpr, fnr):
+    corrupted = np.copy(M)
+    randoms = rng.uniform(size=M.shape)
+    for i in range(M.shape[0]):
+        for j in range(M.shape[1]):
+            if M[i,j] == 0:
+                if randoms[i,j] <= fpr:
+                    corrupted[i,j] = 1
+            else:
+                if randoms[i,j] <= fnr:
+                    corrupted[i,j] = 0
+    return corrupted
 
-fpr = 0.01 # False positive rate.
-fnr = 0.01 # False negative rate.
+N = 3
+M = 2*N
+
+fpr = 0.001 # False positive rate.
+fnr = 0.1  # False negative rate.
 
 # Priors
 true_prior = np.array([1/2, 0])
 true_prior[1] = 1 - true_prior[0]
 
-measured = rng.integers(low=0, high=1, endpoint=True, size=(N, M))
-# measured = np.array([[1, 1, 0], [1, 1, 0], [0, 0, 1]])
-# measured = np.array([[1, 1], [1, 1], [0, 0]])
+# true_data = np.array([[1, 1, 1, 1], [0, 1, 1, 1], [0, 0, 1, 1], [0, 0, 0, 1], [0, 0, 0, 0]])
+# true_data = np.zeros((N, M))
+# true_data[0, M-1] = 1
+true_data = np.triu(np.ones((N, N)))
+true_data = np.array(np.bmat([[true_data, np.zeros((N, N))], [np.zeros((N, N)), true_data]]))
+# true_data = np.hstack((true_data, true_data))
+# true_data = np.hstack((true_data, true_data))
+
+measured = np.array([
+    [1, 1, 1, 0, 0, 0], 
+    [0, 1, 1, 0, 0, 0],
+    [0, 0, 1, 0, 0, 0],
+    [0, 0, 0, 1, 0 ,0],
+    [0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 0, 1.0]
+])
+# measured = corrupt(true_data, fpr, fnr)
 
 print(f"Measured: \n{measured}")
 
-reconstructed_cols = reconstruct(measured, fpr, fnr, true_prior)
-print(f"Reconstructed: \n{reconstructed_cols}")
+reconstructed = reconstruct(measured, fpr, fnr, true_prior)
+print(f"Reconstructed: \n{reconstructed}")
+
+# print(metrics.isPtree(reconstructed_cols))
+
+print(f"Number of elements in matrix: {true_data.shape[0] * true_data.shape[1]}")
+metrics.isPtree(reconstructed)
+metrics.compareAD(true_data, reconstructed)
+metrics.compareDF(true_data, reconstructed)
+print(f"Number of differences: {metrics.num_diffs(true_data, reconstructed)}")
