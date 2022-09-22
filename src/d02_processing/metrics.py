@@ -15,10 +15,10 @@ def isPtree(matrix_in):   # brute force check if matrix_in is a pTree
             if (cap_size != 0):
                 if (cap_size != Mi_size):
                     if (cap_size != Mj_size):
-                        print("Seems NOT to be a PTree")
+                        # print("Seems NOT to be a PTree")
                         return False
                 
-    print("Seems to be a PTree ...")
+    # print("Seems to be a PTree ...")
     return True
 
 
@@ -42,8 +42,9 @@ def compareAD(M1,M2):      # Computes the AD scores for M2 given the ground trut
                         if (np.sum(M1[:,i])>np.sum(M1[:,j]) and np.sum(M2[:,i])<=np.sum(M2[:,j])):
                             error_pairs.append([i,j])
                         #print(i,j,sum(M1[:,i]),sum(M1[:,j]),sum(M2[:,i]),sum(M2[:,j]))
-    print('Number of AD pairs = ',n_adpairs,"errors : ",len(error_pairs), "AD score = ", 1 - len(error_pairs)/n_adpairs)
-    return error_pairs                
+    # print('Number of AD pairs = ',n_adpairs,"errors : ",len(error_pairs), "AD score = ", 1 - len(error_pairs)/n_adpairs)
+    return (n_adpairs, error_pairs, len(error_pairs), 1 - len(error_pairs)/n_adpairs)
+    # return error_pairs                
 
 def compareDF(M_orj,M_rec):  # Computes the Diff Lineage scores for M_rec given the ground truth matrix M_orj
     error_pairs=[]
@@ -61,8 +62,8 @@ def compareDF(M_orj,M_rec):  # Computes the Diff Lineage scores for M_rec given 
         score = 1
     else:
         score = 1 - len(error_pairs)/d_pairs
-    print("Number of Diff pairs = ",d_pairs, "errors :",len(error_pairs), "score :", score)
-    return 
+    # print("Number of Diff pairs = ",d_pairs, "errors :",len(error_pairs), "score :", score)
+    return (d_pairs, len(error_pairs), score)
 
 def num_diffs(M1, M2):
     return np.sum(M1 != M2)
