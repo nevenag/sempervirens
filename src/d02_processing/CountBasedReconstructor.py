@@ -283,16 +283,20 @@ def find_mlvec(p_vec,Col_set,M_in,M_mask,p01,p10): # returns most likely vector 
 def main_Rec(M_in, p01, p10, pnan): # main routine for reconstruction. The output can be fed to mlrefinement function for further processing
 
     M_masked=M_in.copy()
-    
+
     # Account for missing entries by assuming they are 0s
-    # adjust FPR and FNR rates
-    # FPR stays as same
-    measured_num0 = np.sum(M_masked == 0)
-    measured_num1 = np.sum(M_masked == 1)
-    est_true_num1 = 1/(p01*p10 - (1-p01)*(1-p10)) * (p01*measured_num0 - (1-p01)*measured_num1)
-    est_true_num0 = 1/(1-p01) * (measured_num0 - p10*est_true_num1)
-    p10 = p10 + np.clip(pnan * est_true_num1 / (est_true_num1 + est_true_num0), 0, 1)
-    M_masked[M_masked == 3] = 0 
+    # Don't adjust FPR and FNR rates
+    M_masked[M_masked == 3] = 0
+    
+    # # Account for missing entries by assuming they are 0s
+    # # adjust FPR and FNR rates
+    # # FPR stays as same
+    # measured_num0 = np.sum(M_masked == 0)
+    # measured_num1 = np.sum(M_masked == 1)
+    # est_true_num1 = 1/(p01*p10 - (1-p01)*(1-p10)) * (p01*measured_num0 - (1-p01)*measured_num1)
+    # est_true_num0 = 1/(1-p01) * (measured_num0 - p10*est_true_num1)
+    # p10 = p10 + np.clip(pnan * est_true_num1 / (est_true_num1 + est_true_num0), 0, 1)
+    # M_masked[M_masked == 3] = 0 
 
     M_rec_zero=np.zeros(M_in.shape)
     M_mask=np.ones(M_in.shape)                                         # a masking matrix
