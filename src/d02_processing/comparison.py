@@ -13,6 +13,7 @@ import huntress
 import CountBasedReconstructor
 import metrics
 import file_prefixes
+import row_reconstructor
 
 def read_data(filename):     # reads a matrix from file and returns it in BOOL type
     ds = pd.read_csv(filename, sep='\t', index_col=0)
@@ -65,11 +66,14 @@ def compute_metrics(true_data, reconstruction):
     return np.array([is_ptree, ad_score, df_score, num_differences/true_data.size])
 
 # file_prefixes = [
+    # ("simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
+#     ("simNo_6-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
+    # ("simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
 # ]
 
-# file_prefixes = file_prefixes.file_prefixes_300x300s
+file_prefixes = file_prefixes.file_prefixes_300x300s
 # file_prefixes = file_prefixes.file_prefixes_1000x300s
-file_prefixes = file_prefixes.file_prefixes_300x1000s
+# file_prefixes = file_prefixes.file_prefixes_300x1000s
 # file_prefixes = file_prefixes.file_prefixes_1000x1000s
 
 
@@ -80,10 +84,19 @@ metrics_df = pd.DataFrame(columns=['file', 'n', 'm', 'fpr', 'fnr', 'nar', 'time'
 metrics_mat = np.zeros((len(file_prefixes), 4))
 time_start = time.perf_counter()
 
-np.set_printoptions(precision=3)
+np.set_printoptions(precision=5)
 for i, (file_prefix, n, m, fpr, fnr, nar) in enumerate(file_prefixes):
-    print(f"Running file: {file_prefix}")
+    print(f"\nRunning file: {file_prefix}")
     true_data, measured_data = load_file(file_prefix)
+
+
+    # submat = measured_data[:, 50:100]
+    # submat[submat == 3] = 0
+    # col_i = 2
+    # print(submat[:, col_i] == 1)
+    # hist = np.sum(submat[submat[:, col_i] == 1, :], axis = 0)
+    # print(hist)
+    # exit()
 
     # print(f"Reconstructing using this method...")
     # this_reconstruction = main.reconstruct(measured_data, fpr, fnr)
@@ -99,18 +112,65 @@ for i, (file_prefix, n, m, fpr, fnr, nar) in enumerate(file_prefixes):
     # print(hm)
 
     # print(f"Reconstructing using count based...")
-
+    ## Col
     t0 = time.perf_counter()
     separator_reconstruction = CountBasedReconstructor.main_Rec(measured_data, fpr, fnr, nar)
+    sm = compute_metrics(true_data, separator_reconstruction)
+    # print(f'Col:                 {sm}')
     separator_reconstruction = CountBasedReconstructor.mlrefinementcol(separator_reconstruction, measured_data, fpr, fnr)
     t1 = time.perf_counter()
     sm_after_ml = compute_metrics(true_data, separator_reconstruction)
+    print(f'Col & ml:            {sm_after_ml}')
     metrics_mat[i, :] = sm_after_ml
-    
     new_df = pd.DataFrame([[file_prefix, n, m, fpr, fnr, nar, t1 - t0, sm_after_ml[0], sm_after_ml[1], sm_after_ml[2], sm_after_ml[3]]], columns=metrics_df.columns)
     metrics_df = pd.concat((metrics_df, new_df), ignore_index = True)
 
-    print(sm_after_ml)
+    # print(f'Col:')
+    # print(f'0 truth, 1 recons: {np.sum((1-true_data)*separator_reconstruction)}')
+    # print(f'1 truth, 0 recons: {np.sum(true_data*(1-separator_reconstruction))}')
+    # print(f'FP, still false: {np.sum((1-true_data)*measured_data*separator_reconstruction*(measured_data != 3))}')
+    # print(f'FN, still false: {np.sum(true_data*(1-measured_data)*(1-separator_reconstruction)*(measured_data != 3))}')
+
+    ## Row
+    # t0 = time.perf_counter()
+    # base = compute_metrics(true_data, measured_data)
+    # # print(f'Base:     {base}')
+    # separator_reconstruction = row_reconstructor.row_rec(measured_data, fpr, fnr, nar)
+    # sm = compute_metrics(true_data, separator_reconstruction)
+    # # print(f'Row:      {sm}')
+    # separator_reconstruction = CountBasedReconstructor.mlrefinementcol(separator_reconstruction, measured_data, fpr, fnr)
+    # t1 = time.perf_counter()
+    # sm_after_ml = compute_metrics(true_data, separator_reconstruction)
+    # # print(f'Row & ml: {sm_after_ml}')
+    # metrics_mat[i, :] = sm_after_ml
+    # new_df = pd.DataFrame([[file_prefix, n, m, fpr, fnr, nar, t1 - t0, sm_after_ml[0], sm_after_ml[1], sm_after_ml[2], sm_after_ml[3]]], columns=metrics_df.columns)
+    # metrics_df = pd.concat((metrics_df, new_df), ignore_index = True)
+
+    # print(f'Row:')
+    # print(sm_after_ml)
+    # print(f'0 truth, 1 recons: {np.sum((1-true_data)*separator_reconstruction)}')
+    # print(f'1 truth, 0 recons: {np.sum(true_data*(1-separator_reconstruction))}')
+    # print(f'FP, still false: {np.sum((1-true_data)*measured_data*separator_reconstruction*(measured_data != 3))}')
+    # print(f'FN, still false: {np.sum(true_data*(1-measured_data)*(1-separator_reconstruction)*(measured_data != 3))}')
+
+   
+    ## Row -> Col
+    # t0 = time.perf_counter()
+    # separator_reconstruction = row_reconstructor.row_rec(measured_data, fpr, fnr, nar)
+    # sm = compute_metrics(true_data, separator_reconstruction)
+    # print(f'Row:                 {sm}')
+    # separator_reconstruction = CountBasedReconstructor.mlrefinementcol(separator_reconstruction, measured_data, fpr, fnr)
+    # sm_after_ml = compute_metrics(true_data, separator_reconstruction)
+    # print(f'Row & ml:            {sm_after_ml}')
+    # separator_reconstruction = CountBasedReconstructor.main_Rec(separator_reconstruction, fpr, fnr, nar)
+    # sm = compute_metrics(true_data, separator_reconstruction)
+    # print(f'Row & ml & Col:      {sm}')
+    # separator_reconstruction = CountBasedReconstructor.mlrefinementcol(separator_reconstruction, measured_data, fpr, fnr)
+    # sm_after_ml = compute_metrics(true_data, separator_reconstruction)
+    # print(f'Row & ml & Col & ml: {sm_after_ml}')
+    # t1 = time.perf_counter()
+    # new_df = pd.DataFrame([[file_prefix, n, m, fpr, fnr, nar, t1 - t0, sm_after_ml[0], sm_after_ml[1], sm_after_ml[2], sm_after_ml[3]]], columns=metrics_df.columns)
+    # metrics_df = pd.concat((metrics_df, new_df), ignore_index = True)
 
 time_end = time.perf_counter()
 print(f"Took {time_end - time_start} seconds total")
@@ -118,6 +178,7 @@ print(f"Took {time_end - time_start} seconds total")
 # print(f"{data_file_name}:")
 # metrics_df.to_csv(data_file_name)
 # np.save(data_file_name, metrics_mat)
+
 
 np.set_printoptions(precision=3)
 print(f'* FNR: 0.2')
