@@ -88,14 +88,40 @@ def mlrefinementcol(M,M_noisy,p01,p10):  # this is for non missing element case 
 
 #-------- Row related functions ------------------------------------------------------
 
+def reconstruct_row(mat, subtree, sorted_row_set, fpr, fnr):
+    # TODO: parent node HAS to show in every child
+    root = np.zeros(mat.shape[1])
+    
+    kmin = np.min(np.sum(mat[subtree, :], axis = 1)) # Maximum number of ones in any row.
+    subtree_in = np.sum(mat[subtree, :], axis = 0)
+    subtree_out = np.sum(mat[sorted_row_set, :], axis = 0) - subtree_in
+    assert np.all(subtree_in.shape == root.shape)
+    assert np.all(subtree_out.shape == root.shape)
+
+    thresh = kmin # 1.05 * kmin / (1 - fnr)
+    print(kmin)
+    # print('thresh: ', thresh)
+    # print('subtree in: ', subtree_in)
+    sort_index = np.flip(np.argsort(subtree_in)) # Go from col with most to least number of 1s in subtree.
+    ksum = 0 # Number of 1s placed in root so far.
+    for j in sort_index:
+        if ksum < thresh and subtree_in[j] > subtree.size - subtree_in[j]:
+            root[j] = 1
+            ksum += 1
+    
+    assert np.all(np.logical_or(root == 0, root == 1))
+    return root.astype(int)
+
 def get_root(mat, piv_col, fpr, fnr):
+    return reconstruct_row(mat, piv_col, np.ones_like(piv_col), fpr, fnr)
+
     row_indices = piv_col.reshape((piv_col.size, 1))
     histogram = np.sum(row_indices * mat, axis = 0)
     subtree_size_measured = np.sum(row_indices) # The number of rows that should have 1s if the col is present in the root.
-    orig_subtree_size_est = (subtree_size_measured - fpr*mat.shape[0]) / (1 - fpr - fnr)
+    # orig_subtree_size_est = (subtree_size_measured - fpr*mat.shape[0]) / (1 - fpr - fnr)
     # threshold = (1 - fnr)**2 * orig_subtree_size_est + fpr**2 * (mat.shape[0] - orig_subtree_size_est)
-    # threshold = subtree_size_measured * (1 - fnr)
-    threshold = orig_subtree_size_est * (1 - fnr)
+    threshold = subtree_size_measured * (1 - fnr)
+    # threshold = orig_subtree_size_est * (1 - fnr)
     root = (histogram >= threshold).astype(int)
     # print('root', np.sum(root), root)
     return root
@@ -106,8 +132,28 @@ def is_descendant(a, b, num_cols, fpr, fnr):
     # return np.all(a*b == b) # Would result in no changes to descendants
     est_size_b = (np.sum(b) - fpr*num_cols) / (1 - fpr - fnr)
     return np.sum(a * b) / (1 - fnr) >= est_size_b
-
     # return np.sum(a*b) >= (1-fnr)**2 * est_size_b + fpr**2 * (num_cols - est_size_b)
+
+def find_rootnode(M_i,Col_set,p10):
+    x_repeat=sum(M_i[:,Col_set])
+#    x_repeat=sum(M_i)
+    x_max=max(x_repeat)
+    x_recn=np.zeros(M_i.shape[1])
+ 
+    x_recn[Col_set]=x_repeat>=x_max*(1-p10) + 0
+#    x_recn=x_repeat>=x_max*(1-p10) + 0
+    for i in range(M_i.shape[0]):
+        
+#        if x_recn.dot(M_i[i,:])>=sum(x_recn)/2 and x_recn.dot(M_i[i,:])<sum(x_recn):
+        if x_recn.dot(M_i[i,:])>=sum(x_recn)*(0.5):
+            #print(x_recn.dot(M_i[i,:]),sum(x_recn))
+            M_i[i,:]=(M_i[i,:]+x_recn)>0 + 0
+            # if x_recn.dot(M_grnd[i,:])<sum(x_recn):
+            #     print(x_recn.dot(M_grnd[i,:]),sum(x_recn))
+#         else:
+#             if sum(M_i[i,:]*(1-x_recn) + 0)<sum(M_i[i,:]):
+#                 print(sum(M_i[i,:]*(1-x_recn) + 0),sum(M_i[i,:]),sum(M_grnd[i,:]))
+
 
 #-------------------------------------------------------------------------------------
 
@@ -143,18 +189,18 @@ def find_khat(k, n, fpr, fnr):
     return n
     
 
-def rec_root(M_i,S,U,p01,p10): # reconstruct the pivot vector from the subset estimated by S among U
+def rec_root(M_i,S,U,p01,p10): # reconstruct t>he pivot vector from the subset estimated by S among U
     root_vec = np.zeros(M_i.shape[0])
 #    print(S,U)
     root_in = np.zeros(M_i.shape[0])
     root_out = np.zeros(M_i.shape[0])
-    kmax_frac = 0 # After first for loop, becomes max number of 1s / number of non nans (3s) that any column has
+    kmax = 0 # After first for loop, becomes max number of 1s / number of non nans (3s) that any column has
 
     # 2022-12-01: right now this type of root = root + m * (m != 3) effectively is considering missing elements to be 0s in terms of summing them up
     #    perhaps they should be given some minor amount of positive value based on an estimate of prior elem being 1?
     for i in U:
         if i in S:
-            kmax_frac = max(kmax_frac, np.sum(M_i[:, i] == 1) / np.sum(M_i[:, i] != 3))
+            kmax = max(kmax, np.sum(M_i[:, i] == 1))
             root_in = root_in + M_i[:,i] * (M_i[:, i] != 3)
         else: 
             root_out = root_out + M_i[:,i] * (M_i[:, i] != 3)
@@ -162,7 +208,7 @@ def rec_root(M_i,S,U,p01,p10): # reconstruct the pivot vector from the subset es
     # sort_index=np.flip(np.argsort(root_in - root_out)) # Maximize margin
 
     # print(kmax*(1/((1-p10))), (kmax - p01*M_i.shape[1])/((1-p01-p10)), find_khat(kmax, M_i.shape[0], p01, p10))
-    # khat = find_khat(kmax_frac * M_i.shape[0], M_i.shape[0], p01, p10)
+    # khat = find_khat(kmax, M_i.shape[0], p01, p10)
     ksum=0
     for j in sort_index:                     # flipping 0's that are seen the most
         if root_in[j] >= root_out[j] and root_in[j]>0:
@@ -170,8 +216,8 @@ def rec_root(M_i,S,U,p01,p10): # reconstruct the pivot vector from the subset es
             # mf = margin/max(root_in[j], root_out[j])
 
             # thresh = khat
-            thresh = 1.05*kmax_frac*M_i.shape[0]/(1-p10)
-            if ksum < thresh:
+            thresh = 1.05*kmax/(1-p10)
+            if True: # ksum < thresh:
             # if ksum< kmax*(1/((1-p10)*mf)):       # 1.05        
                 # This coefficient needs to be computed accurately. !!!!!!!! # try the estimation of priors + expectation
                 root_vec[j] = 1
@@ -232,34 +278,29 @@ def main_Rec(M_in, p01, p10, pnan): # main routine for reconstruction. The outpu
         i = S_remsorted[0]
         piv_rec = M_masked[:, i]
 
-        # Get root node (row)
-        root_node = get_root(M_masked, piv_rec, p01, p10)
-        # print('root node: ', root_node)
-
-        # Enforce root on each row of matrix
-        descendant_count = 0
-        change_count = 0
-        for row_i in range(M_masked.shape[0]):
-            # If row_i is a descendant of root_node, then add 1s to row_i so it is a superset of root_node
-            if is_descendant(M_masked[row_i, :], root_node, M_masked.shape[1], p01, p10):
-                pre_count = np.sum(M_masked[row_i, :])
-                M_masked[row_i, :] = np.logical_or(M_masked[row_i, :], root_node).astype(int)
-                
-                post_count = np.sum(M_masked[row_i, :])
-                if pre_count != post_count:
-                    change_count += 1
-                descendant_count += 1
-        # print('Changed', change_count, 'of', descendant_count, 'descendants')
-
-
         # TODO: keep track of which subsets each column is in. Due to masking, don't need to check whether columns we already know are in a separate subset are in the same one again
         piv_rec_old = np.copy(piv_rec) 
         S = find_subset_countbased(M_masked, piv_rec, S_remsorted, p01, p10)
+        # if len(S) == 0:
+        #     S.append(i)
+        find_rootnode(M_masked, S, p10)
         piv_rec = rec_root(M_masked, S, S_remsorted, p01, p10)              # reconstruct the corresponding root
         while not np.all(piv_rec == piv_rec_old):
             piv_rec_old = np.copy(piv_rec)
             S = find_subset_countbased(M_masked, piv_rec, S_remsorted, p01, p10)
+            # if len(S) == 0:
+            #     S.append(i)
+            # find_rootnode(M_masked, S, p10)
             piv_rec = rec_root(M_masked, S, S_remsorted, p01, p10)              # reconstruct the corresponding root
+
+
+        # # Get root node (row)
+        # root_node = get_root(M_masked, piv_rec, p01, p10)
+        # # Enforce root on each row of matrix
+        # for row_i in range(M_masked.shape[0]):
+        #     # If row_i is a descendant of root_node, then add 1s to row_i so it is a superset of root_node
+        #     if is_descendant(M_masked[row_i, :], root_node, M_masked.shape[1], p01, p10):
+        #         M_masked[row_i, :] = np.logical_or(M_masked[row_i, :], root_node).astype(int)
 
         #---Backsweep--------
         if S==[]:
