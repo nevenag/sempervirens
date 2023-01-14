@@ -15,6 +15,7 @@ import metrics
 import file_prefixes
 import row_reconstructor
 
+
 def read_data(filename):     # reads a matrix from file and returns it in BOOL type
     ds = pd.read_csv(filename, sep='\t', index_col=0)
     M = ds.values
@@ -78,7 +79,7 @@ file_prefixes = file_prefixes.file_prefixes_300x300s
 
 
 curr_time = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')
-data_file_name = f"data/metrics/metrics_countbased_all_300x1000s_{curr_time}.csv"
+data_file_name = f"data/metrics/metrics_countbased_all_300x300s_{curr_time}.csv"
 metrics_df = pd.DataFrame(columns=['file', 'n', 'm', 'fpr', 'fnr', 'nar', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs'])
 
 metrics_mat = np.zeros((len(file_prefixes), 4))
@@ -115,12 +116,12 @@ for i, (file_prefix, n, m, fpr, fnr, nar) in enumerate(file_prefixes):
     ## Col
     t0 = time.perf_counter()
     separator_reconstruction = CountBasedReconstructor.main_Rec(measured_data, fpr, fnr, nar)
-    sm = compute_metrics(true_data, separator_reconstruction)
+    # sm = compute_metrics(true_data, separator_reconstruction)
     # print(f'Col:                 {sm}')
     separator_reconstruction = CountBasedReconstructor.mlrefinementcol(separator_reconstruction, measured_data, fpr, fnr)
     t1 = time.perf_counter()
     sm_after_ml = compute_metrics(true_data, separator_reconstruction)
-    print(f'Col & ml:            {sm_after_ml}')
+    # print(f'Col & ml:            {sm_after_ml}')
     metrics_mat[i, :] = sm_after_ml
     new_df = pd.DataFrame([[file_prefix, n, m, fpr, fnr, nar, t1 - t0, sm_after_ml[0], sm_after_ml[1], sm_after_ml[2], sm_after_ml[3]]], columns=metrics_df.columns)
     metrics_df = pd.concat((metrics_df, new_df), ignore_index = True)
@@ -175,10 +176,9 @@ for i, (file_prefix, n, m, fpr, fnr, nar) in enumerate(file_prefixes):
 time_end = time.perf_counter()
 print(f"Took {time_end - time_start} seconds total")
 
-# print(f"{data_file_name}:")
-# metrics_df.to_csv(data_file_name)
-# np.save(data_file_name, metrics_mat)
-
+print(f"{data_file_name}:")
+metrics_df.to_csv(data_file_name)
+np.save(data_file_name, metrics_mat)
 
 np.set_printoptions(precision=3)
 print(f'* FNR: 0.2')
