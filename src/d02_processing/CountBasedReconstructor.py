@@ -216,7 +216,7 @@ def rec_root(M_i,S,U,p01,p10): # reconstruct t>he pivot vector from the subset e
             # mf = margin/max(root_in[j], root_out[j])
 
             # thresh = khat
-            thresh = 1.05*kmax/(1-p10)
+            # thresh = 1.05*kmax/(1-p10)
             if True: # ksum < thresh:
             # if ksum< kmax*(1/((1-p10)*mf)):       # 1.05        
                 # This coefficient needs to be computed accurately. !!!!!!!! # try the estimation of priors + expectation
@@ -281,16 +281,14 @@ def main_Rec(M_in, p01, p10, pnan): # main routine for reconstruction. The outpu
         # TODO: keep track of which subsets each column is in. Due to masking, don't need to check whether columns we already know are in a separate subset are in the same one again
         piv_rec_old = np.copy(piv_rec) 
         S = find_subset_countbased(M_masked, piv_rec, S_remsorted, p01, p10)
-        # if len(S) == 0:
-        #     S.append(i)
-        find_rootnode(M_masked, S, p10)
+        if len(S) != 0:
+            find_rootnode(M_masked, S, p10)
         piv_rec = rec_root(M_masked, S, S_remsorted, p01, p10)              # reconstruct the corresponding root
         while not np.all(piv_rec == piv_rec_old):
             piv_rec_old = np.copy(piv_rec)
             S = find_subset_countbased(M_masked, piv_rec, S_remsorted, p01, p10)
-            # if len(S) == 0:
-            #     S.append(i)
-            # find_rootnode(M_masked, S, p10)
+            if len(S) != 0:
+                find_rootnode(M_masked, S, p10)
             piv_rec = rec_root(M_masked, S, S_remsorted, p01, p10)              # reconstruct the corresponding root
 
 
@@ -337,6 +335,7 @@ def main_Rec(M_in, p01, p10, pnan): # main routine for reconstruction. The outpu
     return M_rec_zero
 
 def find_subset_countbased(M_i, p_vec, Col_set, p01, p10): # A simple count based subset finder.
+    # TODO: update pivot vector after each column added to subset
     S_return=[]
     p = p_vec
     for i in Col_set:

@@ -72,14 +72,14 @@ def compute_metrics(true_data, reconstruction):
     # ("simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
 # ]
 
-file_prefixes = file_prefixes.file_prefixes_300x300s
+# file_prefixes = file_prefixes.file_prefixes_300x300s
 # file_prefixes = file_prefixes.file_prefixes_1000x300s
-# file_prefixes = file_prefixes.file_prefixes_300x1000s
+file_prefixes = file_prefixes.file_prefixes_300x1000s
 # file_prefixes = file_prefixes.file_prefixes_1000x1000s
 
 
 curr_time = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')
-data_file_name = f"data/metrics/metrics_countbased_all_300x300s_{curr_time}.csv"
+data_file_name = f"data/metrics/metrics_countbased_all_300x1000s_{curr_time}.csv"
 metrics_df = pd.DataFrame(columns=['file', 'n', 'm', 'fpr', 'fnr', 'nar', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs'])
 
 metrics_mat = np.zeros((len(file_prefixes), 4))
@@ -178,7 +178,7 @@ print(f"Took {time_end - time_start} seconds total")
 
 print(f"{data_file_name}:")
 metrics_df.to_csv(data_file_name)
-np.save(data_file_name, metrics_mat)
+# np.save(data_file_name, metrics_mat)
 
 np.set_printoptions(precision=3)
 print(f'* FNR: 0.2')
