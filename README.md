@@ -12,3 +12,7 @@ Sempervirens Phylogenetic Tree Reconstructor
 * Unzip `data.zip` to get this folder.
 
 `metrics`: Results of running algorithms on various datasets.
+
+# Setup
+
+Use either `poetry` or the `requirements.txt`, tested with Python 3.10.
