@@ -1,7 +1,6 @@
 # From HUNTRESS code
 
 import numpy as np
-# import modin.pandas as pd
 import pandas as pd
 
 def isPtree(matrix_in):   # brute force check if matrix_in is a pTree
@@ -20,8 +19,6 @@ def isPtree(matrix_in):   # brute force check if matrix_in is a pTree
                 
     # print("Seems to be a PTree ...")
     return True
-
-
 
 def compareAD(M1,M2):      # Computes the AD scores for M2 given the ground truth matrix M1
     error_pairs=[]
@@ -46,7 +43,7 @@ def compareAD(M1,M2):      # Computes the AD scores for M2 given the ground trut
     return (n_adpairs, error_pairs, len(error_pairs), 1 - len(error_pairs)/n_adpairs)
     # return error_pairs                
 
-def compareDF(M_orj,M_rec):  # Computes the Diff Lineage scores for M_rec given the ground truth matrix M_orj
+def compareDL(M_orj,M_rec):  # Computes the Diff Lineage scores for M_rec given the ground truth matrix M_orj
     error_pairs=[]
     d_pairs=0
     for i in range(M_orj.shape[1]):
