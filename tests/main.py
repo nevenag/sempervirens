@@ -8,6 +8,8 @@ import pandas as pd
 
 import tests.huntress as huntress
 import scphylo
+import tests.freq_based as freq_based
+import tests.TestingNewpivot as tnp
 
 import sempervirens
 
@@ -74,7 +76,7 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         algorithm = 'sempervirens'
     else:
         algorithm = args[0]
-        assert(algorithm in ['sempervirens', 'huntress', 'scistree'])
+        assert(algorithm in ['sempervirens', 'huntress', 'scistree', 'freq-based', 'tnp'])
     print(f"\nUsing algorithm: {algorithm}.")
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
 
@@ -90,11 +92,28 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
 
         t0 = time.perf_counter()
         if algorithm == 'sempervirens':
-            reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
+            # TODO: fix. TESTING
+            reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer, true_df.to_numpy())
+            # End testing.
+            # reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "scistree":
             reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
+        elif algorithm == "freq-based":
+            measured = measured_df.to_numpy()
+            m_in = measured.copy()
+            m_in[m_in == 3] = 0
+            reconstruction = freq_based.main_Rec(m_in, fpr, fnr)
+            reconstruction = freq_based.mlrefinementcol(reconstruction, m_in, fpr, fnr)
+            reconstruction = freq_based.mlrefinementrow(reconstruction, m_in, fpr, fnr)
+        elif algorithm == "tnp":
+            measured = measured_df.to_numpy()
+            m_in = measured.copy()
+            m_in[m_in == 3] = 0
+            reconstruction = tnp.main_Rec10(m_in, fpr, fnr)
+            reconstruction = tnp.mlrefinementcol(reconstruction, m_in, fpr, fnr)
+            reconstruction = tnp.mlrefinementrow(reconstruction, m_in, fpr, fnr)
 
         t1 = time.perf_counter()
 
@@ -179,10 +198,26 @@ def run_1000x1000s_0_01fpr(alg = sys.argv[1:]):
 def run_1000x1000s_0_1fpr(alg = sys.argv[1:]):
     run("1000x1000s_0_1fpr", file_prefixes_1000x1000s_0_1fpr, alg)
 
-def test(args = sys.argv[1:]):
+def test(alg = sys.argv[1:]):
+    # files = [
+         # ("simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.001, 0.05, 0.05),
+#         ("simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000", 300, 300, 0.001, 0.2, 0.05),
+#         ("fp_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
+#         ("fp_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.01, 0.2,  0.05)
+##        ("simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
+##        ("simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 1e-3, 0.2,  0.05),
+##        ("fp_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
+##        ("fp_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.01, 0.2,  0.05),
+    # ]
+    # run("300x300s_test", files, alg)
+    
 
-    # alg = ['huntress']
-    # run_300x1000s_0_05fpr(alg)
+    # run_300x300s_0_001fpr(alg)
+    # run_300x300s_0_01fpr(alg)
+
+    run_300x1000s_0_001fpr(alg)
+    # run_300x1000s_0_01fpr(alg)
+
 
     # for alg in ['scistree']:
         # arr = [alg]
@@ -198,33 +233,33 @@ def test(args = sys.argv[1:]):
 #       'metrics_300x300s_0_07fpr_2023-03-02_12:52.csv',
 #       'metrics_300x300s_0_1fpr_2023-03-02_11:06.csv',
 #   ]
-    files = [
-        'metrics_scistree_300x1000s_0_05fpr_2023-03-12_13:11.csv',
-        'metrics_scistree_300x1000s_0_03fpr_2023-03-12_11:04.csv',
-#       'metrics_huntress_300x1000s_0_05fpr_2023-03-12_22:30.csv',
-#       'metrics_huntress_300x1000s_0_03fpr_2023-03-11_23:58.csv',
-#       'metrics_sempervirens_300x1000s_0_05fpr_2023-03-11_23:43.csv',
-#       'metrics_sempervirens_300x1000s_0_03fpr_2023-03-11_23:28.csv',
-#       'metrics_scistree_300x300s_0_05fpr_2023-03-11_18:30.csv',
-#       'metrics_scistree_300x300s_0_03fpr_2023-03-11_17:54.csv',
-#       'metrics_scistree_300x300s_0_01fpr_2023-03-11_17:30.csv',
-#       'metrics_scistree_300x300s_0_001fpr_2023-03-11_17:10.csv',
-#       'metrics_huntress_300x300s_0_05fpr_2023-03-11_16:17.csv',
-#       'metrics_huntress_300x300s_0_03fpr_2023-03-11_15:26.csv',
-#       'metrics_huntress_300x300s_0_01fpr_2023-03-11_14:35.csv',
-#       'metrics_huntress_300x300s_0_001fpr_2023-03-11_12:54.csv',
-#       'metrics_sempervirens_300x300s_0_05fpr_2023-03-11_12:52.csv',
-#       'metrics_sempervirens_300x300s_0_03fpr_2023-03-11_12:50.csv',
-#       'metrics_sempervirens_300x300s_0_01fpr_2023-03-11_12:49.csv',
-#       'metrics_sempervirens_300x300s_0_001fpr_2023-03-11_12:47.csv',
-    ]
-
-    for file in reversed(files):
-        file = 'data/metrics/' + file
-        metrics_df = pd.read_csv(file)
-        print(file)
-        print_metrics(metrics_df)
-
+#     files = [
+#         'metrics_scistree_300x1000s_0_05fpr_2023-03-12_13:11.csv',
+#         'metrics_scistree_300x1000s_0_03fpr_2023-03-12_11:04.csv',
+# #       'metrics_huntress_300x1000s_0_05fpr_2023-03-12_22:30.csv',
+# #       'metrics_huntress_300x1000s_0_03fpr_2023-03-11_23:58.csv',
+# #       'metrics_sempervirens_300x1000s_0_05fpr_2023-03-11_23:43.csv',
+# #       'metrics_sempervirens_300x1000s_0_03fpr_2023-03-11_23:28.csv',
+# #       'metrics_scistree_300x300s_0_05fpr_2023-03-11_18:30.csv',
+# #       'metrics_scistree_300x300s_0_03fpr_2023-03-11_17:54.csv',
+# #       'metrics_scistree_300x300s_0_01fpr_2023-03-11_17:30.csv',
+# #       'metrics_scistree_300x300s_0_001fpr_2023-03-11_17:10.csv',
+# #       'metrics_huntress_300x300s_0_05fpr_2023-03-11_16:17.csv',
+# #       'metrics_huntress_300x300s_0_03fpr_2023-03-11_15:26.csv',
+# #       'metrics_huntress_300x300s_0_01fpr_2023-03-11_14:35.csv',
+# #       'metrics_huntress_300x300s_0_001fpr_2023-03-11_12:54.csv',
+# #       'metrics_sempervirens_300x300s_0_05fpr_2023-03-11_12:52.csv',
+# #       'metrics_sempervirens_300x300s_0_03fpr_2023-03-11_12:50.csv',
+# #       'metrics_sempervirens_300x300s_0_01fpr_2023-03-11_12:49.csv',
+# #       'metrics_sempervirens_300x300s_0_001fpr_2023-03-11_12:47.csv',
+#     ]
+# 
+#     for file in reversed(files):
+#         file = 'data/metrics/' + file
+#         metrics_df = pd.read_csv(file)
+#         print(file)
+#         print_metrics(metrics_df)
+# 
     # corrupt_data()
 
 def corrupt_data():
@@ -301,3 +336,6 @@ def corrupt_data():
 
         print(f"(\"{new_name}\", 300, 1000, {fpr}, {fnr}, {mer}),")
 
+
+if __name__ == '__main__':
+    test()

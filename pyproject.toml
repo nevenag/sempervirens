@@ -37,6 +37,7 @@ numba = "^0.56.4"
 scphylo-tools = "^0.0.2"
 numpy = "^1.23"
 pandas = "^1.5.3"
+pyflame = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core"]
