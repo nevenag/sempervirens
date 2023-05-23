@@ -106,7 +106,7 @@ def reconstruct_pivot(cols_in_subtree, cols_sorted, mat):
     subtree_out = mat[:, out_set].sum(axis = 1) 
 
     # Set a row of the reconstruction to 1 if the row occurs more in the subtree than out of it.
-    reconstructed_pivot = np.logical_and(subtree_in >= subtree_out, subtree_in > 0).astype(int)
+    reconstructed_pivot = (subtree_in >= subtree_out).astype(int) * (subtree_in > 0).astype(int)
     return reconstructed_pivot
 
 
@@ -196,39 +196,44 @@ def reconstruct(measured, fpr, fnr, mer, true):
         # # Reconstruct the pivot based on the columns in the subtree.
         # reconstructed_pivot = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
 
-        def get_new_pivot(pivot, mat, cols_sorted, fpr, fnr):
+        def get_new_pivot(pivot, orig, mat, cols_sorted, fpr, fnr):
             cols_in_subtree = find_subtree_columns3(pivot, cols_sorted, mat, fpr, fnr)
-            rows_in_subtree = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
+            # cols_out_subtree = np.setdiff1d(np.array(cols_sorted), np.array(cols_in_subtree), assume_unique = True)
+            # rows_in_subtree_mask = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
+            # rows_in_subtree = np.flatnonzero(rows_in_subtree_mask)
+            # rows_out_subtree = np.flatnonzero(1 - rows_in_subtree_mask)
             root = reconstruct_root(cols_in_subtree, mat, fnr)
-            for row_i in range(mat.shape[0]):
-                if rows_in_subtree[row_i] == 1:
-                    mat[row_i, :] = np.logical_or(mat[row_i, :], root).astype(int)
-                else:
-                    mat[row_i, cols_in_subtree] = 0
-            # mat[np.ix_(np.where(1 - rows_in_subtree)[0], cols_in_subtree)] = 0
+            rows_in_subtree_mask2 = mat @ root > np.sum(root) / 2
+            rows_in_subtree2 = np.flatnonzero(rows_in_subtree_mask2)
+            # rows_out_subtree2 = np.flatnonzero(1 - rows_in_subtree_mask2.astype(int))
+            mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
+            # mat[rows_in_subtree, :] = np.logical_or(mat[rows_in_subtree, :], root).astype(int)
+            # mat[np.ix_(rows_in_subtree, cols_out_subtree)] = 0
+            # mat[np.ix_(rows_in_subtree2, cols_out_subtree)] = 0
+            # mat[np.ix_(rows_out_subtree, cols_in_subtree)] = 0
             reconstructed_pivot = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
             return reconstructed_pivot, cols_in_subtree
 
         prev_reconstructed_pivot = mat[:, pivot_col_i]
-        pivot = mat[:, pivot_col_i]
-        reconstructed_pivot, cols_in_subtree = get_new_pivot(pivot, mat, cols_sorted, fpr, fnr)
+        reconstructed_pivot, cols_in_subtree = get_new_pivot(prev_reconstructed_pivot, orig, mat, cols_sorted, fpr, fnr)
         while not np.all(prev_reconstructed_pivot == reconstructed_pivot):
             prev_reconstructed_pivot = reconstructed_pivot.copy()
-            col_sums = np.sum(mat[:, cols_sorted], axis = 0)
-            cols_sorted = cols_sorted[np.argsort(-col_sums)] # Sort from highest to lowest column sum.
-            pivot_col_i = cols_sorted[0] # Get the column with the most number of ones.
-            pivot = mat[:, pivot_col_i]
-            reconstructed_pivot, cols_in_subtree = get_new_pivot(pivot, mat, cols_sorted, fpr, fnr)
+            # col_sums = np.sum(mat[:, cols_sorted], axis = 0)
+            # cols_sorted = cols_sorted[np.argsort(-col_sums)] # Sort from highest to lowest column sum.
+            # pivot_col_i = cols_sorted[0] # Get the column with the most number of ones.
+            reconstructed_pivot, cols_in_subtree = get_new_pivot(prev_reconstructed_pivot, orig, mat, cols_sorted, fpr, fnr)
 
         if cols_in_subtree == []: # TODO: do we need this
             print('cols in subtree is empty')
             reconstructed_pivot = mat[:, pivot_col_i]
 
         # Go through all columns, enforcing structure with pivot_reconstructed
-        final_cols_in_subtree = find_subtree_columns3(reconstructed_pivot, cols_sorted, mat, fpr, fnr)
+        final_cols_in_subtree = find_subtree_columns3(reconstructed_pivot, cols_sorted, orig, fpr, fnr)
         undecided_cols_out_subtree = np.setdiff1d(np.array(cols_sorted), np.array(final_cols_in_subtree), assume_unique = True)
         mat[:, final_cols_in_subtree] *= reconstructed_pivot.reshape((-1, 1))
+        # mask[:, final_cols_in_subtree] *= reconstructed_pivot.reshape((-1, 1))
         mat[:, undecided_cols_out_subtree] *= 1 - reconstructed_pivot.reshape((-1, 1))
+        # mask[:, undecided_cols_out_subtree] *= 1 - reconstructed_pivot.reshape((-1, 1))
 
         if final_cols_in_subtree == []:
             col_placement_i = pivot_col_i
@@ -236,8 +241,8 @@ def reconstruct(measured, fpr, fnr, mer, true):
         else:
             col_placement_i = count_based_max_likelihood(reconstructed_pivot, final_cols_in_subtree, mat)
 
-        reconstruction[:, col_placement_i] = reconstructed_pivot
-        mask[:, col_placement_i] = reconstruction[:, col_placement_i]
+        reconstruction[:, col_placement_i] = reconstructed_pivot # * mask[:, col_placement_i]
+        # mask[:, col_placement_i] = reconstruction[:, col_placement_i]
 
         # TODO: remove testing.
         # TESTING

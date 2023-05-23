@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 import tests.huntress as huntress
-import scphylo
+# import scphylo
 import tests.freq_based as freq_based
 import tests.TestingNewpivot as tnp
 
@@ -158,6 +158,8 @@ def run_300x300s_0_2fnr(alg = sys.argv[1:]):
     run("300x300s_0_2fnr", file_prefixes_300x300s_0_2fnr, alg)
 def run_300x300s_0_001fpr(alg = sys.argv[1:]):
     run("300x300s_0_001fpr", file_prefixes_300x300s_0_001fpr, alg)
+def run_300x300s_0_003fpr(alg = sys.argv[1:]):
+    run("300x300s_0_003fpr", file_prefixes_300x300s_0_003fpr, alg)
 def run_300x300s_0_01fpr(alg = sys.argv[1:]):
     run("300x300s_0_01fpr", file_prefixes_300x300s_0_01fpr, alg)
 def run_300x300s_0_03fpr(alg = sys.argv[1:]):
@@ -212,11 +214,15 @@ def test(alg = sys.argv[1:]):
     # run("300x300s_test", files, alg)
     
 
-    # run_300x300s_0_001fpr(alg)
-    # run_300x300s_0_01fpr(alg)
+    run_300x300s_0_001fpr(alg)
+    run_300x300s_0_003fpr(alg)
+    run_300x300s_0_01fpr(alg)
 
     run_300x1000s_0_001fpr(alg)
-    # run_300x1000s_0_01fpr(alg)
+    run_300x1000s_0_01fpr(alg)
+
+    run_1000x1000s_0_001fpr(alg)
+    run_1000x1000s_0_01fpr(alg)
 
 
     # for alg in ['scistree']:
