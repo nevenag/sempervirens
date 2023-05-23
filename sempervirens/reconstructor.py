@@ -78,12 +78,17 @@ def find_subtree_columns3(pivot_col, cols_sorted, mat, fpr, fnr):
 
 def find_subtree_columns4(pivot_col, cols_sorted, mat, fpr, fnr):
     """Finds all columns that ocurr in the subtree of mat's pivot_col_i'th column."""
-    cols_in_subtree = []
-    for col_i in cols_sorted:
-        col = mat[:, col_i]
-        if column_in_subtree4(col, pivot_col, fpr, fnr) or column_in_subtree4(pivot_col, col, fpr, fnr):
-            cols_in_subtree.append(col_i)
-    return cols_in_subtree
+    c0 = np.log((1-fnr)/fpr)
+    c1 = np.log((1-fpr)/fnr)
+    mat_cols = mat[:, cols_sorted]
+    K_11 = pivot_col @ mat_cols
+    K_01 = (1 - pivot_col) @ mat_cols
+    K_10 = pivot_col @ (1 - mat_cols)
+    cols_mask = np.logical_or(
+            np.logical_and(K_11 * c0 >= K_01 * c1, K_10 >= K_01),
+            np.logical_and(K_11 * c0 >= K_10 * c1, K_01 >= K_10)
+    )
+    return np.array(cols_sorted)[cols_mask]
 
 def reconstruct_root(cols_in_subtree, mat, fnr):
     """Reconstructs the root row for the subtree consisting of the columns in cols_in_subtree."""
@@ -197,7 +202,7 @@ def reconstruct(measured, fpr, fnr, mer, true):
         # reconstructed_pivot = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
 
         def get_new_pivot(pivot, orig, mat, cols_sorted, fpr, fnr):
-            cols_in_subtree = find_subtree_columns3(pivot, cols_sorted, mat, fpr, fnr)
+            cols_in_subtree = find_subtree_columns4(pivot, cols_sorted, mat, fpr, fnr)
             # cols_out_subtree = np.setdiff1d(np.array(cols_sorted), np.array(cols_in_subtree), assume_unique = True)
             # rows_in_subtree_mask = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
             # rows_in_subtree = np.flatnonzero(rows_in_subtree_mask)

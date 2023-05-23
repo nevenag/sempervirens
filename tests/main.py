@@ -221,8 +221,8 @@ def test(alg = sys.argv[1:]):
     run_300x1000s_0_001fpr(alg)
     run_300x1000s_0_01fpr(alg)
 
-    run_1000x1000s_0_001fpr(alg)
-    run_1000x1000s_0_01fpr(alg)
+    # run_1000x1000s_0_001fpr(alg)
+    # run_1000x1000s_0_01fpr(alg)
 
 
     # for alg in ['scistree']:
