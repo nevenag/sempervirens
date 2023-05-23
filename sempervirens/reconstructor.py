@@ -221,12 +221,12 @@ def reconstruct(measured, fpr, fnr, mer, true):
 
         prev_reconstructed_pivot = mat[:, pivot_col_i]
         reconstructed_pivot, cols_in_subtree = get_new_pivot(prev_reconstructed_pivot, orig, mat, cols_sorted, fpr, fnr)
-        while not np.all(prev_reconstructed_pivot == reconstructed_pivot):
-            prev_reconstructed_pivot = reconstructed_pivot.copy()
-            # col_sums = np.sum(mat[:, cols_sorted], axis = 0)
-            # cols_sorted = cols_sorted[np.argsort(-col_sums)] # Sort from highest to lowest column sum.
-            # pivot_col_i = cols_sorted[0] # Get the column with the most number of ones.
-            reconstructed_pivot, cols_in_subtree = get_new_pivot(prev_reconstructed_pivot, orig, mat, cols_sorted, fpr, fnr)
+#        while not np.all(prev_reconstructed_pivot == reconstructed_pivot):
+#            prev_reconstructed_pivot = reconstructed_pivot.copy()
+#            # col_sums = np.sum(mat[:, cols_sorted], axis = 0)
+#            # cols_sorted = cols_sorted[np.argsort(-col_sums)] # Sort from highest to lowest column sum.
+#            # pivot_col_i = cols_sorted[0] # Get the column with the most number of ones.
+#            reconstructed_pivot, cols_in_subtree = get_new_pivot(prev_reconstructed_pivot, orig, mat, cols_sorted, fpr, fnr)
 
         if cols_in_subtree == []: # TODO: do we need this
             print('cols in subtree is empty')
