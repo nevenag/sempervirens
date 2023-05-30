@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 
 import tests.huntress as huntress
-# import scphylo
+import scphylo
 import tests.freq_based as freq_based
 import tests.TestingNewpivot as tnp
 
