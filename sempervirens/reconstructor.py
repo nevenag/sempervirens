@@ -194,6 +194,12 @@ def reconstruct(measured, fpr, fnr, mer, true):
 
         pivot = mat[:, pivot_col_i]
         cols_in_subtree = find_subtree_columns4(pivot, cols_sorted, mat, fpr, fnr)
+
+        root = reconstruct_root(cols_in_subtree, mat, fnr)
+        rows_in_subtree_mask2 = mat @ root > np.sum(root) / 2
+        rows_in_subtree2 = np.flatnonzero(rows_in_subtree_mask2)
+        mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
+
         reconstructed_pivot = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
 
         if len(cols_in_subtree) == 0: # TODO: do we need this
@@ -205,14 +211,8 @@ def reconstruct(measured, fpr, fnr, mer, true):
         undecided_cols_out_subtree = np.setdiff1d(np.array(cols_sorted), np.array(final_cols_in_subtree), assume_unique = True)
 
         if len(final_cols_in_subtree) > 0:
-            root = reconstruct_root(final_cols_in_subtree, mat, fnr)
-            rows_in_subtree_mask2 = mat @ root > np.sum(root) / 2
-            rows_in_subtree2 = np.flatnonzero(rows_in_subtree_mask2)
-            mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
-
             mat[:, final_cols_in_subtree] *= reconstructed_pivot.reshape((-1, 1))
             mat[:, undecided_cols_out_subtree] *= 1 - reconstructed_pivot.reshape((-1, 1))
-
             col_placement_i = count_based_max_likelihood(reconstructed_pivot, final_cols_in_subtree, mat)
         else:
             col_placement_i = pivot_col_i
