@@ -1,74 +1,37 @@
+# Sempervirens: error correction for phylogenetic tree matrices.
+# Written by: Neelay Junnarkar (neelay.junnarkar@berkeley.edu) and Can Kizilkale (cankizilkale@berkeley.edu).
+# Last update: July 13, 2023.
+
+# Can be used as a library or as a commandline program.
+#
+# Library usage:
+# Import file and use the reconstruct function.
+# Dependencies: numpy.
+#
+# Example:
+# from reconstructor import reconstruct
+# reconstruction = reconstruct(noisy_mat, fpr, fnr, mer)
+#
+#
+# Commandline usage:
+# python reconstructor.py noisy_matrix_filename fpr fnr mer
+# The output file defaults to noisy_matrix_filename.CFMatrix.
+# Can specify output file with the "-o" flag: python reconstructor.py noisy_matrix_filename fpr fnr mer -o output_filename.
+# To get help information, run: python reconstructor.py -h 
+# Dependencies: numpy, pandas, and argparse.
+#
+# Example:
+# python reconstructor.py noisy_data.SC 0.001 0.2 0.05 -o reconstructed_data.SC.CFMatrix
+
+###### Reconstructor code ######
+
 import numpy as np
 
-def column_in_subtree(col_a, col_b, fpr, fnr):
-    """Returns whether col_a ocurrs in the subtree of col_b."""
-    # Tries to determine if col_a is a subset of col_b.
-
-    # k_00 = np.sum((1 - col_b) * (1 - col_a))
-    k_01 = np.sum((1 - col_b) * col_a)
-    # k_10 = np.sum(col_b * (1 - col_a))
-    k_11 = np.sum(col_b * col_a)
-
-    # True if col b is more likely to be a superset of col a than a subset of col a. 
-    # supset_gt_subset = k_10 >= k_01
-    # True if col b is more likely to be a superset of col a than disjoint from col a.
-    # supset_gt_disjoint = k_11 * np.log((1-fnr)/fpr) >= k_01 * np.log((1-fpr)/fnr)
-
-    old_decision = k_11 >= k_01
-    # new_decision = supset_gt_subset and supset_gt_disjoint
-
-    # if old_decision and not supset_gt_subset:
-        # print("col b more likely to be subset of col a")
-    return old_decision
-    # return np.sum(col_a * col_b) >= np.sum(col_a * (1 - col_b))
-
-def column_in_subtree2(col, rows_in_subtree, fpr, fnr):
-    """Returns if an undecided column col is in in the subtree defined by rows_in_subtree."""
-    k_00 = np.sum((1 - rows_in_subtree) * (1 - col))
-    k_01 = np.sum((1 - rows_in_subtree) * col)
-    k_10 = np.sum(rows_in_subtree * (1 - col))
-    k_11 = np.sum(rows_in_subtree * col)
-    decision = ((k_00 - k_10)*np.log((1-fpr)/(1-fnr)) + (k_11 - k_01)*np.log((1-fnr)/fnr)) >= 0
-    # return decision and k_11 > 0
-    return k_11 >= k_01 and k_11 > 0
-
-def column_in_subtree4(col_a, col_b, fpr, fnr):
-    """Returns whether col_a ocurrs in the subtree of col_b."""
-    # Tries to determine if col_a is a subset of col_b.
-
-    # k_00 = np.sum((1 - col_b) * (1 - col_a))
-    k_01 = np.sum((1 - col_b) * col_a)
-    k_10 = np.sum(col_b * (1 - col_a))
-    k_11 = np.sum(col_b * col_a)
-
-    # True if col b is more likely to be a superset of col a than a subset of col a. 
-    supset_gt_subset = k_10 >= k_01
-    # True if col b is more likely to be a superset of col a than disjoint from col a.
-    supset_gt_disjoint = k_11 * np.log((1-fnr)/fpr) >= k_01 * np.log((1-fpr)/fnr)
-
-    new_decision = supset_gt_subset and supset_gt_disjoint
-    return new_decision
-
-def find_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
-    """Finds all columns that ocurr in the subtree of mat's pivot_col_i'th column."""
-    cols_in_subtree = []
-    for col_i in cols_sorted:
-        col = mat[:, col_i]
-        if column_in_subtree(col, pivot_col, fpr, fnr) or column_in_subtree(pivot_col, col, fpr, fnr):
-            cols_in_subtree.append(col_i)
-    return cols_in_subtree
-
-def find_subtree_columns2(rows_in_subtree, cols_sorted, mat, fpr, fnr):
-    """Finds all columns that ocurr in the subtree of mat's pivot_col_i'th column."""
-    cols_in_subtree = []
-    for col_i in cols_sorted:
-        col = mat[:, col_i]
-        if column_in_subtree2(col, rows_in_subtree, fpr, fnr):
-            cols_in_subtree.append(col_i)
-    return cols_in_subtree
-
-def find_subtree_columns3(pivot_col, cols_sorted, mat, fpr, fnr):
-    """Finds all columns that ocurr in the subtree of mat's pivot_col_i'th column."""
+def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
+    """Finds all columns of mat that ocurr in the subtree of the pivot_col column,
+    or that pivot_col is in the subtree of, assuming that each entry of mat is
+    subject to fpr and fnr, and pivot_col is correct.
+    """
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
     K_01 = (1 - pivot_col) @ mat_cols
@@ -76,8 +39,11 @@ def find_subtree_columns3(pivot_col, cols_sorted, mat, fpr, fnr):
     cols_mask = K_11 >= np.minimum(K_01, K_10)
     return np.array(cols_sorted)[cols_mask]
 
-def find_subtree_columns4(pivot_col, cols_sorted, mat, fpr, fnr):
-    """Finds all columns that ocurr in the subtree of mat's pivot_col_i'th column."""
+def noisy_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
+    """Finds all columns of mat that ocurr in the subtree of the pivot_col column,
+    or that pivot_col is in the subtree of, assuming that each entry of mat and
+    pivot_col is subject to fpr and fnr.
+    """
     c0 = np.log((1-fnr)/fpr)
     c1 = np.log((1-fpr)/fnr)
     mat_cols = mat[:, cols_sorted]
@@ -85,8 +51,8 @@ def find_subtree_columns4(pivot_col, cols_sorted, mat, fpr, fnr):
     K_01 = (1 - pivot_col) @ mat_cols
     K_10 = pivot_col @ (1 - mat_cols)
     cols_mask = np.logical_or(
-            np.logical_and(K_11 * c0 >= K_01 * c1, K_10 >= K_01),
-            np.logical_and(K_11 * c0 >= K_10 * c1, K_01 >= K_10)
+        np.logical_and(K_11 * c0 >= K_01 * c1, K_10 >= K_01),
+        np.logical_and(K_11 * c0 >= K_10 * c1, K_01 >= K_10)
     )
     return np.array(cols_sorted)[cols_mask]
 
@@ -96,17 +62,13 @@ def reconstruct_root(cols_in_subtree, mat, fnr):
     root = np.zeros(mat.shape[1])
     root[cols_in_subtree] = (counts >= np.max(counts)*(1 - fnr)).astype(int)
     return root
-#
-#def row_in_subtree(row_a, row_b):
-#    """Returns whether row_a is in the subtree of row_b."""
-#    return np.sum(row_a * row_b) >= np.sum(row_b) * (1/2)
 
 def reconstruct_pivot(cols_in_subtree, cols_sorted, mat):
     """Reconstructs the pivot column based on the columns in its subtree."""
     # Count the number of times a row occurs in the subtree.
     subtree_in = mat[:, cols_in_subtree].sum(axis = 1)
 
-    # Count the number of times a row occurs outside of the subtree but in undecided columns.
+    # Count the number of times a row occurs outside of the subtree but in unreconstructed columns.
     out_set = np.setdiff1d(np.array(cols_sorted), np.array(cols_in_subtree), assume_unique = True)
     subtree_out = mat[:, out_set].sum(axis = 1) 
 
@@ -114,14 +76,12 @@ def reconstruct_pivot(cols_in_subtree, cols_sorted, mat):
     reconstructed_pivot = (subtree_in >= subtree_out).astype(int) * (subtree_in > 0).astype(int)
     return reconstructed_pivot
 
-
 def count_based_max_likelihood(pivot, col_set, mat):
     """Returns the index of the column in mat (of columns in col_set) that is most similar to pivot."""
     return col_set[np.argmax(pivot.T @ mat[:, col_set])]
 
 def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpr, fnr, mer):
-    """
-    Create and return a refined matrix from the columns in reconstructed_mat by, 
+    """Create and return a refined matrix from the columns in reconstructed_mat by, 
     for each column in the noisy matrix, selecting the column in reconstructed_mat 
     that maximizes the likelihood of measuring the noisy column.
     Note that noisy_mat may contain 3s.
@@ -139,26 +99,13 @@ def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpr, fnr, mer
     refinement = reconstructed_mat[:, log_probs.argmax(axis = 1)]
     return refinement
 
-def refinement2(reconstruction, noisy, fpr, fnr, mer):
-    refinement = reconstruction.copy()
-    for i in range(refinement.shape[1]):
-        for j in range(refinement.shape[1]):
-            if _true_subset(refinement[:, i], refinement[:, j]): 
-                if np.sum(noisy[:, i] * noisy[:, j]) > 0 and np.sum(noisy[:, i]) > np.sum(noisy[:, j]):
-                    temp = refinement[:, j]
-                    refinement[:, j] = refinement[:, i]
-                    refinement[:, i] = temp
-    return refinement
-
-# TODO: true is only for testing. Remove after.
-def reconstruct(measured, fpr, fnr, mer, true):
-    """
-    Reconstructs a phylogenetic tree from the measured matrix.
+def reconstruct(noisy, fpr, fnr, mer):
+    """Reconstructs a phylogenetic tree from the noisy matrix.
 
     Args:
-        measured: N x M np array. The measured matrix to be corrected. 
+        noisy: N x M numpy array. The noisy matrix to be corrected. 
             Elements are of values 0, 1, or 3. 
-            Zero represents measured absent, 1 represents measured present,
+            Zero represents mutation absent, 1 represents mutation present,
             and 3 represents missing entry.
         fpr: scalar. False positive rate.
         fnr: scalar. False negative rate.
@@ -166,16 +113,15 @@ def reconstruct(measured, fpr, fnr, mer, true):
     
     Returns:
       Matrix that represents the reconstructed phylogenetic tree.
+      In this matrix, for any two columns, either one is a subset of the other or they are disjoint.
     """
-    
-    assert np.all(np.logical_or(measured == 0, np.logical_or(measured == 1, measured == 3))), \
-        "measured must contain only 0s, 1s, and 3s."
+    assert np.all(np.logical_or(noisy == 0, np.logical_or(noisy == 1, noisy == 3))), \
+        "noisy matrix must contain only 0s, 1s, and 3s."
     assert 0 <= fpr <= 1 and 0 <= fnr <= 1 and 0 <= mer <= 1, "fpr, fnr, and mer must be in [0, 1]."
 
-    mat = measured.copy()
-    orig = measured.copy()
+    mat = noisy.copy()
+    orig = noisy.copy()
     reconstruction = np.zeros_like(mat)
-    mask = np.ones_like(mat)
 
     # Set all missing elements to 0s.
     mat[mat == 3] = 0
@@ -184,90 +130,103 @@ def reconstruct(measured, fpr, fnr, mer, true):
     col_set = np.array(range(mat.shape[1]))
     col_sums = np.sum(mat[:, col_set], axis = 0)
     assert np.all(col_sums.shape == (mat.shape[1],))
-    cols_sorted = col_set[np.argsort(-col_sums)]
-    # cols_sorted used as a sorted col_set from here on.
-
+    cols_sorted = col_set[np.argsort(-col_sums)] # cols_sorted used as a sorted col_set from here on.
+    
+    # Reconstruct one column at a time until all are corrected.
     while cols_sorted.size > 0:
+        # Reconstruct the unreconstructed column with the most ones.
         col_sums = np.sum(mat[:, cols_sorted], axis = 0)
         cols_sorted = cols_sorted[np.argsort(-col_sums)] # Sort from highest to lowest column sum.
         pivot_col_i = cols_sorted[0] # Get the column with the most number of ones.
-
         pivot = mat[:, pivot_col_i]
-        cols_in_subtree = find_subtree_columns4(pivot, cols_sorted, mat, fpr, fnr)
 
+        # Find columns in the subtree of pivot assuming the pivot is subject to fpr and fnr.
+        cols_in_subtree = noisy_pivot_subtree_columns(pivot, cols_sorted, mat, fpr, fnr)
+
+        # Adjust mat to ensure that rows which should be in the subtree are supersets of the subtree root.
         root = reconstruct_root(cols_in_subtree, mat, fnr)
         rows_in_subtree_mask2 = mat @ root > np.sum(root) / 2
         rows_in_subtree2 = np.flatnonzero(rows_in_subtree_mask2)
         mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
 
+        # Re-find pivot based on adjusted mat.
         reconstructed_pivot = reconstruct_pivot(cols_in_subtree, cols_sorted, mat)
-
-        if len(cols_in_subtree) == 0: # TODO: do we need this
-            print('cols in subtree is empty')
-            reconstructed_pivot = mat[:, pivot_col_i]
-
-        # Go through all columns, enforcing structure with pivot_reconstructed
-        final_cols_in_subtree = find_subtree_columns3(reconstructed_pivot, cols_sorted, orig, fpr, fnr)
-        undecided_cols_out_subtree = np.setdiff1d(np.array(cols_sorted), np.array(final_cols_in_subtree), assume_unique = True)
+        
+        # Find columns in subtree of the reconstructed pivot assuming the reconstructed pivot is correct.
+        final_cols_in_subtree = correct_pivot_subtree_columns(reconstructed_pivot, cols_sorted, orig, fpr, fnr)
 
         if len(final_cols_in_subtree) > 0:
+            # Find the columns which haven't been reconstructed yet, but are outside the reconstructed pivot's subtree.
+            unreconstructed_cols_out_subtree = np.setdiff1d(np.array(cols_sorted), np.array(final_cols_in_subtree), assume_unique = True)
+
+            # Go through all mat, enforcing column structure with pivot_reconstructed.
+            # Any column in the subtree of the reconstructed pivot must be a subset of the reconstructed pivot.
             mat[:, final_cols_in_subtree] *= reconstructed_pivot.reshape((-1, 1))
-            mat[:, undecided_cols_out_subtree] *= 1 - reconstructed_pivot.reshape((-1, 1))
+            # Any undecided column outside of the subtree must be disjoint with the reconstructed pivot.
+            mat[:, unreconstructed_cols_out_subtree] *= 1 - reconstructed_pivot.reshape((-1, 1))
+
+            # Find which column of mat should be replaced with the reconstructed pivot.
             col_placement_i = count_based_max_likelihood(reconstructed_pivot, final_cols_in_subtree, mat)
         else:
+            # Default to replacing the column the pivot started as.
             col_placement_i = pivot_col_i
-            print('Empty final set')
 
         reconstruction[:, col_placement_i] = reconstructed_pivot
 
-        # TODO: remove testing.
-        # TESTING
-        # Assuming the input is the ground truth, compare the final_cols_in_subtree to the true cols in subtree.
-#        true_cols_in_subtree_mask = np.zeros(true.shape[1])
-#        true_cols_in_subtree = []
-#        for col_i in cols_sorted:
-#            if _true_subset(true[:, col_i], true[:, orig_pivot_col_i]):
-#                true_cols_in_subtree.append(col_i)
-#                true_cols_in_subtree_mask[col_i] = 1
-#        final_cols_in_subtree_mask = np.zeros_like(true_cols_in_subtree_mask)
-#        final_cols_in_subtree_mask[final_cols_in_subtree] = 1
-#        completeness_ratio_cols = np.sum(final_cols_in_subtree_mask * true_cols_in_subtree_mask) / np.sum(true_cols_in_subtree_mask)
-#        excess_ratio_cols = len(set(final_cols_in_subtree) - set(true_cols_in_subtree)) / len(final_cols_in_subtree)
-#        true_rows_in_subtree = (np.sum(true[:, true_cols_in_subtree], 1) > 0).astype(int)
-#        completeness_ratio_rows = np.sum(reconstructed_pivot * true_rows_in_subtree) / np.sum(true_rows_in_subtree)
-#        excess_ratio_rows = len(set(np.where(reconstructed_pivot)[0]) - set(np.where(true_rows_in_subtree)[0])) / np.sum(reconstructed_pivot)
-#        if completeness_ratio_cols < 1.0-1e-3 or excess_ratio_cols > 1e-3 or completeness_ratio_rows < 1.0-1e-3 or excess_ratio_rows > 1e-3:
-#            # print(f'Cols in subtree size: {len(true_cols_in_subtree)},    row size: {np.sum(true_rows_in_subtree)}')
-#            # print(f'cols: completeness (bad [0, 1] good): {completeness_ratio_cols},    excess (good [0, 1] bad): {excess_ratio_cols}')
-#            # print(f'rows: completeness (bad [0, 1] good): {completeness_ratio_rows},    excess (good [0, 1] bad): {excess_ratio_rows}')
-#            # print(f'rows: missing: {np.sum(true_rows_in_subtree) - np.sum(true_rows_in_subtree * reconstructed_pivot)}')
-#            # missing_rows_mask = true_rows_in_subtree * (1 - reconstructed_pivot)
-##            print(true[np.ix_(np.where(missing_rows_mask)[0], cols_sorted)])
-##            print(true[np.ix_(np.where(missing_rows_mask)[0], true_cols_in_subtree)])
-##            print(np.sum(true[np.ix_(np.where(missing_rows_mask)[0], true_cols_in_subtree)], 1))
-##            print(np.sum(true[np.ix_(np.where(missing_rows_mask)[0], list(set(cols_sorted) - set(true_cols_in_subtree)))], 1))
-#            # print(np.where(missing_rows_mask)[0])
-#            # exit()
-
-        # END TESTING
-
+        # Remove column from list of columns which need to be reconstructed.
         cols_sorted = np.delete(cols_sorted, np.flatnonzero(cols_sorted == col_placement_i))
 
     # Row maximum likelihood
-    reconstruction = column_max_likelihood_refinement(reconstruction.T, measured.T, fpr, fnr, mer).T
+    reconstruction = column_max_likelihood_refinement(reconstruction.T, noisy.T, fpr, fnr, mer).T
     # Column maximum likelihood
-    reconstruction = column_max_likelihood_refinement(reconstruction, measured, fpr, fnr, mer)
-
-    # reconstruction = refinement2(reconstruction, measured, fpr, fnr, mer)
+    reconstruction = column_max_likelihood_refinement(reconstruction, noisy, fpr, fnr, mer)
 
     assert np.all(np.logical_or(reconstruction == 0, reconstruction == 1))
     return reconstruction
 
-def _true_subset(a, b):
-    """Checks that 'a' is a subset of 'b'"""
-    return np.all(a * b == a)
+###### Running reconstructor as command line program ######
 
-def _true_disjoint(a, b):
-    """Checks that 'a' and 'b' are disjoint"""
-    return np.all(a * b == 0)
+def main():
+    import argparse
+    import pandas as pd
 
+    def float_closed_unit_interval(arg):
+        try:
+            f = float(arg)
+        except ValueError:
+            raise argparse.ArgumentTypeError(f"invalid float value: {arg}")
+        if f < 0.0 or f > 1.0:
+            raise argparse.ArgumentTypeError(f"invalid float value {arg}: argument must be in [0.0, 1.0]")
+        return f
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("in_file", type = str, help = "Input file to read noisy matrix from.")
+    parser.add_argument("fpr", type = float_closed_unit_interval, help = "False positive rate.")
+    parser.add_argument("fnr", type = float_closed_unit_interval, help = "False negative rate.")
+    parser.add_argument("mer", type = float_closed_unit_interval, help = "Missing entry rate.")
+    parser.add_argument("-o", "--out_file", type = str, help = "Output file to write conflict-free matrix to. Defaults to IN_FILE.CFMatrix.")
+    parser.add_argument("-v", "--verbose", action = "store_true")
+    args = parser.parse_args()
+
+    assert args.fpr + args.fnr + args.mer <= 1.0, "fpr + fnr + mer must be in [0.0, 1.0]"
+    if args.out_file is None:
+        args.out_file = args.in_file + ".CFMatrix"
+
+    if args.verbose:
+        print(f"Reading noisy matrix from {args.in_file} with false positive rate {args.fpr}, false negative rate {args.fnr}, and missing entry rate {args.mer}.")
+        print(f"Conflict-free matrix will be written to {args.out_file}.")
+
+    noisy_df = pd.read_csv(args.in_file, sep = '\t', index_col = 0)
+
+    reconstructed_mat = reconstruct(noisy_df.to_numpy(), args.fpr, args.fnr, args.mer)
+
+    reconstructed_df = pd.DataFrame(reconstructed_mat)
+    reconstructed_df.columns = noisy_df.columns
+    reconstructed_df.index = noisy_df.index
+    reconstructed_df.index.name = "cellIDxmutID"
+    reconstructed_df.to_csv(args.out_file, sep = "\t")
+    if args.verbose:
+        print(f"Output written.")
+
+if __name__ == '__main__':
+    main()
