@@ -2,7 +2,18 @@
 # Written by: Neelay Junnarkar (neelay.junnarkar@berkeley.edu) and Can Kizilkale (cankizilkale@berkeley.edu).
 # Last update: July 13, 2023.
 
-# Can be used as a library or as a commandline program.
+# Can be used from the commandline or as a library from other code.
+#
+# Commandline usage:
+# python reconstructor.py noisy_matrix_filename fpr fnr mer
+# The output file defaults to noisy_matrix_filename.CFMatrix.
+# Can specify output file with the "-o" flag: python reconstructor.py noisy_matrix_filename fpr fnr mer -o output_filename.
+# To get help information, run: python reconstructor.py -h 
+# Dependencies: numpy, and pandas.
+#
+# Example:
+# python reconstructor.py noisy_data.SC 0.001 0.2 0.05 -o reconstructed_data.SC.CFMatrix
+#
 #
 # Library usage:
 # Import file and use the reconstruct function.
@@ -11,17 +22,7 @@
 # Example:
 # from reconstructor import reconstruct
 # reconstruction = reconstruct(noisy_mat, fpr, fnr, mer)
-#
-#
-# Commandline usage:
-# python reconstructor.py noisy_matrix_filename fpr fnr mer
-# The output file defaults to noisy_matrix_filename.CFMatrix.
-# Can specify output file with the "-o" flag: python reconstructor.py noisy_matrix_filename fpr fnr mer -o output_filename.
-# To get help information, run: python reconstructor.py -h 
-# Dependencies: numpy, pandas, and argparse.
-#
-# Example:
-# python reconstructor.py noisy_data.SC 0.001 0.2 0.05 -o reconstructed_data.SC.CFMatrix
+
 
 ###### Reconstructor code ######
 
