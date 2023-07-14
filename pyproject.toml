@@ -1,0 +1,45 @@
+[tool.poetry]
+name = "sempervirens"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.scripts]
+test = 'tests.main:test'
+
+fnr0_05_300x300s = 'tests.main:run_300x300s_0_05fnr'
+fnr0_2_300x300s = 'tests.main:run_300x300s_0_2fnr'
+fpr0_001_300x300s = 'tests.main:run_300x300s_0_001fpr'
+fpr0_003_300x300s = 'tests.main:run_300x300s_0_003fpr'
+fpr0_01_300x300s = 'tests.main:run_300x300s_0_01fpr'
+fpr0_03_300x300s = 'tests.main:run_300x300s_0_03fpr'
+fpr0_05_300x300s = 'tests.main:run_300x300s_0_05fpr'
+
+fnr0_05_1000x300s = 'tests.main:run_1000x300s_0_05fnr'
+fnr0_2_1000x300s = 'tests.main:run_1000x300s_0_2fnr'
+
+fnr0_05_300x1000s = 'tests.main:run_300x1000s_0_05fnr'
+fnr0_2_300x1000s = 'tests.main:run_300x1000s_0_2fnr'
+fpr0_001_300x1000s = 'tests.main:run_300x1000s_0_001fpr'
+fpr0_01_300x1000s = 'tests.main:run_300x1000s_0_01fpr'
+fpr0_03_300x1000s = 'tests.main:run_300x1000s_0_03fpr'
+fpr0_05_300x1000s = 'tests.main:run_300x1000s_0_05fpr'
+fpr0_1_300x1000s = 'tests.main:run_300x1000s_0_1fpr'
+
+fnr0_05_1000x1000s = 'tests.main:run_1000x1000s_0_05fnr'
+fnr0_2_1000x1000s = 'tests.main:run_1000x1000s_0_2fnr'
+fpr0_01_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr'
+fpr0_1_1000x1000s = 'tests.main:run_1000x1000s_0_1fpr'
+
+[tool.poetry.dependencies]
+python = "^3.10"
+# numba = "^0.56.4"
+# scphylo-tools = "^0.0.2"
+numpy = "^1.23"
+pandas = "^1.5.3"
+# pyflame = "^0.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
