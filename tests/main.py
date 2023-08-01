@@ -89,13 +89,13 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
 
         t0 = time.perf_counter()
         if algorithm == 'sempervirens':
-            import subprocess
-            true_filename = "data/" + file_prefix + ".SC.before_FP_FN_NA"
-            noisy_filename = "data/" + file_prefix + ".SC"
-            output_filename = "/tmp/" + file_prefix + ".SC.CFMatrix"
-            subprocess.run(["python", "sempervirens/reconstructor.py", noisy_filename, str(fpr), str(fnr), str(mer), "-o", output_filename])
-            reconstruction = read_df(output_filename).to_numpy()
-            # reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
+            # import subprocess
+            # true_filename = "data/" + file_prefix + ".SC.before_FP_FN_NA"
+            # noisy_filename = "data/" + file_prefix + ".SC"
+            # output_filename = "/tmp/" + file_prefix + ".SC.CFMatrix"
+            # subprocess.run(["python", "sempervirens/reconstructor.py", noisy_filename, str(fpr), str(fnr), str(mer), "-o", output_filename])
+            # reconstruction = read_df(output_filename).to_numpy()
+            reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "scistree":
