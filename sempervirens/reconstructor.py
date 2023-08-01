@@ -30,31 +30,35 @@ import numpy as np
 
 def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
     """Finds all columns of mat that ocurr in the subtree of the pivot_col column,
-    or that pivot_col is in the subtree of, assuming that each entry of mat is
-    subject to fpr and fnr, and pivot_col is correct.
+    assuming that each entry of mat is subject to fpr and fnr, and pivot_col is correct.
     """
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
     K_01 = (1 - pivot_col) @ mat_cols
     K_10 = pivot_col @ (1 - mat_cols)
-    cols_mask = K_11 >= np.minimum(K_01, K_10)
+    cols_mask = K_11 >= K_01
     return np.array(cols_sorted)[cols_mask]
 
 def noisy_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
-    """Finds all columns of mat that ocurr in the subtree of the pivot_col column,
-    or that pivot_col is in the subtree of, assuming that each entry of mat and
-    pivot_col is subject to fpr and fnr.
+    """Finds all columns of mat that ocurr in the same subtree as the pivot_col column,
+    assuming that each entry of mat and pivot_col is subject to fpr and fnr.
     """
-    c0 = np.log((1-fnr)/fpr)
-    c1 = np.log((1-fpr)/fnr)
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
     K_01 = (1 - pivot_col) @ mat_cols
     K_10 = pivot_col @ (1 - mat_cols)
-    cols_mask = np.logical_or(
-        np.logical_and(K_11 * c0 >= K_01 * c1, K_10 >= K_01),
-        np.logical_and(K_11 * c0 >= K_10 * c1, K_01 >= K_10)
-    )
+    if fnr >= fpr:
+        c0 = np.log((1-fnr)/fpr)
+        c1 = np.log((1-fpr)/fnr)
+        cols_mask = np.logical_or(
+            K_11 * c0 >= K_01 * c1,
+            K_11 * c0 >= K_10 * c1,
+        )
+    else:
+        cols_mask = np.logical_or(
+            K_11 >= K_01,
+            K_11 >= K_10,
+        )
     return np.array(cols_sorted)[cols_mask]
 
 def reconstruct_root(cols_in_subtree, mat, fnr):
@@ -142,6 +146,25 @@ def reconstruct(noisy, fpr, fnr, mer):
         pivot = mat[:, pivot_col_i]
 
         # Find columns in the subtree of pivot assuming the pivot is subject to fpr and fnr.
+        # tempcolset = cols_sorted.copy()
+        # pivot_col_i = cols_sorted[0]
+        # pivot = mat[:, pivot_col_i]
+        # cols_in_subtree = noisy_pivot_subtree_columns(pivot, tempcolset, mat, fpr, fnr)
+        # tempcolset = np.setdiff1d(tempcolset, cols_in_subtree, assume_unique=True)
+        # # print(cols_in_subtree.size)
+        # for i in range(1, cols_sorted.size):
+        #     candidate_pivot_col_i = cols_sorted[i]
+        #     if candidate_pivot_col_i not in tempcolset:
+        #         continue
+        #     candidate_pivot = mat[:, candidate_pivot_col_i]
+        #     candidate_cols_in_subtree = noisy_pivot_subtree_columns(candidate_pivot, tempcolset, mat, fpr, fnr)
+        #     tempcolset = np.setdiff1d(tempcolset, candidate_cols_in_subtree, assume_unique=True)
+        #     if candidate_cols_in_subtree.size > cols_in_subtree.size:
+        #         # print("replaced the subtree: ", cols_in_subtree.size, "to", candidate_cols_in_subtree.size)
+        #         pivot_col_i = candidate_pivot_col_i
+        #         pivot = candidate_pivot
+        #         cols_in_subtree = candidate_cols_in_subtree
+        # # print("Final subtree num columns: ", cols_in_subtree.size)
         cols_in_subtree = noisy_pivot_subtree_columns(pivot, cols_sorted, mat, fpr, fnr)
 
         # Adjust mat to ensure that rows which should be in the subtree are supersets of the subtree root.
