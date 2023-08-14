@@ -73,7 +73,9 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         algorithm = 'sempervirens'
     else:
         algorithm = args[0]
-        assert(algorithm in ['sempervirens', 'huntress', 'scistree', 'freq-based', 'tnp'])
+        assert(algorithm in ['sempervirens', 'huntress', 'scistree'])
+    if algorithm == 'scistree':
+        import scphylo
     print(f"\nUsing algorithm: {algorithm}.")
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
 
@@ -89,13 +91,13 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
 
         t0 = time.perf_counter()
         if algorithm == 'sempervirens':
-            import subprocess
-            true_filename = "data/" + file_prefix + ".SC.before_FP_FN_NA"
-            noisy_filename = "data/" + file_prefix + ".SC"
-            output_filename = "/tmp/" + file_prefix + ".SC.CFMatrix"
-            subprocess.run(["python", "sempervirens/reconstructor.py", noisy_filename, str(fpr), str(fnr), str(mer), "-o", output_filename])
-            reconstruction = read_df(output_filename).to_numpy()
-            # reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
+            # import subprocess
+            # true_filename = "data/" + file_prefix + ".SC.before_FP_FN_NA"
+            # noisy_filename = "data/" + file_prefix + ".SC"
+            # output_filename = "/tmp/" + file_prefix + ".SC.CFMatrix"
+            # subprocess.run(["python", "sempervirens/reconstructor.py", noisy_filename, str(fpr), str(fnr), str(mer), "-o", output_filename])
+            # reconstruction = read_df(output_filename).to_numpy()
+            reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "scistree":
@@ -149,10 +151,6 @@ def run_300x300s_0_003fpr(alg = sys.argv[1:]):
     run("300x300s_0_003fpr", file_prefixes_300x300s_0_003fpr, alg)
 def run_300x300s_0_01fpr(alg = sys.argv[1:]):
     run("300x300s_0_01fpr", file_prefixes_300x300s_0_01fpr, alg)
-def run_300x300s_0_03fpr(alg = sys.argv[1:]):
-    run("300x300s_0_03fpr", file_prefixes_300x300s_0_03fpr, alg)
-def run_300x300s_0_05fpr(alg = sys.argv[1:]):
-    run("300x300s_0_05fpr", file_prefixes_300x300s_0_05fpr, alg)
 
 def run_1000x300s_0_05fnr(alg = sys.argv[1:]):
     run("1000x300s_0_05fnr", file_prefixes_1000x300s_0_05fnr, alg)
@@ -169,12 +167,6 @@ def run_300x1000s_0_001fpr(alg = sys.argv[1:]):
     run("300x1000s_0_001fpr", file_prefixes_300x1000s_0_001fpr, alg)
 def run_300x1000s_0_01fpr(alg = sys.argv[1:]):
     run("300x1000s_0_01fpr", file_prefixes_300x1000s_0_01fpr, alg)
-def run_300x1000s_0_03fpr(alg = sys.argv[1:]):
-    run("300x1000s_0_03fpr", file_prefixes_300x1000s_0_03fpr, alg)
-def run_300x1000s_0_05fpr(alg = sys.argv[1:]):
-    run("300x1000s_0_05fpr", file_prefixes_300x1000s_0_05fpr, alg)
-def run_300x1000s_0_1fpr(alg = sys.argv[1:]):
-    run("300x1000s_0_1fpr", file_prefixes_300x1000s_0_1fpr, alg)
 
 def run_1000x1000s_0_05fnr(alg = sys.argv[1:]):
     run("1000x1000s_0_05fnr", file_prefixes_1000x1000s_0_05fnr, alg)
@@ -184,8 +176,6 @@ def run_1000x1000s_0_001fpr(alg = sys.argv[1:]):
     run("1000x1000s_0_001fpr", file_prefixes_1000x1000s_0_001fpr, alg)
 def run_1000x1000s_0_01fpr(alg = sys.argv[1:]):
     run("1000x1000s_0_01fpr", file_prefixes_1000x1000s_0_01fpr, alg)
-def run_1000x1000s_0_1fpr(alg = sys.argv[1:]):
-    run("1000x1000s_0_1fpr", file_prefixes_1000x1000s_0_1fpr, alg)
 
 def test(alg = sys.argv[1:]):
 
@@ -196,8 +186,10 @@ def test(alg = sys.argv[1:]):
     run_300x1000s_0_001fpr(alg)
     run_300x1000s_0_01fpr(alg)
 
-    # run_1000x1000s_0_001fpr(alg)
-    # run_1000x1000s_0_01fpr(alg)
+    run_1000x300s_0_001fpr(alg)
+
+    run_1000x1000s_0_001fpr(alg)
+    run_1000x1000s_0_01fpr(alg)
 
 #     for file in reversed(files):
 #         file = 'data/metrics/' + file
