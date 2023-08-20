@@ -75,7 +75,8 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         algorithm = args[0]
         assert(algorithm in ['sempervirens', 'huntress', 'scistree'])
     if algorithm == 'scistree':
-        import scphylo
+        pass
+        # import scphylo
     print(f"\nUsing algorithm: {algorithm}.")
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
 
@@ -101,8 +102,10 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "scistree":
-            import scphylo
-            reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
+            # import scphylo
+            # Scphylo uses a modified scistree.
+            # reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
+            reconstruction = scistree_reconstruct(measured_df, fpr, fnr, mer)
 
         t1 = time.perf_counter()
 
@@ -139,6 +142,69 @@ def huntress_reconstruct(file_prefix, fpr, fnr, mer):
     )
     reconstruction = read_df(output_name + ".CFMatrix")
     return reconstruction.to_numpy()
+
+def scistree_reconstruct(noisy_df, fpr, fnr, mer):
+    cells = noisy_df.index
+    snvs = noisy_df.columns
+    df = noisy_df.transpose()
+
+    df = df.replace(3, 0.5)
+    df = df.replace(0, 1 - fnr)
+    df = df.replace(1, fpr)
+
+    df.index.name = f"HAPLOID {df.shape[0]} {df.shape[1]}"
+    
+    file = "/tmp/scistree.input"
+    df.to_csv(file, sep=" ")
+    with open(file) as ifile:
+        data = ifile.read()
+    with open(file, "w") as ofile:
+        data = data.replace('"', "")
+        ofile.write(data)
+
+    cmd = [
+        "tests/scistree",
+        "-v",
+        "-d",
+        "0",
+        "-e",
+        # "-k",
+        # f"{mp.cpu_count()}",
+        "-o",
+        "/tmp/scistree.gml",
+        "/tmp/scistree.input",
+    ]
+
+    outfile = open("/tmp/scistree.output", "w")
+    import subprocess
+    subprocess.run(cmd, stdout=outfile)
+
+    data = []
+    # detail = {"cost": "\n"}
+    with open(f"/tmp/scistree.output") as infile:
+        now_store = False
+        for line in infile:
+            line = line.strip()
+            if "Imputed genotypes:" in line:
+                now_store = True
+            if line[:4] == "Site" and now_store:
+                line = "".join(line.split(":")[1])
+                line = line.replace("\t", "")
+                data.append([int(x) for x in line.split(" ")])
+            if "current cost: " in line:
+                pass
+                # cost = float(line.split("current cost: ")[1].split(", opt tree: ")[0])
+                # detail["cost"] += f"    current best cost = {cost}\n"
+
+    data = np.array(data)
+    matrix_output = data.T
+
+    df_output = pd.DataFrame(matrix_output)
+    df_output.columns = snvs
+    df_output.index = cells
+    df_output.index.name = "cellIDxmutID"
+
+    return df_output.to_numpy()
 
 
 def run_300x300s_0_05fnr(alg = sys.argv[1:]):

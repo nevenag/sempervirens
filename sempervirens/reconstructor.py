@@ -35,7 +35,6 @@ def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
     K_01 = (1 - pivot_col) @ mat_cols
-    K_10 = pivot_col @ (1 - mat_cols)
     cols_mask = K_11 >= K_01
     return cols_sorted[cols_mask]
 
@@ -104,7 +103,7 @@ def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpr, fnr, mer
     refinement = reconstructed_mat[:, log_probs.argmax(axis = 1)]
     return refinement
 
-def split_part(part, all_nonreconstructed, mat, fpr, fnr):
+def split_part(part, mat, fpr, fnr):
     """Finds the largest maximal subtree in a set of columns, determines and removes the pivot,
     enforces column relationships, and returns the subtree, remaining columns, pivot,
     and non-reconstructed column most similar to the pivot.
@@ -130,7 +129,7 @@ def split_part(part, all_nonreconstructed, mat, fpr, fnr):
     mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
 
     # Re-find pivot based on adjusted mat.
-    reconstructed_pivot = reconstruct_pivot(cols_in_subtree, all_nonreconstructed, mat)
+    reconstructed_pivot = reconstruct_pivot(cols_in_subtree, part, mat)
     
     # Find columns in subtree of the reconstructed pivot assuming the reconstructed pivot is correct.
     final_cols_in_subtree = correct_pivot_subtree_columns(reconstructed_pivot, part, mat, fpr, fnr)
@@ -201,22 +200,24 @@ def reconstruct(noisy, fpr, fnr, mer):
         part_lengths = [part.size for part in partition]
         part_i = np.argmax(part_lengths)
         part = partition.pop(part_i)
-        subpartition, reconstructed_pivot, col_i = split_part(part, cols_sorted, mat, fpr, fnr)
+        subpartition, reconstructed_pivot, col_i = split_part(part, mat, fpr, fnr)
         # Place reconstructed pivot in reconstructed matrix
-        reconstruction[:, col_i] = reconstructed_pivot
-        cols_sorted = np.delete(cols_sorted, np.flatnonzero(cols_sorted == col_i))
+        mat[:, col_i] = reconstructed_pivot
+        # reconstruction[:, col_i] = reconstructed_pivot
+        # cols_sorted = np.delete(cols_sorted, np.flatnonzero(cols_sorted == col_i))
         # Replace part in partition with the new parts
         for subpart in subpartition:
             if subpart.size > 0:
                 partition.append(subpart)
 
     # Row maximum likelihood
-    reconstruction = column_max_likelihood_refinement(reconstruction.T, noisy.T, fpr, fnr, mer).T
+    # reconstruction = mat
+    mat = column_max_likelihood_refinement(mat.T, noisy.T, fpr, fnr, mer).T
     # Column maximum likelihood
-    reconstruction = column_max_likelihood_refinement(reconstruction, noisy, fpr, fnr, mer)
+    mat = column_max_likelihood_refinement(mat, noisy, fpr, fnr, mer)
 
-    assert np.all(np.logical_or(reconstruction == 0, reconstruction == 1))
-    return reconstruction
+    assert np.all(np.logical_or(mat == 0, mat == 1))
+    return mat
 
 
 ###### Running reconstructor as command line program ######
