@@ -1,7 +1,6 @@
 # From HUNTRESS code
 
 import numpy as np
-import pandas as pd
 
 def isPtree(matrix_in):   # brute force check if matrix_in is a pTree
     M=matrix_in.astype(bool)
