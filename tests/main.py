@@ -73,10 +73,8 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         algorithm = 'sempervirens'
     else:
         algorithm = args[0]
-        assert(algorithm in ['sempervirens', 'huntress', 'scistree'])
-    if algorithm == 'scistree':
-        pass
-        # import scphylo
+        assert(algorithm in ['sempervirens', 'huntress', 'scistreep', 'scistree', 'sphyr'])
+        
     print(f"\nUsing algorithm: {algorithm}.")
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
 
@@ -101,11 +99,15 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
             reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
-        elif algorithm == "scistree":
-            # import scphylo
+        elif algorithm == "scistreep":
             # Scphylo uses a modified scistree.
-            # reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
+            import scphylo
+            reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
+        elif algorithm == "scistree":
             reconstruction = scistree_reconstruct(measured_df, fpr, fnr, mer)
+        elif algorithm == "sphyr":
+            import scphylo
+            reconstruction = scphylo.tl.sphyr(measured_df, fpr, fnr, n_threads=mp.cpu_count()).to_numpy()
 
         t1 = time.perf_counter()
 
@@ -205,7 +207,6 @@ def scistree_reconstruct(noisy_df, fpr, fnr, mer):
     df_output.index.name = "cellIDxmutID"
 
     return df_output.to_numpy()
-
 
 def run_300x300s_0_05fnr(alg = sys.argv[1:]):
     run("300x300s_0_05fnr", file_prefixes_300x300s_0_05fnr, alg)
