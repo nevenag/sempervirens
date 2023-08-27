@@ -150,7 +150,8 @@ def split_part(part, mat, fpr, fnr):
         # Setup split and return.
         # Delete col_placement_i wherever it is.
         split_a = np.delete(final_cols_in_subtree, np.flatnonzero(final_cols_in_subtree == col_placement_i))
-        split_b = np.delete(unreconstructed_cols_out_subtree, np.flatnonzero(unreconstructed_cols_out_subtree == col_placement_i))
+        split_b = unreconstructed_cols_out_subtree
+        # split_b = np.delete(unreconstructed_cols_out_subtree, np.flatnonzero(unreconstructed_cols_out_subtree == col_placement_i))
 
         assert split_a.size + split_b.size + 1 == part.size
 
@@ -183,7 +184,6 @@ def reconstruct(noisy, fpr, fnr, mer):
     assert 0 <= fpr <= 1 and 0 <= fnr <= 1 and 0 <= mer <= 1, "fpr, fnr, and mer must be in [0, 1]."
 
     mat = noisy.copy()
-    reconstruction = np.zeros_like(mat)
 
     # Set all missing elements to 0s.
     mat[mat == 3] = 0
@@ -196,22 +196,17 @@ def reconstruct(noisy, fpr, fnr, mer):
     partition = [cols_sorted] # Start with all columns in one part
 
     while len(partition) > 0:
-        # Take largest part and split into two
-        part_lengths = [part.size for part in partition]
-        part_i = np.argmax(part_lengths)
-        part = partition.pop(part_i)
+        # Take a part and split into two
+        part = partition.pop(0)
         subpartition, reconstructed_pivot, col_i = split_part(part, mat, fpr, fnr)
-        # Place reconstructed pivot in reconstructed matrix
+        # Place reconstructed pivot in matrix
         mat[:, col_i] = reconstructed_pivot
-        # reconstruction[:, col_i] = reconstructed_pivot
-        # cols_sorted = np.delete(cols_sorted, np.flatnonzero(cols_sorted == col_i))
         # Replace part in partition with the new parts
         for subpart in subpartition:
             if subpart.size > 0:
                 partition.append(subpart)
 
     # Row maximum likelihood
-    # reconstruction = mat
     mat = column_max_likelihood_refinement(mat.T, noisy.T, fpr, fnr, mer).T
     # Column maximum likelihood
     mat = column_max_likelihood_refinement(mat, noisy, fpr, fnr, mer)
