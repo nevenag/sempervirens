@@ -28,6 +28,8 @@ fnr0_2_1000x1000s = 'tests.main:run_1000x1000s_0_2fnr'
 fpr0_001_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr'
 fpr0_01_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr'
 
+fpr0_001_5000x500s = 'tests.main:run_5000x500s_0_001fpr'
+
 [tool.poetry.dependencies]
 python = "^3.10"
 numba = "^0.56.4"
