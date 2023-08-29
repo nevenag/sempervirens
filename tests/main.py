@@ -73,7 +73,7 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         algorithm = 'sempervirens'
     else:
         algorithm = args[0]
-        assert(algorithm in ['sempervirens', 'huntress', 'scistreep', 'scistree', 'sphyr'])
+        assert(algorithm in ['sempervirens', 'huntress', 'scistreep', 'scistree', 'sphyr', 'scite'])
         
     print(f"\nUsing algorithm: {algorithm}.")
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
@@ -108,6 +108,9 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         elif algorithm == "sphyr":
             import scphylo
             reconstruction = scphylo.tl.sphyr(measured_df, fpr, fnr, n_threads=mp.cpu_count()).to_numpy()
+        elif algorithm == "scite":
+            import scphylo
+            reconstruction = scphylo.tl.scite(measured_df, fpr, fnr, experiment=True)[0].to_numpy()
 
         t1 = time.perf_counter()
 
@@ -243,6 +246,9 @@ def run_1000x1000s_0_001fpr(alg = sys.argv[1:]):
     run("1000x1000s_0_001fpr", file_prefixes_1000x1000s_0_001fpr, alg)
 def run_1000x1000s_0_01fpr(alg = sys.argv[1:]):
     run("1000x1000s_0_01fpr", file_prefixes_1000x1000s_0_01fpr, alg)
+
+def run_5000x500s_0_001fpr(alg = sys.argv[1:]):
+    run("5000x500s_0_001fpr", file_prefixes_5000x500s_0_001fpr, alg)
 
 def test(alg = sys.argv[1:]):
 
