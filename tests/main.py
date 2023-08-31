@@ -250,6 +250,9 @@ def run_1000x1000s_0_01fpr(alg = sys.argv[1:]):
 def run_5000x500s_0_001fpr(alg = sys.argv[1:]):
     run("5000x500s_0_001fpr", file_prefixes_5000x500s_0_001fpr, alg)
 
+def run_1000x10000s_0_001fpr(alg = sys.argv[1:]):
+    run("1000x10000s_0_001fpr", file_prefixes_1000x10000s_0_001fpr, alg)
+
 def test(alg = sys.argv[1:]):
 
     run_300x300s_0_001fpr(alg)
@@ -263,6 +266,8 @@ def test(alg = sys.argv[1:]):
 
     run_1000x1000s_0_001fpr(alg)
     run_1000x1000s_0_01fpr(alg)
+
+    run_5000x500s_0_001fpr(alg)
 
 #     for file in reversed(files):
 #         file = 'data/metrics/' + file
