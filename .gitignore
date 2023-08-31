@@ -16,8 +16,4 @@ Cargo.lock
 **/*.rs.bk
 
 # MSVC Windows builds of rustc generate these, which store debugging information
-<<<<<<< HEAD
 *.pdb
-=======
-*.pdb
->>>>>>> 56ca4e2 (Add gitignore)
