@@ -351,6 +351,7 @@ pub const FILE_PREFIXES_1000X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, 
 //     ("fp_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.1, 0.2,  0.05),
 // ]
 
+<<<<<<< HEAD
 pub const FILE_PREFIXES_5000X500S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 5000, 500, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_10-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.2,  0.05),
@@ -374,6 +375,8 @@ pub const FILE_PREFIXES_5000X500S_0_001FPR: [(&'static str, i64, i64, f64, f64, 
     ("fp_0_001/simNo_9-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   5000, 500, 0.001, 0.2,  0.05),
 ];
 
+=======
+>>>>>>> c32ddbb (added 1000x10000s dataset and also sempervirens-rs)
 pub const FILE_PREFIXES_1000X10000S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 10000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_10-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.2,  0.05),
@@ -396,6 +399,7 @@ pub const FILE_PREFIXES_1000X10000S_0_001FPR: [(&'static str, i64, i64, f64, f64
     ("fp_0_001/simNo_9-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 10000, 0.001, 0.2,  0.05),
 ];
+<<<<<<< HEAD
 
 pub const FILE_PREFIXES_2000X20000S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 2000, 20000, 0.001, 0.05, 0.05),
@@ -419,3 +423,5 @@ pub const FILE_PREFIXES_2000X20000S_0_001FPR: [(&'static str, i64, i64, f64, f64
     ("fp_0_001/simNo_9-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   2000, 20000, 0.001, 0.2,  0.05),
 ];
+=======
+>>>>>>> c32ddbb (added 1000x10000s dataset and also sempervirens-rs)
