@@ -176,7 +176,7 @@ def reconstruct(noisy, fpr, fnr, mer):
         mer: scalar. Missing entry rate.
     
     Returns:
-      Matrix that represents the reconstructed phylogenetic tree.
+      N x M matrix that represents the reconstructed phylogenetic tree.
       In this matrix, for any two columns, either one is a subset of the other or they are disjoint.
     """
     assert np.all(np.logical_or(noisy == 0, np.logical_or(noisy == 1, noisy == 3))), \
@@ -239,7 +239,8 @@ def main():
     parser.add_argument("-v", "--verbose", action = "store_true")
     args = parser.parse_args()
 
-    assert args.fpr + args.fnr + args.mer <= 1.0, "fpr + fnr + mer must be in [0.0, 1.0]"
+    assert args.fpr + args.mer <= 1.0, "fpr + mer must be in [0.0, 1.0]"
+    assert args.fnr + args.mer <= 1.0, "fnr + mer must be in [0.0, 1.0]"
     if args.out_file is None:
         args.out_file = args.in_file + ".CFMatrix"
 
