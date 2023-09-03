@@ -10,6 +10,7 @@ use ndarray::Ix;
 use ndarray::azip;
 use rayon::current_num_threads;
 use rayon::prelude::*;
+use clap::Parser;
 
 mod file_prefixes;
 use file_prefixes::*;
@@ -259,9 +260,28 @@ fn split_part(mat: &mut Array2<f64>, fpr: f64, fnr: f64) -> (Vec<Vec<usize>>, Ar
     
 }
 
+/// Reconstructs a phylogenetic tree from the noisy matrix.
+/// 
+/// Args:
+///     noisy: N x M array. The noisy matrix to be corrected. 
+///         Elements are of values 0, 1, or 3. 
+///         Zero represents mutation absent, 1 represents mutation present,
+///         and 3 represents missing entry.
+///     fpr: False positive rate.
+///     fnr: False negative rate.
+///     mer: Missing entry rate.
+/// 
+/// Returns:
+///     N x M matrix that represents the reconstructed phylogenetic tree.
+///     In this matrix, for any two columns, either one is a subset of the other or they are disjoint.
 fn reconstruct(noisy: &Array2<f64>, fpr: f64, fnr: f64, mer: f64) -> Array2<f64> {
+    assert!(
+        noisy.mapv(|v| v.round() as i64 == 0 || v.round() as i64 == 1 || v.round() as i64 == 3).fold(true, |a, &b| a && b),
+        "Elements in the noisy matrix may only be 0 (absent), 1 (present), or 3 (missing)."
+    );
+
     let mut mat = noisy.clone();
-    mat.par_mapv_inplace(|v| if v.round() as i64 == 3 { 0.0 } else { v }); // 3.0
+    mat.par_mapv_inplace(|v| if v.round() as i64 == 3 { 0.0 } else { v });
 
     let cols_sorted: Vec<usize> = {
         let col_sums = mat.sum_axis(Axis(0));
@@ -303,6 +323,8 @@ fn reconstruct(noisy: &Array2<f64>, fpr: f64, fnr: f64, mer: f64) -> Array2<f64>
 
     mat = column_max_likelihood_refinement(&mat.t(), &noisy.t(), fpr, fnr, mer).reversed_axes();
     mat = column_max_likelihood_refinement(&mat.view(), &noisy.view(), fpr, fnr, mer);
+
+    assert!(mat.mapv(|v| v.round() as i64 == 0 || v.round() as i64 == 1).fold(true, |a, &b| a && b));
 
     mat
 }
@@ -417,10 +439,83 @@ fn run(file_prefixes: &[(&'static str, i64, i64, f64, f64, f64)]) {
 
 }
 
+#[derive(Parser)]
+#[command(author, version, about, long_about = "Sempervirens: Reconstruction of phylogenetic trees from noisy data.")]
+struct Args {
+    /// Input file to read noisy matrix from.
+    in_file: String,
+
+    /// False positive rate.
+    fpr: f64,
+
+    /// False negative rate.
+    fnr: f64,
+
+    /// Missing entry rate.
+    mer: f64,
+
+    /// Output file to write conflict-free matrix to. Defaults to IN_FILE.CFMatrix.
+    #[arg(short, long)]
+    out_file: Option<String>,
+
+    /// Number of threads to use in threadpool. Defaults to number of cpu cores.
+    #[arg(short, long)]
+    num_threads: Option<usize>,
+
+    #[arg(short, long, default_value_t = false)]
+    verbose: bool,
+}
 
 fn main() {
-    println!("Num threads: {}", current_num_threads()); // TODO: build thread pool
-    let mut files = vec![];
+    let args = Args::parse();
+
+    let verbose = args.verbose;
+
+    let in_file = args.in_file;
+
+    let fpr = args.fpr;
+    let fnr = args.fnr;
+    let mer = args.mer;
+
+    // Basic, but insufficient, checks.
+    assert!(0.0 <= fpr && fpr <= 1.0, "FPR must be in [0, 1].");
+    assert!(0.0 <= fnr && fnr <= 1.0, "FNR must be in [0, 1].");
+    assert!(0.0 <= mer && mer <= 1.0, "MER must be in [0, 1].");
+    assert!(fpr + mer <= 1.0, "FPR + MER must be in [0, 1].");
+    assert!(fnr + mer <= 1.0, "FNR + MER must be in [0, 1].");
+
+    let out_file = args.out_file.unwrap_or(in_file.clone() + ".CFMatrix");
+    let mut write_file = std::fs::File::create(&out_file).expect("Could not open OUT_FILE to write to.");
+
+    if let Some(num_threads) = args.num_threads {
+        assert!(num_threads > 0, "Number of threads NUM_THREADS must be greater than 0.");
+        rayon::ThreadPoolBuilder::new().num_threads(num_threads).build_global().expect("Failed to build thread pool");
+    }
+
+    if verbose {
+        println!("Number of threads: {}.", current_num_threads());
+        println!("Reading from: {in_file}.");
+        println!("False positive rate: {fpr}, false negative rate: {fnr}, missing entry rate: {mer}.");
+        println!("Will output reconstruction to {out_file}.");
+    }
+
+    let noisy_df = CsvReader::from_path(in_file).unwrap().with_delimiter(b'\t').finish().unwrap();
+    let col_name = &noisy_df.get_column_names_owned()[0];
+    let noisy_mat = noisy_df.drop(&col_name).unwrap().to_ndarray::<Float64Type>(IndexOrder::C).unwrap(); //.mapv(f64::from);
+
+    let reconstruction = reconstruct(&noisy_mat, fpr, fnr, mer);
+
+    let seriess: Vec<Series> = std::iter::once(noisy_df.column(col_name).unwrap().to_owned()) // Add first column.
+        .chain(reconstruction.columns().into_iter()
+            .map(|c| c.mapv(|v| v.round() as i64).to_vec()) // Convert floats to ints.
+            .zip(noisy_df.get_column_names().iter().skip(1)) // Get names of original columns, skipping first (which corresponds to names of rows).
+            .map(|(column, name)| Series::new(name, column)) // Assign column names to data.
+        )
+        .collect();
+    let mut write_df = DataFrame::new(seriess).unwrap();
+    CsvWriter::new(&mut write_file).has_header(true).with_delimiter(b'\t').finish(&mut write_df).expect("Failed to write reconstructed matrix.");
+
+    // let mut files = vec![];
     // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_001FPR);
     // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_003FPR);
     // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_01FPR);
@@ -429,6 +524,7 @@ fn main() {
     // files.extend_from_slice(&FILE_PREFIXES_300X1000S_0_01FPR);
     // files.extend_from_slice(&FILE_PREFIXES_1000X1000S_0_001FPR);
     // files.extend_from_slice(&FILE_PREFIXES_1000X1000S_0_01FPR);
-    files.extend_from_slice(&FILE_PREFIXES_1000X10000S_0_001FPR);
-    run(&files);
+    // files.extend_from_slice(&FILE_PREFIXES_1000X10000S_0_001FPR);
+    // files.extend_from_slice(&FILE_PREFIXES_2000X20000S_0_001FPR);
+    // run(&files);
 }
