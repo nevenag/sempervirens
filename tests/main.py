@@ -88,34 +88,37 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
 
     for i, (file_prefix, n, m, fpr, fnr, mer) in enumerate(file_prefixes):
         print(f"Running file: {file_prefix}")
-        true_df, measured_df = load_file(file_prefix)
+        true_df, noisy_df = load_file(file_prefix)
 
         t0 = time.perf_counter()
         if algorithm == 'sempervirens':
             reconstruction = sempervirens_reconstruct(file_prefix, fpr, fnr, mer) # Call from command-line
-            # reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer) # Call as library function
+            # reconstruction = sempervirens.reconstruct(noisy_df.to_numpy(), fpr, fnr, mer) # Call as library function
         elif algorithm == "sempervirens-rs":
             reconstruction = sempervirens_rs_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "scistreep":
             # Scphylo uses a parallelized scistree.
-            reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
+            reconstruction = scphylo.tl.scistree(noisy_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
         elif algorithm == "scistree":
-            reconstruction = scistree_reconstruct(measured_df, fpr, fnr, mer)
+            reconstruction = scistree_reconstruct(noisy_df, fpr, fnr, mer)
         elif algorithm == "sphyr":
-            reconstruction = scphylo.tl.sphyr(measured_df, fpr, fnr, n_threads=mp.cpu_count()).to_numpy()
+            reconstruction = scphylo.tl.sphyr(noisy_df, fpr, fnr, n_threads=mp.cpu_count()).to_numpy()
         elif algorithm == "scite":
-            reconstruction = scphylo.tl.scite(measured_df, fpr, fnr, experiment=True)[0].to_numpy()
+            reconstruction = scphylo.tl.scite(noisy_df, fpr, fnr, experiment=True)[0].to_numpy()
         t1 = time.perf_counter()
 
         metrics = compute_metrics(true_df.to_numpy(), reconstruction)
 
         reconstruction_df = pd.DataFrame(reconstruction)
-        reconstruction_df.columns = true_df.columns
-        reconstruction_df.index = true_df.index
+        reconstruction_df.columns = noisy_df.columns
+        reconstruction_df.index = noisy_df.index
         reconstruction_df.index.name = "cellIDxmutID"
-        rf_score = scphylo.tl.rf(true_df, reconstruction_df)
+        try:
+            rf_score = scphylo.tl.rf(true_df, reconstruction_df)
+        except:
+            rf_score = float('nan')
         metrics = np.hstack((metrics, np.array(rf_score)))
 
         print(metrics)
