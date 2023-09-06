@@ -92,8 +92,8 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
 
         t0 = time.perf_counter()
         if algorithm == 'sempervirens':
-            reconstruction = sempervirens_reconstruct(file_prefix, fpr, fnr, mer) # Call from command-line
-            # reconstruction = sempervirens.reconstruct(noisy_df.to_numpy(), fpr, fnr, mer) # Call as library function
+            # reconstruction = sempervirens_reconstruct(file_prefix, fpr, fnr, mer) # Call from command-line
+            reconstruction = sempervirens.reconstruct(noisy_df.to_numpy(), fpr, fnr, mer) # Call as library function
         elif algorithm == "sempervirens-rs":
             reconstruction = sempervirens_rs_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "huntress":
