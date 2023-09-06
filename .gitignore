@@ -2,3 +2,8 @@ __pycache__
 dist
 .idea/
 notebooks/.ipynb_checkpoints/
+data
+figures
+metrics
+metrics.zip
+sempervirens-rs/target
