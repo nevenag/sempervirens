@@ -5,6 +5,8 @@ import re
 import multiprocessing as mp
 import numpy as np
 import pandas as pd
+import scphylo
+import subprocess
 
 import tests.huntress as huntress
 
@@ -39,7 +41,7 @@ def compute_metrics(true_data, reconstruction):
 def print_metrics(metrics_df):
     """Takes in a dataframe and computes and prints metrics"""
     # metrics_df should be a pandas dataframe with the following columns:
-    # ['file', 'n', 'm', 'fpr', 'fnr', 'mer', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs']
+    # ['file', 'n', 'm', 'fpr', 'fnr', 'mer', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs', 'rf_score']
 
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
 
@@ -57,7 +59,7 @@ def print_metrics(metrics_df):
                 mer_match = np.isclose(metrics_df.mer, mer)
                 matches = np.logical_and(fpr_match, np.logical_and(fnr_match, mer_match))
                 match_count += np.sum(matches)
-                df = metrics_df[matches][['is_ptree', 'ad_score', 'dl_score', 'fraction_diffs']]
+                df = metrics_df[matches][['is_ptree', 'ad_score', 'dl_score', 'fraction_diffs', 'rf_score']]
                 times = metrics_df[matches][['time']]
                 print(f'* fpr: {fpr}    fnr: {fnr}    mer: {mer}')
                 print(f'    * Average: {df.mean().to_numpy()}')
@@ -73,42 +75,55 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
         algorithm = 'sempervirens'
     else:
         algorithm = args[0]
-        assert(algorithm in ['sempervirens', 'huntress', 'scistree'])
-    if algorithm == 'scistree':
-        import scphylo
+        assert(algorithm in ['sempervirens', 'sempervirens-rs', 'huntress', 'scistreep', 'scistree', 'sphyr', 'scite'])
+        
     print(f"\nUsing algorithm: {algorithm}.")
     np.set_printoptions(formatter={'float_kind': '{:.3f}'.format})
 
     curr_time = datetime.datetime.now().strftime('%Y-%m-%d_%H:%M')
     data_file_name = f"metrics/metrics_{algorithm}_{data_file_prefix}_{curr_time}.csv"
-    metrics_df = pd.DataFrame(columns=['file', 'n', 'm', 'fpr', 'fnr', 'mer', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs'])
+    metrics_df = pd.DataFrame(columns=['file', 'n', 'm', 'fpr', 'fnr', 'mer', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs', 'rf_score'])
 
     time_start = time.perf_counter()
 
     for i, (file_prefix, n, m, fpr, fnr, mer) in enumerate(file_prefixes):
         print(f"Running file: {file_prefix}")
-        true_df, measured_df = load_file(file_prefix)
+        true_df, noisy_df = load_file(file_prefix)
 
         t0 = time.perf_counter()
         if algorithm == 'sempervirens':
-            # import subprocess
-            # true_filename = "data/" + file_prefix + ".SC.before_FP_FN_NA"
-            # noisy_filename = "data/" + file_prefix + ".SC"
-            # output_filename = "/tmp/" + file_prefix + ".SC.CFMatrix"
-            # subprocess.run(["python", "sempervirens/reconstructor.py", noisy_filename, str(fpr), str(fnr), str(mer), "-o", output_filename])
-            # reconstruction = read_df(output_filename).to_numpy()
-            reconstruction = sempervirens.reconstruct(measured_df.to_numpy(), fpr, fnr, mer)
+            # reconstruction = sempervirens_reconstruct(file_prefix, fpr, fnr, mer) # Call from command-line
+            reconstruction = sempervirens.reconstruct(noisy_df.to_numpy(), fpr, fnr, mer) # Call as library function
+        elif algorithm == "sempervirens-rs":
+            reconstruction = sempervirens_rs_reconstruct(file_prefix, fpr, fnr, mer)
         elif algorithm == "huntress":
             reconstruction = huntress_reconstruct(file_prefix, fpr, fnr, mer)
+        elif algorithm == "scistreep":
+            # Scphylo uses a parallelized scistree.
+            reconstruction = scphylo.tl.scistree(noisy_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
         elif algorithm == "scistree":
-            import scphylo
-            reconstruction = scphylo.tl.scistree(measured_df, alpha=fpr, beta=fnr, n_threads=mp.cpu_count(), experiment=True)[0].to_numpy()
-
+            reconstruction = scistree_reconstruct(noisy_df, fpr, fnr, mer)
+        elif algorithm == "sphyr":
+            reconstruction = scphylo.tl.sphyr(noisy_df, fpr, fnr, n_threads=mp.cpu_count()).to_numpy()
+        elif algorithm == "scite":
+            reconstruction = scphylo.tl.scite(noisy_df, fpr, fnr, experiment=True)[0].to_numpy()
         t1 = time.perf_counter()
 
         metrics = compute_metrics(true_df.to_numpy(), reconstruction)
+
+        reconstruction_df = pd.DataFrame(reconstruction)
+        reconstruction_df.columns = noisy_df.columns
+        reconstruction_df.index = noisy_df.index
+        reconstruction_df.index.name = "cellIDxmutID"
+        try:
+            rf_score = scphylo.tl.rf(true_df, reconstruction_df)
+        except:
+            rf_score = float('nan')
+        metrics = np.hstack((metrics, np.array(rf_score)))
+
         print(metrics)
-        new_df = pd.DataFrame([[file_prefix, n, m, fpr, fnr, mer, t1 - t0, metrics[0], metrics[1], metrics[2], metrics[3]]], columns = metrics_df.columns)
+
+        new_df = pd.DataFrame([[file_prefix, n, m, fpr, fnr, mer, t1 - t0, metrics[0], metrics[1], metrics[2], metrics[3], metrics[4]]], columns = metrics_df.columns)
         metrics_df = pd.concat((metrics_df, new_df), ignore_index = True)
 
     time_end = time.perf_counter()
@@ -118,6 +133,31 @@ def run(data_file_prefix, file_prefixes, args = sys.argv[1:]):
     metrics_df.to_csv(data_file_name)
 
     print_metrics(metrics_df)
+
+def sempervirens_reconstruct(file_prefix, fpr, fnr, mer):
+    noisy_filename = "data/" + file_prefix + ".SC"
+    output_filename = "/tmp/" + file_prefix + ".SC.CFMatrix"
+    subprocess.run(["python", "sempervirens/reconstructor.py", noisy_filename, str(fpr), str(fnr), str(mer), "-o", output_filename])
+    reconstruction = read_df(output_filename).to_numpy()
+    return reconstruction
+
+def sempervirens_rs_reconstruct(file_prefix, fpr, fnr, mer):
+    noisy_data_filename = "data/" + file_prefix + ".SC"
+    output_file = "/tmp/" + file_prefix + ".SC.CFMatrix"
+    cmd = [
+        "sempervirens-rs/target/release/sempervirens-rs",
+        noisy_data_filename,
+        f"{fpr}",
+        f"{fnr}",
+        f"{mer}",
+        "-o",
+        output_file,
+        "--num-threads",
+        f"{mp.cpu_count()}"
+    ]
+    subprocess.run(cmd)
+    reconstruction = read_df(output_file)
+    return reconstruction.to_numpy()
 
 
 def huntress_reconstruct(file_prefix, fpr, fnr, mer):
@@ -140,6 +180,67 @@ def huntress_reconstruct(file_prefix, fpr, fnr, mer):
     reconstruction = read_df(output_name + ".CFMatrix")
     return reconstruction.to_numpy()
 
+def scistree_reconstruct(noisy_df, fpr, fnr, mer):
+    cells = noisy_df.index
+    snvs = noisy_df.columns
+    df = noisy_df.transpose()
+
+    df = df.replace(3, 0.5)
+    df = df.replace(0, 1 - fnr)
+    df = df.replace(1, fpr)
+
+    df.index.name = f"HAPLOID {df.shape[0]} {df.shape[1]}"
+    
+    file = "/tmp/scistree.input"
+    df.to_csv(file, sep=" ")
+    with open(file) as ifile:
+        data = ifile.read()
+    with open(file, "w") as ofile:
+        data = data.replace('"', "")
+        ofile.write(data)
+
+    cmd = [
+        "tests/scistree",
+        "-v",
+        "-d",
+        "0",
+        "-e",
+        # "-k",
+        # f"{mp.cpu_count()}",
+        "-o",
+        "/tmp/scistree.gml",
+        "/tmp/scistree.input",
+    ]
+
+    outfile = open("/tmp/scistree.output", "w")
+    subprocess.run(cmd, stdout=outfile)
+
+    data = []
+    # detail = {"cost": "\n"}
+    with open(f"/tmp/scistree.output") as infile:
+        now_store = False
+        for line in infile:
+            line = line.strip()
+            if "Imputed genotypes:" in line:
+                now_store = True
+            if line[:4] == "Site" and now_store:
+                line = "".join(line.split(":")[1])
+                line = line.replace("\t", "")
+                data.append([int(x) for x in line.split(" ")])
+            if "current cost: " in line:
+                pass
+                # cost = float(line.split("current cost: ")[1].split(", opt tree: ")[0])
+                # detail["cost"] += f"    current best cost = {cost}\n"
+
+    data = np.array(data)
+    matrix_output = data.T
+
+    df_output = pd.DataFrame(matrix_output)
+    df_output.columns = snvs
+    df_output.index = cells
+    df_output.index.name = "cellIDxmutID"
+
+    return df_output.to_numpy()
 
 def run_300x300s_0_05fnr(alg = sys.argv[1:]):
     run("300x300s_0_05fnr", file_prefixes_300x300s_0_05fnr, alg)
@@ -177,6 +278,18 @@ def run_1000x1000s_0_001fpr(alg = sys.argv[1:]):
 def run_1000x1000s_0_01fpr(alg = sys.argv[1:]):
     run("1000x1000s_0_01fpr", file_prefixes_1000x1000s_0_01fpr, alg)
 
+def run_5000x500s_0_001fpr(alg = sys.argv[1:]):
+    run("5000x500s_0_001fpr", file_prefixes_5000x500s_0_001fpr, alg)
+
+def run_1000x10000s_0_001fpr(alg = sys.argv[1:]):
+    run("1000x10000s_0_001fpr", file_prefixes_1000x10000s_0_001fpr, alg)
+
+def run_2000x20000s_0_001fpr(alg = sys.argv[1:]):
+    run("2000x20000s_0_001fpr", file_prefixes_2000x20000s_0_001fpr, alg)
+
+def run_20000x2000s_0_001fpr(alg = sys.argv[1:]):
+    run("20000x2000s_0_001fpr", file_prefixes_20000x2000s_0_001fpr, alg)
+
 def test(alg = sys.argv[1:]):
 
     run_300x300s_0_001fpr(alg)
@@ -190,6 +303,12 @@ def test(alg = sys.argv[1:]):
 
     run_1000x1000s_0_001fpr(alg)
     run_1000x1000s_0_01fpr(alg)
+
+    run_20000x2000s_0_001fpr(alg)
+
+    run_2000x20000s_0_001fpr(alg)
+
+    # run_5000x500s_0_001fpr(alg)
 
 #     for file in reversed(files):
 #         file = 'data/metrics/' + file

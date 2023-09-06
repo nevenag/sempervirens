@@ -1,0 +1,19 @@
+[package]
+name = "sempervirens-rs"
+version = "0.1.0"
+authors = ["Neelay Junnarkar <neelay.junnarkar@berkeley.edu>", "Can Kızılkale <cankizilkale@berkeley.edu>"]
+edition = "2021"
+description = "Reconstructs phylogenetic trees from noisy data"
+repository = "https://github.com/nevenag/sempervirens"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+itertools = "0.11.0"
+ndarray = { version = "0.15.6", features = ["blas", "rayon"] }
+ndarray-stats = { version = "0.5.1" }
+polars = { version = "0.32.1", features = ["ndarray", "describe", "arg_where", "lazy"] }
+rayon = "1.7.0"
+clap = { version = "4.4.2", features = ["derive"] }
+blas-src = { version = "0.9", default-features = false, features = ["openblas"] }
+openblas-src = { version = "0.10", default-features = false, features = ["cblas", "static"] }
