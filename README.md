@@ -14,7 +14,7 @@ The output file can be specified with the optional `-o` flag:
 python reconstructor.py noisy_matrix_filename fpr fnr mer -o output_filename
 ```
 
-Help information can be found by running `python reconstructor.py -h`.
+Help information can be found by running `python reconstructor.py --help`.
 
 ### Example Usage
 ```bash
@@ -70,15 +70,76 @@ Finally, test the script with **TODO**.
 
 All code has been tested with Python 3.10.
 
+## Using the Rust Implementation
+
+A faster implementation is provided in `sempervirens-rs`. This implementation must be compiled from source.
+Once compiled, it is used similarly to the commandline Python implementation. Help information can be found by running `./sempevirens-rs --help`. 
+
+
+### Compiling Instructions
+
+First make sure [Rust](https://www.rust-lang.org/) is installed. Then, in the `sempervirens-rs` directory, run the following. The binary will be `target/release/sempervirens-rs` and can be moved to wherever needed.
+```bash
+cargo build --release
+```
+
+### Basic Linear Algebra Subprograms (BLAS)
+
+By default, a version of OpenBLAS is compiled into `sempervirens-rs`.
+For best performance, the Basic Linear Algebra Subprograms (BLAS) installation should be configured.
+Configuring BLAS requires changing the following lines in `Cargo.toml`:
+```toml
+blas-src = { version = "0.9", default-features = false, features = ["openblas"] }
+openblas-src = { version = "0.10", default-features = false, features = ["cblas", "static"] }
+```
+as well as the following line at the top of `sempervirens-rs/src/lib.rs`:
+```rust
+extern crate openblas_src;
+```
+
+Information on this can be found in [blas-src](https://docs.rs/blas-src/latest/blas_src/).
+Examples for using system OpenBLAS and Intel MKL are below.
+
+#### OpenBLAS
+
+To use the system OpenBLAS installation (if available), change the lines in `Cargo.toml` to:
+```toml
+blas-src = { version = "0.9", default-features = false, features = ["openblas"] }
+openblas-src = { version = "0.10", default-features = false, features = ["cblas", "system"] }
+```
+and the line in `lib.rs` to:
+```rust
+extern crate openblas_src;
+```
+
+#### Intel MKL
+
+To use the system Intel Math Kernel Library (Intel MKL) installation (if available), change the lines in `Cargo.toml` to:
+```toml
+blas-src = { version = "*", default-features = false, features = ["intel-mkl"] }
+intel-mkl-src = { version = "0.8.1", features =  ["ENTER_INSTALLATION_HERE"] }
+```
+and the line in `lib.rs` to:
+```rust
+extern crate intel_mkl_src;
+```
+
+The text "ENTER_INSTALLATION_HERE" should be configured according to [intel-mkl-src](https://github.com/rust-math/intel-mkl-src).
+
+
 ## Files and Directories:
 `sempervirens`:
-* `reconstructor.py`: All code for reconstruction.
+* `reconstructor.py`: The reconstruction code and the commandline interface code.
 * `metrics.py`: Functions for metrics; e.g. ancestor-descendant score.
+
+`sempervirens-rs`: The Rust implementation.
+* `src/lib.rs`: The reconstruction code.
+* `src/main.rs`: The commandline interface code.
 
 `tests`: Code for evaluating algorithms on datasets and comparing them. 
 
 `data`: Datasets for testing algorithms.
-* Unzip `data.zip` to get this folder.
+* Get `data.zip` from **TODO**
 
 `metrics`: Results of running algorithms on various datasets.
 
@@ -91,4 +152,4 @@ If you found this code useful, consider citing the associated paper:
 
 ## Contact Information
 
-For questions, please contact [Neelay Junnarkar](mailto:neelay.junnarkar@berkeley.edu) and [Can Kizilkale](mailto:cankizilkale@lbl.gov).
+For questions, please contact [Neelay Junnarkar](mailto:neelay.junnarkar@berkeley.edu) and [Can Kızılkale](mailto:cankizilkale@lbl.gov).

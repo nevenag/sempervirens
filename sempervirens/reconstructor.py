@@ -1,6 +1,6 @@
 # Sempervirens: error correction for phylogenetic tree matrices.
 # Written by: Neelay Junnarkar (neelay.junnarkar@berkeley.edu) and Can Kizilkale (cankizilkale@berkeley.edu).
-# Last update: July 13, 2023.
+# Last update: Sep 5, 2023.
 
 # Can be used from the commandline or as a library from other code.
 #
@@ -236,7 +236,6 @@ def main():
     parser.add_argument("fnr", type = float_closed_unit_interval, help = "False negative rate.")
     parser.add_argument("mer", type = float_closed_unit_interval, help = "Missing entry rate.")
     parser.add_argument("-o", "--out_file", type = str, help = "Output file to write conflict-free matrix to. Defaults to IN_FILE.CFMatrix.")
-    parser.add_argument("-v", "--verbose", action = "store_true")
     args = parser.parse_args()
 
     assert args.fpr + args.mer <= 1.0, "fpr + mer must be in [0.0, 1.0]"
