@@ -1,6 +1,6 @@
 # Sempervirens: error correction for phylogenetic tree matrices.
 # Written by: Neelay Junnarkar (neelay.junnarkar@berkeley.edu) and Can Kizilkale (cankizilkale@berkeley.edu).
-# Last update: July 13, 2023.
+# Last update: Sep 5, 2023.
 
 # Can be used from the commandline or as a library from other code.
 #
@@ -35,7 +35,6 @@ def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
     K_01 = (1 - pivot_col) @ mat_cols
-    K_10 = pivot_col @ (1 - mat_cols)
     cols_mask = K_11 >= K_01
     return cols_sorted[cols_mask]
 
@@ -104,7 +103,7 @@ def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpr, fnr, mer
     refinement = reconstructed_mat[:, log_probs.argmax(axis = 1)]
     return refinement
 
-def split_part(part, all_nonreconstructed, mat, fpr, fnr):
+def split_part(part, mat, fpr, fnr):
     """Finds the largest maximal subtree in a set of columns, determines and removes the pivot,
     enforces column relationships, and returns the subtree, remaining columns, pivot,
     and non-reconstructed column most similar to the pivot.
@@ -130,7 +129,7 @@ def split_part(part, all_nonreconstructed, mat, fpr, fnr):
     mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
 
     # Re-find pivot based on adjusted mat.
-    reconstructed_pivot = reconstruct_pivot(cols_in_subtree, all_nonreconstructed, mat)
+    reconstructed_pivot = reconstruct_pivot(cols_in_subtree, part, mat)
     
     # Find columns in subtree of the reconstructed pivot assuming the reconstructed pivot is correct.
     final_cols_in_subtree = correct_pivot_subtree_columns(reconstructed_pivot, part, mat, fpr, fnr)
@@ -151,7 +150,8 @@ def split_part(part, all_nonreconstructed, mat, fpr, fnr):
         # Setup split and return.
         # Delete col_placement_i wherever it is.
         split_a = np.delete(final_cols_in_subtree, np.flatnonzero(final_cols_in_subtree == col_placement_i))
-        split_b = np.delete(unreconstructed_cols_out_subtree, np.flatnonzero(unreconstructed_cols_out_subtree == col_placement_i))
+        split_b = unreconstructed_cols_out_subtree
+        # split_b = np.delete(unreconstructed_cols_out_subtree, np.flatnonzero(unreconstructed_cols_out_subtree == col_placement_i))
 
         assert split_a.size + split_b.size + 1 == part.size
 
@@ -176,7 +176,7 @@ def reconstruct(noisy, fpr, fnr, mer):
         mer: scalar. Missing entry rate.
     
     Returns:
-      Matrix that represents the reconstructed phylogenetic tree.
+      N x M matrix that represents the reconstructed phylogenetic tree.
       In this matrix, for any two columns, either one is a subset of the other or they are disjoint.
     """
     assert np.all(np.logical_or(noisy == 0, np.logical_or(noisy == 1, noisy == 3))), \
@@ -184,7 +184,6 @@ def reconstruct(noisy, fpr, fnr, mer):
     assert 0 <= fpr <= 1 and 0 <= fnr <= 1 and 0 <= mer <= 1, "fpr, fnr, and mer must be in [0, 1]."
 
     mat = noisy.copy()
-    reconstruction = np.zeros_like(mat)
 
     # Set all missing elements to 0s.
     mat[mat == 3] = 0
@@ -197,26 +196,23 @@ def reconstruct(noisy, fpr, fnr, mer):
     partition = [cols_sorted] # Start with all columns in one part
 
     while len(partition) > 0:
-        # Take largest part and split into two
-        part_lengths = [part.size for part in partition]
-        part_i = np.argmax(part_lengths)
-        part = partition.pop(part_i)
-        subpartition, reconstructed_pivot, col_i = split_part(part, cols_sorted, mat, fpr, fnr)
-        # Place reconstructed pivot in reconstructed matrix
-        reconstruction[:, col_i] = reconstructed_pivot
-        cols_sorted = np.delete(cols_sorted, np.flatnonzero(cols_sorted == col_i))
+        # Take a part and split into two
+        part = partition.pop(0)
+        subpartition, reconstructed_pivot, col_i = split_part(part, mat, fpr, fnr)
+        # Place reconstructed pivot in matrix
+        mat[:, col_i] = reconstructed_pivot
         # Replace part in partition with the new parts
         for subpart in subpartition:
             if subpart.size > 0:
                 partition.append(subpart)
 
     # Row maximum likelihood
-    reconstruction = column_max_likelihood_refinement(reconstruction.T, noisy.T, fpr, fnr, mer).T
+    mat = column_max_likelihood_refinement(mat.T, noisy.T, fpr, fnr, mer).T
     # Column maximum likelihood
-    reconstruction = column_max_likelihood_refinement(reconstruction, noisy, fpr, fnr, mer)
+    mat = column_max_likelihood_refinement(mat, noisy, fpr, fnr, mer)
 
-    assert np.all(np.logical_or(reconstruction == 0, reconstruction == 1))
-    return reconstruction
+    assert np.all(np.logical_or(mat == 0, mat == 1))
+    return mat
 
 
 ###### Running reconstructor as command line program ######
@@ -243,7 +239,8 @@ def main():
     parser.add_argument("-v", "--verbose", action = "store_true")
     args = parser.parse_args()
 
-    assert args.fpr + args.fnr + args.mer <= 1.0, "fpr + fnr + mer must be in [0.0, 1.0]"
+    assert args.fpr + args.mer <= 1.0, "fpr + mer must be in [0.0, 1.0]"
+    assert args.fnr + args.mer <= 1.0, "fnr + mer must be in [0.0, 1.0]"
     if args.out_file is None:
         args.out_file = args.in_file + ".CFMatrix"
 
