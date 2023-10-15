@@ -1,8 +1,47 @@
 # Sempervirens - Phylogenetic Tree Reconstructor
 
-Reconstructs phylogenetic trees from noisy data.
+Sempervirens is a fast entropy based algorithm that reconstructs phylogenetic trees from noisy data.
 
-## Commandline Usage
+## Table of Contents
+
+1. [Quick Start](#QS)
+2. [Installation](#Installation)
+3. [Commandline Usage](#CLI)
+4. [Library Usage](#LIB)
+5. [Input Output Format](#IOFormat)
+6. [Using the Rust Implementation](#Rust)
+7. [Files and Directories](#Files)
+8. [Citing](#Citing)
+9. [Contact Information](#Contact)
+
+## Quick Start <a name="QS"></a>
+
+Assuming python and dependencies are present you can run:
+
+```bash
+git clone git@github.com:nevenag/sempervirens.git
+cd sempervirens
+python reconstructor.py ../data/noisy_data.SC 0.001 0.2 0.05 -o reconstructed_data.SC.CFMatrix
+```
+
+## Installation <a name="Installation"></a>
+
+Sempervirens requires Python and only two Python packages: NumPy and Pandas. Pandas can be omitted if only using Sempervirens as a library. 
+
+Python and dependencies can by installed as follows:
+
+```bash
+brew install python@3.10
+brew install pip
+pip install numpy
+pip install pandas
+```
+
+Follow the steps from [Quick Start](#QS) or below to continue.
+
+All code has been tested with Python 3.10.
+
+## Commandline Usage <a name="CLI"></a>
 
 The following reconstructs the noisy matrix in `noisy_matrix_filename` given false positive rate `fpr`, false negative rate `fnr`, and missing entry rate `mer`. The reconstructed matrix is written to `noisy_matrix_filename.CFMatrix`.
 
@@ -18,13 +57,7 @@ python reconstructor.py noisy_matrix_filename fpr fnr mer -o output_filename
 
 Help information can be found by running `python reconstructor.py --help`.
 
-### Example Usage
-
-```bash
-python reconstructor.py noisy_data.SC 0.001 0.2 0.05 -o reconstructed_data.SC.CFMatrix
-```
-
-## Library Usage
+## Library Usage <a name="LIB"></a>
 
 The `reconstructor.py` file can be imported and used as a library in other Python code.
 Example usage is as follows.
@@ -38,7 +71,7 @@ reconstruction = reconstruct(noisy_mat, fpr, fnr, mer)
 
 An example of using Pandas to read and write matrices of files can be seen at the bottom of `reconstructor.py`.
 
-## Input/Output Format
+## Input/Output Format <a name="IOFormat"></a>
 
 The input and output to the `reconstruct` function is a NumPy matrix with `n` rows and `m` columns. This describes `n` objects in terms of `m` characters. Element `(i, j)` of the matrix can be either `0`, `1`, or `3`. If it is `0`, then object `i` does not have character `j`. If it is `1`, then object `i` has character `j`. If it is `3`, then it is unknown whether object `i` has character `j` (the output of `reconstruct` will not have any `3`s).
 
@@ -58,24 +91,7 @@ cell8         3     0     0     0     3     0     3     1
 cell9         0     1     0     0     0     0     0     0
 ```
 
-## Installation
-
-Sempervirens requires Python and only two Python packages: NumPy and Pandas. Pandas can be omitted if only using Sempervirens as a library. 
-
-First, make sure Python is installed. Then the dependencies can by installed as follows.
-
-```bash
-pip install numpy
-pip install pandas
-```
-
-Download `reconstructor.py` from the repository.
-
-Finally, test the script with **TODO**.
-
-All code has been tested with Python 3.10.
-
-## Using the Rust Implementation
+## Using the Rust Implementation <a name="Rust"></a>
 
 A faster implementation is provided in `sempervirens-rs`. This implementation must be compiled from source.
 Once compiled, it is used similarly to the commandline Python implementation. Help information can be found by running `./sempevirens-rs --help`.
@@ -140,7 +156,7 @@ extern crate intel_mkl_src;
 
 The text "ENTER_INSTALLATION_HERE" should be configured according to [intel-mkl-src](https://github.com/rust-math/intel-mkl-src).
 
-## Files and Directories:
+## Files and Directories <a name="Files"></a>
 
 `sempervirens`:
 
@@ -156,16 +172,15 @@ The text "ENTER_INSTALLATION_HERE" should be configured according to [intel-mkl-
 
 `data`: Datasets for testing algorithms.
 
-* Get `data.zip` from **TODO**
+* Get input data from [`data.zip`](https://github.com/nevenag/sempervirens/blob/main/data.zip).
+* `noisy_data.SC` sample input file.
 
 `metrics`: Results of running algorithms on various datasets.
 
-## Citing
+## Citing <a name="Citing"></a>
 
-If you found this code useful, consider citing the associated paper:
+If you found this code useful, consider citing the associated paper: TODO
 
-TODO
-
-## Contact Information
+## Contact Information <a name="Contact"></a>
 
 For questions, please contact [Neelay Junnarkar](mailto:neelay.junnarkar@berkeley.edu) and [Can Kızılkale](mailto:cankizilkale@lbl.gov).
