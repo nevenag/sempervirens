@@ -29,7 +29,14 @@ fpr0_01_300x1000s = 'tests.main:run_300x1000s_0_01fpr'
 fpr0_001_fnr0_05_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr_0_05fnr'
 fpr0_001_fnr0_2_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr_0_2fnr'
 fpr0_001_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr'
+fpr0_001_0_1mer_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr_0_1mer'
+fpr0_001_0_15mer_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr_0_15mer'
+
+fpr0_01_fnr0_05_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr_0_05fnr'
+fpr0_01_fnr0_2_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr_0_2fnr'
 fpr0_01_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr'
+fpr0_01_0_1mer_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr_0_1mer'
+fpr0_01_0_15mer_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr_0_15mer'
 
 fpr0_001_5000x500s = 'tests.main:run_5000x500s_0_001fpr'
 

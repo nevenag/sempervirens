@@ -411,6 +411,22 @@ def run_300x300s_0_001fpr():
     run_front("300x300s_0_001fpr", file_prefixes_300x300s_0_001fpr)
 
 
+def run_300x300s_0_001fpr_0_05fnr_0_1mer():
+    run_front("300x300s_0_001fpr_0_05fnr_0_1mer", file_prefixes_300x300s_0_001fpr_0_05fnr_0_1mer)
+def run_300x300s_0_001fpr_0_2fnr_0_1mer():
+    run_front("300x300s_0_001fpr_0_2fnr_0_1mer", file_prefixes_300x300s_0_001fpr_0_2fnr_0_1mer)
+def run_300x300s_0_001fpr_0_1mer():
+    run_front("300x300s_0_001fpr_0_1mer", file_prefixes_300x300s_0_001fpr_0_1mer)
+
+
+def run_300x300s_0_001fpr_0_05fnr_0_15mer():
+    run_front("300x300s_0_001fpr_0_05fnr_0_15mer", file_prefixes_300x300s_0_001fpr_0_05fnr_0_15mer)
+def run_300x300s_0_001fpr_0_2fnr_0_15mer():
+    run_front("300x300s_0_001fpr_0_2fnr_0_15mer", file_prefixes_300x300s_0_001fpr_0_2fnr_0_15mer)
+def run_300x300s_0_001fpr_0_15mer():
+    run_front("300x300s_0_001fpr_0_15mer", file_prefixes_300x300s_0_001fpr_0_15mer)
+
+
 def run_300x300s_0_003fpr():
     run_front("300x300s_0_003fpr", file_prefixes_300x300s_0_003fpr)
 
@@ -452,18 +468,46 @@ def run_300x1000s_0_01fpr():
 
 def run_1000x1000s_0_001fpr_0_05fnr():
     run_front("1000x1000s_0_001fpr_0_05fnr", file_prefixes_1000x1000s_0_001fpr_0_05fnr)
-
-
 def run_1000x1000s_0_001fpr_0_2fnr():
     run_front("1000x1000s_0_001fpr_0_2fnr", file_prefixes_1000x1000s_0_001fpr_0_2fnr)
-
-
 def run_1000x1000s_0_001fpr():
     run_front("1000x1000s_0_001fpr", file_prefixes_1000x1000s_0_001fpr)
 
+def run_1000x1000s_0_001fpr_0_05fnr_0_1mer():
+    run_front("1000x1000s_0_001fpr_0_05fnr_0_1mer", file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_1mer)
+def run_1000x1000s_0_001fpr_0_2fnr_0_1mer():
+    run_front("1000x1000s_0_001fpr_0_2fnr_0_1mer", file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_1mer)
+def run_1000x1000s_0_001fpr_0_1mer():
+    run_front("1000x1000s_0_001fpr", file_prefixes_1000x1000s_0_001fpr_0_1mer)
 
+def run_1000x1000s_0_001fpr_0_05fnr_0_15mer():
+    run_front("1000x1000s_0_001fpr_0_05fnr_0_15mer", file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_15mer)
+def run_1000x1000s_0_001fpr_0_2fnr_0_15mer():
+    run_front("1000x1000s_0_001fpr_0_2fnr_0_15mer", file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_15mer)
+def run_1000x1000s_0_001fpr_0_15mer():
+    run_front("1000x1000s_0_001fpr_0_15mer", file_prefixes_1000x1000s_0_001fpr_0_15mer)
+
+
+def run_1000x1000s_0_01fpr_0_05fnr():
+    run_front("1000x1000s_0_01fpr_0_05fnr", file_prefixes_1000x1000s_0_01fpr_0_05fnr)
+def run_1000x1000s_0_01fpr_0_2fnr():
+    run_front("1000x1000s_0_01fpr_0_2fnr", file_prefixes_1000x1000s_0_01fpr_0_2fnr)
 def run_1000x1000s_0_01fpr():
     run_front("1000x1000s_0_01fpr", file_prefixes_1000x1000s_0_01fpr)
+
+def run_1000x1000s_0_01fpr_0_05fnr_0_1mer():
+    run_front("1000x1000s_0_01fpr_0_05fnr_0_1mer", file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_1mer)
+def run_1000x1000s_0_01fpr_0_2fnr_0_1mer():
+    run_front("1000x1000s_0_01fpr_0_2fnr_0_1mer", file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_1mer)
+def run_1000x1000s_0_01fpr_0_1mer():
+    run_front("1000x1000s_0_01fpr_0_1mer", file_prefixes_1000x1000s_0_01fpr_0_1mer)
+
+def run_1000x1000s_0_01fpr_0_05fnr_0_15mer():
+    run_front("1000x1000s_0_01fpr_0_05fnr_0_15mer", file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_15mer)
+def run_1000x1000s_0_01fpr_0_2fnr_0_15mer():
+    run_front("1000x1000s_0_01fpr_0_2fnr_0_15mer", file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_15mer)
+def run_1000x1000s_0_01fpr_0_15mer():
+    run_front("1000x1000s_0_01fpr_0_15mer", file_prefixes_1000x1000s_0_01fpr_0_15mer)
 
 
 def run_5000x500s_0_001fpr():
@@ -484,6 +528,11 @@ def run_20000x2000s_0_001fpr():
 
 def test():
     pass
+    # corrupt_data()
+    # run_300x300s_0_001fpr()
+    # run_300x300s_0_001fpr_0_1mer()
+    # run_300x300s_0_001fpr_0_15mer()
+    # corrupt_data()
     # run_300x300s_0_001fpr(alg)
     # run_300x300s_0_003fpr(alg)
     # run_300x300s_0_01fpr(alg)
@@ -514,18 +563,18 @@ def corrupt_data():
     # Generating some extra fpr data
 
     # Take the true matrices of these and corrupt them.
-    prefixes = file_prefixes_300x1000s_0_001fpr_0_05fnr + file_prefixes_300x1000s_0_001fpr_0_2fnr
+    prefixes = None
 
     rates = [prefix[-3:] for prefix in prefixes]
     for i in range(len(rates)):
-        rates[i] = (0.05, rates[i][1], rates[i][2])  # Set fpr to 0.05
+        rates[i] = (rates[i][0], rates[i][1], 0.15)  # Set mep to 0.15
 
     rng = np.random.default_rng()
 
     for prefix, rate in zip(prefixes, rates):
         name = prefix[0]
-        new_name = re.sub("-fp_0.001-", "-fp_0.05-", name)
-        new_name = "fp_005/" + new_name
+        new_name = re.sub("-na_0.05-", "-na_0.15-", name)
+        new_name = "me_0_15/" + new_name
 
         true_mat = read_df("data/" + name + ".SC.before_FP_FN_NA").to_numpy()
 
@@ -584,7 +633,7 @@ def corrupt_data():
         # true_df.to_csv("data/" + new_name + ".SC.before_FP_FN_NA", sep='\t')
         # print("data/" + new_name + ".SC.before_FP_FN_NA")
 
-        print(f'("{new_name}", 300, 1000, {fpr}, {fnr}, {mer}),')
+        print(f'("{new_name}", 1000, 1000, {fpr}, {fnr}, {mer}),')
 
 
 if __name__ == "__main__":
