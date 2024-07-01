@@ -1,7 +1,7 @@
-# (file prefix, n, m, false positive rate (fpr), false negative rate (fnr), missing entry rate (mer))
+# (file prefix, n, m, false positive probability (fpp), false negative probability (fnp), missing entry probability (mep))
 
 # 300 x 300s
-file_prefixes_300x300s_0_001fpr_0_05fnr = [  
+file_prefixes_300x300s_0_001fpp_0_05fnp = [  
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
@@ -13,7 +13,7 @@ file_prefixes_300x300s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
 ]
-file_prefixes_300x300s_0_001fpr_0_2fnr = [
+file_prefixes_300x300s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
@@ -25,9 +25,9 @@ file_prefixes_300x300s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
 ]
-file_prefixes_300x300s_0_001fpr = file_prefixes_300x300s_0_001fpr_0_05fnr + file_prefixes_300x300s_0_001fpr_0_2fnr
+file_prefixes_300x300s_0_001fpp = file_prefixes_300x300s_0_001fpp_0_05fnp + file_prefixes_300x300s_0_001fpp_0_2fnp
 
-file_prefixes_300x300s_0_003fpr_0_05fnr = [
+file_prefixes_300x300s_0_003fpp_0_05fnp = [
     ("fp_0_003/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.003, 0.05, 0.05),
     ("fp_0_003/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.05, 0.05),
     ("fp_0_003/simNo_2-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.05, 0.05),
@@ -39,7 +39,7 @@ file_prefixes_300x300s_0_003fpr_0_05fnr = [
     ("fp_0_003/simNo_8-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.05, 0.05),
     ("fp_0_003/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.05, 0.05),
 ]
-file_prefixes_300x300s_0_003fpr_0_2fnr = [
+file_prefixes_300x300s_0_003fpp_0_2fnp = [
     ("fp_0_003/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.2,  0.05),
     ("fp_0_003/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.003, 0.2,  0.05),
     ("fp_0_003/simNo_2-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.003, 0.2,  0.05),
@@ -51,9 +51,9 @@ file_prefixes_300x300s_0_003fpr_0_2fnr = [
     ("fp_0_003/simNo_8-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.003, 0.2,  0.05),
     ("fp_0_003/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.003, 0.2,  0.05),
 ]
-file_prefixes_300x300s_0_003fpr = file_prefixes_300x300s_0_003fpr_0_05fnr + file_prefixes_300x300s_0_003fpr_0_2fnr
+file_prefixes_300x300s_0_003fpp = file_prefixes_300x300s_0_003fpp_0_05fnp + file_prefixes_300x300s_0_003fpp_0_2fnp
 
-file_prefixes_300x300s_0_01fpr_0_05fnr = [
+file_prefixes_300x300s_0_01fpp_0_05fnp = [
     ("fp_0_01/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
@@ -65,7 +65,7 @@ file_prefixes_300x300s_0_01fpr_0_05fnr = [
     ("fp_0_01/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
 ]
-file_prefixes_300x300s_0_01fpr_0_2fnr = [
+file_prefixes_300x300s_0_01fpp_0_2fnp = [
     ("fp_0_01/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.01, 0.2,  0.05),
@@ -77,9 +77,9 @@ file_prefixes_300x300s_0_01fpr_0_2fnr = [
     ("fp_0_01/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.01, 0.2,  0.05)
 ]
-file_prefixes_300x300s_0_01fpr = file_prefixes_300x300s_0_01fpr_0_05fnr + file_prefixes_300x300s_0_01fpr_0_2fnr
+file_prefixes_300x300s_0_01fpp = file_prefixes_300x300s_0_01fpp_0_05fnp + file_prefixes_300x300s_0_01fpp_0_2fnp
 
-file_prefixes_300x300s_0_03fpr_0_05fnr = [
+file_prefixes_300x300s_0_03fpp_0_05fnp = [
     ("fp_0_03/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.03, 0.05, 0.05),
     ("fp_0_03/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.05, 0.05),
     ("fp_0_03/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.05, 0.05),
@@ -91,7 +91,7 @@ file_prefixes_300x300s_0_03fpr_0_05fnr = [
     ("fp_0_03/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.05, 0.05),
     ("fp_0_03/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.05, 0.05),
 ]
-file_prefixes_300x300s_0_03fpr_0_2fnr = [
+file_prefixes_300x300s_0_03fpp_0_2fnp = [
     ("fp_0_03/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.2,  0.05),
     ("fp_0_03/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.03, 0.2,  0.05),
     ("fp_0_03/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.03, 0.2,  0.05),
@@ -103,9 +103,9 @@ file_prefixes_300x300s_0_03fpr_0_2fnr = [
     ("fp_0_03/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.03, 0.2,  0.05),
     ("fp_0_03/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.03, 0.2,  0.05),
 ]
-file_prefixes_300x300s_0_03fpr = file_prefixes_300x300s_0_03fpr_0_05fnr + file_prefixes_300x300s_0_03fpr_0_2fnr
+file_prefixes_300x300s_0_03fpp = file_prefixes_300x300s_0_03fpp_0_05fnp + file_prefixes_300x300s_0_03fpp_0_2fnp
 
-file_prefixes_300x300s_0_05fpr_0_05fnr = [
+file_prefixes_300x300s_0_05fpp_0_05fnp = [
     ("fp_0_05/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.05, 0.05, 0.05),
     ("fp_0_05/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.05, 0.05),
     ("fp_0_05/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.05, 0.05),
@@ -117,7 +117,7 @@ file_prefixes_300x300s_0_05fpr_0_05fnr = [
     ("fp_0_05/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.05, 0.05),
     ("fp_0_05/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.05, 0.05),
 ]
-file_prefixes_300x300s_0_05fpr_0_02fnr = [
+file_prefixes_300x300s_0_05fpp_0_02fnp = [
     ("fp_0_05/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.2,  0.05),
     ("fp_0_05/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.05, 0.2,  0.05),
     ("fp_0_05/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.05, 0.2,  0.05),
@@ -129,9 +129,9 @@ file_prefixes_300x300s_0_05fpr_0_02fnr = [
     ("fp_0_05/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.05, 0.2,  0.05),
     ("fp_0_05/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.05, 0.2,  0.05),
 ]
-file_prefixes_300x300s_0_05fpr = file_prefixes_300x300s_0_05fpr_0_05fnr + file_prefixes_300x300s_0_05fpr_0_02fnr
+file_prefixes_300x300s_0_05fpp = file_prefixes_300x300s_0_05fpp_0_05fnp + file_prefixes_300x300s_0_05fpp_0_02fnp
 
-file_prefixes_300x300s_0_001fpr_0_05fnr_0_1mer = [
+file_prefixes_300x300s_0_001fpp_0_05fnp_0_1mep = [
     ("me_0_1/fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000", 300, 300, 0.001, 0.05, 0.1),
     ("me_0_1/fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.1),
     ("me_0_1/fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.1),
@@ -143,7 +143,7 @@ file_prefixes_300x300s_0_001fpr_0_05fnr_0_1mer = [
     ("me_0_1/fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.1),
     ("me_0_1/fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.1)
 ]
-file_prefixes_300x300s_0_001fpr_0_2fnr_0_1mer = [
+file_prefixes_300x300s_0_001fpp_0_2fnp_0_1mep = [
     ("me_0_1/fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000", 300, 300, 0.001, 0.2, 0.1),
     ("me_0_1/fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.1),
     ("me_0_1/fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.1),
@@ -155,9 +155,9 @@ file_prefixes_300x300s_0_001fpr_0_2fnr_0_1mer = [
     ("me_0_1/fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.1),
     ("me_0_1/fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.1),
 ]
-file_prefixes_300x300s_0_001fpr_0_1mer = file_prefixes_300x300s_0_001fpr_0_05fnr_0_1mer + file_prefixes_300x300s_0_001fpr_0_2fnr_0_1mer
+file_prefixes_300x300s_0_001fpp_0_1mep = file_prefixes_300x300s_0_001fpp_0_05fnp_0_1mep + file_prefixes_300x300s_0_001fpp_0_2fnp_0_1mep
 
-file_prefixes_300x300s_0_001fpr_0_05fnr_0_15mer = [
+file_prefixes_300x300s_0_001fpp_0_05fnp_0_15mep = [
     ("me_0_15/fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000", 300, 300, 0.001, 0.05, 0.15),
     ("me_0_15/fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.15),
     ("me_0_15/fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.15),
@@ -169,7 +169,7 @@ file_prefixes_300x300s_0_001fpr_0_05fnr_0_15mer = [
     ("me_0_15/fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.15),
     ("me_0_15/fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.05, 0.15),
 ]
-file_prefixes_300x300s_0_001fpr_0_2fnr_0_15mer = [
+file_prefixes_300x300s_0_001fpp_0_2fnp_0_15mep = [
     ("me_0_15/fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000", 300, 300, 0.001, 0.2, 0.15),
     ("me_0_15/fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.15),
     ("me_0_15/fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.15),
@@ -181,10 +181,10 @@ file_prefixes_300x300s_0_001fpr_0_2fnr_0_15mer = [
     ("me_0_15/fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.15),
     ("me_0_15/fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  300, 300, 0.001, 0.2, 0.15)
 ]
-file_prefixes_300x300s_0_001fpr_0_15mer = file_prefixes_300x300s_0_001fpr_0_05fnr_0_15mer + file_prefixes_300x300s_0_001fpr_0_2fnr_0_15mer
+file_prefixes_300x300s_0_001fpp_0_15mep = file_prefixes_300x300s_0_001fpp_0_05fnp_0_15mep + file_prefixes_300x300s_0_001fpp_0_2fnp_0_15mep
 
 # 1000 x 300s
-file_prefixes_1000x300s_0_001fpr_0_05fnr = [
+file_prefixes_1000x300s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.05, 0.05),
@@ -196,7 +196,7 @@ file_prefixes_1000x300s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.05, 0.05),
 ]
-file_prefixes_1000x300s_0_001fpr_0_2fnr = [
+file_prefixes_1000x300s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 300, 1e-3, 0.2,  0.05),
@@ -208,10 +208,10 @@ file_prefixes_1000x300s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 300, 1e-3, 0.2,  0.05),
 ]
-file_prefixes_1000x300s_0_001fpr = file_prefixes_1000x300s_0_001fpr_0_05fnr + file_prefixes_1000x300s_0_001fpr_0_2fnr
+file_prefixes_1000x300s_0_001fpp = file_prefixes_1000x300s_0_001fpp_0_05fnp + file_prefixes_1000x300s_0_001fpp_0_2fnp
 
 # 300 x 1000s
-file_prefixes_300x1000s_0_001fpr_0_05fnr = [
+file_prefixes_300x1000s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
@@ -223,7 +223,7 @@ file_prefixes_300x1000s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
 ]
-file_prefixes_300x1000s_0_001fpr_0_2fnr = [
+file_prefixes_300x1000s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 1e-3, 0.2,  0.05),
@@ -235,9 +235,9 @@ file_prefixes_300x1000s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 1e-3, 0.2,  0.05),
 ]
-file_prefixes_300x1000s_0_001fpr = file_prefixes_300x1000s_0_001fpr_0_05fnr + file_prefixes_300x1000s_0_001fpr_0_2fnr
+file_prefixes_300x1000s_0_001fpp = file_prefixes_300x1000s_0_001fpp_0_05fnp + file_prefixes_300x1000s_0_001fpp_0_2fnp
 
-file_prefixes_300x1000s_0_01fpr_0_05fnr = [
+file_prefixes_300x1000s_0_01fpp_0_05fnp = [
     ("fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
@@ -249,7 +249,7 @@ file_prefixes_300x1000s_0_01fpr_0_05fnr = [
     ("fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
 ]
-file_prefixes_300x1000s_0_01fpr_0_2fnr = [
+file_prefixes_300x1000s_0_01fpp_0_2fnp = [
     ("fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.01, 0.2,  0.05),
@@ -261,9 +261,9 @@ file_prefixes_300x1000s_0_01fpr_0_2fnr = [
     ("fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.01, 0.2,  0.05),
 ]
-file_prefixes_300x1000s_0_01fpr = file_prefixes_300x1000s_0_01fpr_0_05fnr + file_prefixes_300x1000s_0_01fpr_0_2fnr
+file_prefixes_300x1000s_0_01fpp = file_prefixes_300x1000s_0_01fpp_0_05fnp + file_prefixes_300x1000s_0_01fpp_0_2fnp
 
-file_prefixes_300x1000s_0_03fpr_0_05fnr = [
+file_prefixes_300x1000s_0_03fpp_0_05fnp = [
     ("fp_0_03/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.03, 0.05, 0.05),
     ("fp_0_03/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.05, 0.05),
     ("fp_0_03/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.05, 0.05),
@@ -275,7 +275,7 @@ file_prefixes_300x1000s_0_03fpr_0_05fnr = [
     ("fp_0_03/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.05, 0.05),
     ("fp_0_03/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.05, 0.05),
 ]
-file_prefixes_300x1000s_0_03fpr_0_2fnr = [
+file_prefixes_300x1000s_0_03fpp_0_2fnp = [
     ("fp_0_03/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.2,  0.05),
     ("fp_0_03/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.03, 0.2,  0.05),
     ("fp_0_03/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.03, 0.2,  0.05),
@@ -287,9 +287,9 @@ file_prefixes_300x1000s_0_03fpr_0_2fnr = [
     ("fp_0_03/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.03, 0.2,  0.05),
     ("fp_0_03/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.03, 0.2,  0.05),
 ]
-file_prefixes_300x1000s_0_03fpr = file_prefixes_300x1000s_0_03fpr_0_05fnr + file_prefixes_300x1000s_0_03fpr_0_2fnr
+file_prefixes_300x1000s_0_03fpp = file_prefixes_300x1000s_0_03fpp_0_05fnp + file_prefixes_300x1000s_0_03fpp_0_2fnp
 
-file_prefixes_300x1000s_0_05fpr_0_05fnr = [
+file_prefixes_300x1000s_0_05fpp_0_05fnp = [
     ("fp_0_05/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.05, 0.05, 0.05),
     ("fp_0_05/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.05, 0.05),
     ("fp_0_05/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.05, 0.05),
@@ -301,7 +301,7 @@ file_prefixes_300x1000s_0_05fpr_0_05fnr = [
     ("fp_0_05/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.05, 0.05),
     ("fp_0_05/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.05, 0.05),
 ]
-file_prefixes_300x1000s_0_05fpr_0_2fnr = [
+file_prefixes_300x1000s_0_05fpp_0_2fnp = [
     ("fp_0_05/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.2,  0.05),
     ("fp_0_05/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.05, 0.2,  0.05),
     ("fp_0_05/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.05, 0.2,  0.05),
@@ -313,9 +313,9 @@ file_prefixes_300x1000s_0_05fpr_0_2fnr = [
     ("fp_0_05/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.05, 0.2,  0.05),
     ("fp_0_05/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.05, 0.2,  0.05),
 ]
-file_prefixes_300x1000s_0_05fpr = file_prefixes_300x1000s_0_05fpr_0_05fnr + file_prefixes_300x1000s_0_05fpr_0_2fnr
+file_prefixes_300x1000s_0_05fpp = file_prefixes_300x1000s_0_05fpp_0_05fnp + file_prefixes_300x1000s_0_05fpp_0_2fnp
 
-file_prefixes_300x1000s_0_1fpr_0_5fnr = [
+file_prefixes_300x1000s_0_1fpp_0_5fnp = [
     ("fp_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.1, 0.05, 0.05),
     ("fp_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.05, 0.05),
     ("fp_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.05, 0.05),
@@ -327,7 +327,7 @@ file_prefixes_300x1000s_0_1fpr_0_5fnr = [
     ("fp_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.05, 0.05),
     ("fp_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.05, 0.05),
 ]
-file_prefixes_300x1000s_0_1fpr_0_2fnr = [
+file_prefixes_300x1000s_0_1fpp_0_2fnp = [
     ("fp_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.2,  0.05),
     ("fp_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.1, 0.2,  0.05),
     ("fp_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.1, 0.2,  0.05),
@@ -339,10 +339,10 @@ file_prefixes_300x1000s_0_1fpr_0_2fnr = [
     ("fp_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.1, 0.2,  0.05),
     ("fp_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.1, 0.2,  0.05),
 ]
-file_prefixes_300x1000s_0_1fpr = file_prefixes_300x1000s_0_1fpr_0_5fnr + file_prefixes_300x1000s_0_1fpr_0_2fnr
+file_prefixes_300x1000s_0_1fpp = file_prefixes_300x1000s_0_1fpp_0_5fnp + file_prefixes_300x1000s_0_1fpp_0_2fnp
 
 # 1000 x 1000s
-file_prefixes_1000x1000s_0_001fpr_0_05fnr = [
+file_prefixes_1000x1000s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.05, 0.05),
@@ -354,7 +354,7 @@ file_prefixes_1000x1000s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.05, 0.05),
 ]
-file_prefixes_1000x1000s_0_001fpr_0_2fnr = [
+file_prefixes_1000x1000s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 1e-3, 0.2,  0.05),
@@ -366,9 +366,9 @@ file_prefixes_1000x1000s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 1e-3, 0.2,  0.05),
 ]
-file_prefixes_1000x1000s_0_001fpr = file_prefixes_1000x1000s_0_001fpr_0_05fnr + file_prefixes_1000x1000s_0_001fpr_0_2fnr
+file_prefixes_1000x1000s_0_001fpp = file_prefixes_1000x1000s_0_001fpp_0_05fnp + file_prefixes_1000x1000s_0_001fpp_0_2fnp
 
-file_prefixes_1000x1000s_0_01fpr_0_05fnr = [
+file_prefixes_1000x1000s_0_01fpp_0_05fnp = [
     ("fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000", 1000, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.05),
@@ -380,7 +380,7 @@ file_prefixes_1000x1000s_0_01fpr_0_05fnr = [
     ("fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.05),
 ]
-file_prefixes_1000x1000s_0_01fpr_0_2fnr = [
+file_prefixes_1000x1000s_0_01fpp_0_2fnp = [
     ("fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.01, 0.2,  0.05),
@@ -392,9 +392,9 @@ file_prefixes_1000x1000s_0_01fpr_0_2fnr = [
     ("fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.01, 0.2,  0.05),
     ("fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.01, 0.2,  0.05),
 ]
-file_prefixes_1000x1000s_0_01fpr = file_prefixes_1000x1000s_0_01fpr_0_05fnr + file_prefixes_1000x1000s_0_01fpr_0_2fnr
+file_prefixes_1000x1000s_0_01fpp = file_prefixes_1000x1000s_0_01fpp_0_05fnp + file_prefixes_1000x1000s_0_01fpp_0_2fnp
 
-file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_1mer = [
+file_prefixes_1000x1000s_0_001fpp_0_05fnp_0_1mep = [
     ("me_0_1/fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000", 1000, 1000, 0.001, 0.05, 0.1),
     ("me_0_1/fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.1),
     ("me_0_1/fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.1),
@@ -406,7 +406,7 @@ file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_1mer = [
     ("me_0_1/fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.1),
     ("me_0_1/fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.1),
 ]
-file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_1mer = [
+file_prefixes_1000x1000s_0_001fpp_0_2fnp_0_1mep = [
     ("me_0_1/fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000", 1000, 1000, 0.001, 0.2, 0.1),
     ("me_0_1/fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.1),
     ("me_0_1/fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.1),
@@ -418,9 +418,9 @@ file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_1mer = [
     ("me_0_1/fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.1),
     ("me_0_1/fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.1),
 ]
-file_prefixes_1000x1000s_0_001fpr_0_1mer = file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_1mer + file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_1mer
+file_prefixes_1000x1000s_0_001fpp_0_1mep = file_prefixes_1000x1000s_0_001fpp_0_05fnp_0_1mep + file_prefixes_1000x1000s_0_001fpp_0_2fnp_0_1mep
 
-file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_15mer = [
+file_prefixes_1000x1000s_0_001fpp_0_05fnp_0_15mep = [
     ("me_0_15/fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000", 1000, 1000, 0.001, 0.05, 0.15),
     ("me_0_15/fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.15),
     ("me_0_15/fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.15),
@@ -432,7 +432,7 @@ file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_15mer = [
     ("me_0_15/fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.15),
     ("me_0_15/fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.05, 0.15),
 ]
-file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_15mer = [
+file_prefixes_1000x1000s_0_001fpp_0_2fnp_0_15mep = [
     ("me_0_15/fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000", 1000, 1000, 0.001, 0.2, 0.15),
     ("me_0_15/fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.15),
     ("me_0_15/fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.15),
@@ -444,9 +444,9 @@ file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_15mer = [
     ("me_0_15/fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.15),
     ("me_0_15/fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.001, 0.2, 0.15),
 ]
-file_prefixes_1000x1000s_0_001fpr_0_15mer = file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_15mer + file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_15mer
+file_prefixes_1000x1000s_0_001fpp_0_15mep = file_prefixes_1000x1000s_0_001fpp_0_05fnp_0_15mep + file_prefixes_1000x1000s_0_001fpp_0_2fnp_0_15mep
 
-file_prefixes_1000x1000s_0_1fpr_0_05fnr = [
+file_prefixes_1000x1000s_0_1fpp_0_05fnp = [
     ("fp_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000", 1000, 1000, 0.1, 0.05, 0.05),
     ("fp_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.05, 0.05),
     ("fp_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.05, 0.05),
@@ -458,7 +458,7 @@ file_prefixes_1000x1000s_0_1fpr_0_05fnr = [
     ("fp_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.05, 0.05),
     ("fp_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.05, 0.05),
 ]
-file_prefixes_1000x1000s_0_1fpr_0_2fnr = [
+file_prefixes_1000x1000s_0_1fpp_0_2fnp = [
     ("fp_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.2,  0.05),
     ("fp_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.1, 0.2,  0.05),
     ("fp_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.1, 0.2,  0.05),
@@ -469,9 +469,9 @@ file_prefixes_1000x1000s_0_1fpr_0_2fnr = [
     ("fp_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.1, 0.2,  0.05),
     ("fp_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.1, 0.2,  0.05),
 ]
-file_prefixes_1000x1000s_0_1fpr = file_prefixes_1000x1000s_0_1fpr_0_05fnr + file_prefixes_1000x1000s_0_1fpr_0_2fnr
+file_prefixes_1000x1000s_0_1fpp = file_prefixes_1000x1000s_0_1fpp_0_05fnp + file_prefixes_1000x1000s_0_1fpp_0_2fnp
 
-file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_1mer = [
+file_prefixes_1000x1000s_0_01fpp_0_05fnp_0_1mep = [
     ("me_0_1/fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.1-d_0-l_1000000", 1000, 1000, 0.01, 0.05, 0.1),
     ("me_0_1/fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.1),
     ("me_0_1/fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.1),
@@ -483,7 +483,7 @@ file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_1mer = [
     ("me_0_1/fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.1),
     ("me_0_1/fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.1),
 ]
-file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_1mer = [
+file_prefixes_1000x1000s_0_01fpp_0_2fnp_0_1mep = [
     ("me_0_1/fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.1-d_0-l_1000000", 1000, 1000, 0.01, 0.2, 0.1),
     ("me_0_1/fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.1),
     ("me_0_1/fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.1),
@@ -495,9 +495,9 @@ file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_1mer = [
     ("me_0_1/fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.1),
     ("me_0_1/fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.1-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.1),
 ]
-file_prefixes_1000x1000s_0_01fpr_0_1mer = file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_1mer + file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_1mer
+file_prefixes_1000x1000s_0_01fpp_0_1mep = file_prefixes_1000x1000s_0_01fpp_0_05fnp_0_1mep + file_prefixes_1000x1000s_0_01fpp_0_2fnp_0_1mep
 
-file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_15mer = [
+file_prefixes_1000x1000s_0_01fpp_0_05fnp_0_15mep = [
     ("me_0_15/fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.15-d_0-l_1000000", 1000, 1000, 0.01, 0.05, 0.15),
     ("me_0_15/fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.15),
     ("me_0_15/fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.15),
@@ -509,7 +509,7 @@ file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_15mer = [
     ("me_0_15/fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.15),
     ("me_0_15/fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.15),
 ]
-file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_15mer = [
+file_prefixes_1000x1000s_0_01fpp_0_2fnp_0_15mep = [
     ("me_0_15/fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.15-d_0-l_1000000", 1000, 1000, 0.01, 0.2, 0.15),
     ("me_0_15/fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.15),
     ("me_0_15/fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.15),
@@ -521,11 +521,11 @@ file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_15mer = [
     ("me_0_15/fp_0_01/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.15),
     ("me_0_15/fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.15-d_0-l_1000000",  1000, 1000, 0.01, 0.2, 0.15),  
 ]
-file_prefixes_1000x1000s_0_01fpr_0_15mer = file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_15mer + file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_15mer
+file_prefixes_1000x1000s_0_01fpp_0_15mep = file_prefixes_1000x1000s_0_01fpp_0_05fnp_0_15mep + file_prefixes_1000x1000s_0_01fpp_0_2fnp_0_15mep
 
 # Larger than 1000 x 1000s
 
-file_prefixes_5000x500s_0_001fpr_0_05fnr = [
+file_prefixes_5000x500s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_10-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 5000, 500, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_2-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.05, 0.05),
@@ -537,7 +537,7 @@ file_prefixes_5000x500s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_8-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.05, 0.05),
 ]
-file_prefixes_5000x500s_0_001fpr_0_2fnr = [
+file_prefixes_5000x500s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   5000, 500, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_2-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   5000, 500, 0.001, 0.2,  0.05),
@@ -549,9 +549,9 @@ file_prefixes_5000x500s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_8-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   5000, 500, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   5000, 500, 0.001, 0.2,  0.05),
 ]
-file_prefixes_5000x500s_0_001fpr = file_prefixes_5000x500s_0_001fpr_0_05fnr + file_prefixes_5000x500s_0_001fpr_0_2fnr
+file_prefixes_5000x500s_0_001fpp = file_prefixes_5000x500s_0_001fpp_0_05fnp + file_prefixes_5000x500s_0_001fpp_0_2fnp
 
-file_prefixes_1000x10000s_0_001fpr_0_05fnr = [
+file_prefixes_1000x10000s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_10-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 10000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_2-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.05, 0.05),
@@ -563,7 +563,7 @@ file_prefixes_1000x10000s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_8-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.05, 0.05),
 ]
-file_prefixes_1000x10000s_0_001fpr_0_2fnr = [
+file_prefixes_1000x10000s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 10000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_2-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 10000, 0.001, 0.2,  0.05),
@@ -575,9 +575,9 @@ file_prefixes_1000x10000s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_8-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 10000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 10000, 0.001, 0.2,  0.05),
 ]
-file_prefixes_1000x10000s_0_001fpr = file_prefixes_1000x10000s_0_001fpr_0_05fnr + file_prefixes_1000x10000s_0_001fpr_0_2fnr
+file_prefixes_1000x10000s_0_001fpp = file_prefixes_1000x10000s_0_001fpp_0_05fnp + file_prefixes_1000x10000s_0_001fpp_0_2fnp
 
-file_prefixes_2000x20000s_0_001fpr_0_05fnr = [
+file_prefixes_2000x20000s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_10-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 2000, 20000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_2-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.05, 0.05),
@@ -589,7 +589,7 @@ file_prefixes_2000x20000s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_8-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.05, 0.05),
 ]
-file_prefixes_2000x20000s_0_001fpr_0_2fnr = [
+file_prefixes_2000x20000s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_10-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   2000, 20000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_2-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   2000, 20000, 0.001, 0.2,  0.05),
@@ -601,9 +601,9 @@ file_prefixes_2000x20000s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_8-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   2000, 20000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   2000, 20000, 0.001, 0.2,  0.05),
 ]
-file_prefixes_2000x20000s_0_001fpr = file_prefixes_2000x20000s_0_001fpr_0_05fnr + file_prefixes_2000x20000s_0_001fpr_0_2fnr
+file_prefixes_2000x20000s_0_001fpp = file_prefixes_2000x20000s_0_001fpp_0_05fnp + file_prefixes_2000x20000s_0_001fpp_0_2fnp
 
-file_prefixes_20000x2000s_0_001fpr_0_05fnr = [
+file_prefixes_20000x2000s_0_001fpp_0_05fnp = [
     ("fp_0_001/simNo_1-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  20000, 2000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_10-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 20000, 2000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_2-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  20000, 2000, 0.001, 0.05, 0.05),
@@ -615,7 +615,7 @@ file_prefixes_20000x2000s_0_001fpr_0_05fnr = [
     ("fp_0_001/simNo_8-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  20000, 2000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  20000, 2000, 0.001, 0.05, 0.05),
 ]
-file_prefixes_20000x2000s_0_001fpr_0_2fnr = [
+file_prefixes_20000x2000s_0_001fpp_0_2fnp = [
     ("fp_0_001/simNo_1-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   20000, 2000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_10-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  20000, 2000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_2-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   20000, 2000, 0.001, 0.2,  0.05),
@@ -627,4 +627,4 @@ file_prefixes_20000x2000s_0_001fpr_0_2fnr = [
     ("fp_0_001/simNo_8-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   20000, 2000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_2000-h_1-minVAF_0.005-ISAV_0-n_20000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   20000, 2000, 0.001, 0.2,  0.05),
 ]
-file_prefixes_20000x2000s_0_001fpr = file_prefixes_20000x2000s_0_001fpr_0_05fnr + file_prefixes_20000x2000s_0_001fpr_0_2fnr
+file_prefixes_20000x2000s_0_001fpp = file_prefixes_20000x2000s_0_001fpp_0_05fnp + file_prefixes_20000x2000s_0_001fpp_0_2fnp

@@ -75,6 +75,7 @@ def compute_metrics(true_data, reconstruction):
 def print_metrics(metrics_df):
     """Takes in a dataframe and computes and prints metrics"""
     # metrics_df should be a pandas dataframe with the following columns:
+    # This uses 'fpr', 'fnr', and 'mer' for backwards compatibility instead of 'fpp', 'fnp', and 'mep'
     # ['file', 'n', 'm', 'fpr', 'fnr', 'mer', 'time', 'is_ptree', 'ad_score', 'dl_score', 'fraction_diffs', 'rf_score']
 
     np.set_printoptions(formatter={"float_kind": "{:.3f}".format})
@@ -402,155 +403,131 @@ def run_front(data_file_prefix, file_prefixes):
     args = parser.parse_args()
     run(data_file_prefix, file_prefixes, **vars(args))
 
-
-def run_300x300s_0_001fpr_0_05fnr():
-    run_front("300x300s_0_001fpr_0_05fnr", file_prefixes_300x300s_0_001fpr_0_05fnr)
-def run_300x300s_0_001fpr_0_2fnr():
-    run_front("300x300s_0_001fpr_0_2fnr", file_prefixes_300x300s_0_001fpr_0_2fnr)
-def run_300x300s_0_001fpr():
-    run_front("300x300s_0_001fpr", file_prefixes_300x300s_0_001fpr)
-
-
-def run_300x300s_0_001fpr_0_05fnr_0_1mer():
-    run_front("300x300s_0_001fpr_0_05fnr_0_1mer", file_prefixes_300x300s_0_001fpr_0_05fnr_0_1mer)
-def run_300x300s_0_001fpr_0_2fnr_0_1mer():
-    run_front("300x300s_0_001fpr_0_2fnr_0_1mer", file_prefixes_300x300s_0_001fpr_0_2fnr_0_1mer)
-def run_300x300s_0_001fpr_0_1mer():
-    run_front("300x300s_0_001fpr_0_1mer", file_prefixes_300x300s_0_001fpr_0_1mer)
+def run_300x300s_0_001fpp_0_05fnp():
+    run_front("300x300s_0_001fpp_0_05fnp", file_prefixes_300x300s_0_001fpp_0_05fnp)
+def run_300x300s_0_001fpp_0_2fnp():
+    run_front("300x300s_0_001fpp_0_2fnp", file_prefixes_300x300s_0_001fpp_0_2fnp)
+def run_300x300s_0_001fpp():
+    run_front("300x300s_0_001fpp", file_prefixes_300x300s_0_001fpp)
 
 
-def run_300x300s_0_001fpr_0_05fnr_0_15mer():
-    run_front("300x300s_0_001fpr_0_05fnr_0_15mer", file_prefixes_300x300s_0_001fpr_0_05fnr_0_15mer)
-def run_300x300s_0_001fpr_0_2fnr_0_15mer():
-    run_front("300x300s_0_001fpr_0_2fnr_0_15mer", file_prefixes_300x300s_0_001fpr_0_2fnr_0_15mer)
-def run_300x300s_0_001fpr_0_15mer():
-    run_front("300x300s_0_001fpr_0_15mer", file_prefixes_300x300s_0_001fpr_0_15mer)
+def run_300x300s_0_001fpp_0_05fnp_0_1mep():
+    run_front("300x300s_0_001fpp_0_05fnp_0_1mep", file_prefixes_300x300s_0_001fpp_0_05fnp_0_1mep)
+def run_300x300s_0_001fpp_0_2fnp_0_1mep():
+    run_front("300x300s_0_001fpp_0_2fnp_0_1mep", file_prefixes_300x300s_0_001fpp_0_2fnp_0_1mep)
+def run_300x300s_0_001fpp_0_1mep():
+    run_front("300x300s_0_001fpp_0_1mep", file_prefixes_300x300s_0_001fpp_0_1mep)
 
 
-def run_300x300s_0_003fpr():
-    run_front("300x300s_0_003fpr", file_prefixes_300x300s_0_003fpr)
-
-def run_300x300s_0_01fpr_0_05fnr():
-    run_front("300x300s_0_01fpr_0_05fnr", file_prefixes_300x300s_0_01fpr_0_05fnr)
-def run_300x300s_0_01fpr_0_2fnr():
-    run_front("300x300s_0_01fpr_0_2fnr", file_prefixes_300x300s_0_01fpr_0_2fnr)
-def run_300x300s_0_01fpr():
-    run_front("300x300s_0_01fpr", file_prefixes_300x300s_0_01fpr)
+def run_300x300s_0_001fpp_0_05fnp_0_15mep():
+    run_front("300x300s_0_001fpp_0_05fnp_0_15mep", file_prefixes_300x300s_0_001fpp_0_05fnp_0_15mep)
+def run_300x300s_0_001fpp_0_2fnp_0_15mep():
+    run_front("300x300s_0_001fpp_0_2fnp_0_15mep", file_prefixes_300x300s_0_001fpp_0_2fnp_0_15mep)
+def run_300x300s_0_001fpp_0_15mep():
+    run_front("300x300s_0_001fpp_0_15mep", file_prefixes_300x300s_0_001fpp_0_15mep)
 
 
-def run_1000x300s_0_001fpr_0_05fnr():
-    run_front("1000x300s_0_001fpr_0_05fnr", file_prefixes_1000x300s_0_001fpr_0_05fnr)
+def run_300x300s_0_003fpp():
+    run_front("300x300s_0_003fpp", file_prefixes_300x300s_0_003fpp)
+
+def run_300x300s_0_01fpp_0_05fnp():
+    run_front("300x300s_0_01fpp_0_05fnp", file_prefixes_300x300s_0_01fpp_0_05fnp)
+def run_300x300s_0_01fpp_0_2fnp():
+    run_front("300x300s_0_01fpp_0_2fnp", file_prefixes_300x300s_0_01fpp_0_2fnp)
+def run_300x300s_0_01fpp():
+    run_front("300x300s_0_01fpp", file_prefixes_300x300s_0_01fpp)
 
 
-def run_1000x300s_0_001fpr_0_2fnr():
-    run_front("1000x300s_0_001fpr_0_2fnr", file_prefixes_1000x300s_0_001fpr_0_2fnr)
+def run_1000x300s_0_001fpp_0_05fnp():
+    run_front("1000x300s_0_001fpp_0_05fnp", file_prefixes_1000x300s_0_001fpp_0_05fnp)
 
 
-def run_1000x300s_0_001fpr():
-    run_front("1000x300s_0_001fpr", file_prefixes_1000x300s_0_001fpr)
+def run_1000x300s_0_001fpp_0_2fnp():
+    run_front("1000x300s_0_001fpp_0_2fnp", file_prefixes_1000x300s_0_001fpp_0_2fnp)
 
 
-def run_300x1000s_0_001fpr_0_05fnr():
-    run_front("300x1000s_0_001fpr_0_05fnr", file_prefixes_300x1000s_0_001fpr_0_05fnr)
+def run_1000x300s_0_001fpp():
+    run_front("1000x300s_0_001fpp", file_prefixes_1000x300s_0_001fpp)
 
 
-def run_300x1000s_0_001fpr_0_2fnr():
-    run_front("300x1000s_0_001fpr_0_2fnr", file_prefixes_300x1000s_0_001fpr_0_2fnr)
+def run_300x1000s_0_001fpp_0_05fnp():
+    run_front("300x1000s_0_001fpp_0_05fnp", file_prefixes_300x1000s_0_001fpp_0_05fnp)
 
 
-def run_300x1000s_0_001fpr():
-    run_front("300x1000s_0_001fpr", file_prefixes_300x1000s_0_001fpr)
+def run_300x1000s_0_001fpp_0_2fnp():
+    run_front("300x1000s_0_001fpp_0_2fnp", file_prefixes_300x1000s_0_001fpp_0_2fnp)
 
 
-def run_300x1000s_0_01fpr():
-    run_front("300x1000s_0_01fpr", file_prefixes_300x1000s_0_01fpr)
+def run_300x1000s_0_001fpp():
+    run_front("300x1000s_0_001fpp", file_prefixes_300x1000s_0_001fpp)
 
 
-def run_1000x1000s_0_001fpr_0_05fnr():
-    run_front("1000x1000s_0_001fpr_0_05fnr", file_prefixes_1000x1000s_0_001fpr_0_05fnr)
-def run_1000x1000s_0_001fpr_0_2fnr():
-    run_front("1000x1000s_0_001fpr_0_2fnr", file_prefixes_1000x1000s_0_001fpr_0_2fnr)
-def run_1000x1000s_0_001fpr():
-    run_front("1000x1000s_0_001fpr", file_prefixes_1000x1000s_0_001fpr)
-
-def run_1000x1000s_0_001fpr_0_05fnr_0_1mer():
-    run_front("1000x1000s_0_001fpr_0_05fnr_0_1mer", file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_1mer)
-def run_1000x1000s_0_001fpr_0_2fnr_0_1mer():
-    run_front("1000x1000s_0_001fpr_0_2fnr_0_1mer", file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_1mer)
-def run_1000x1000s_0_001fpr_0_1mer():
-    run_front("1000x1000s_0_001fpr", file_prefixes_1000x1000s_0_001fpr_0_1mer)
-
-def run_1000x1000s_0_001fpr_0_05fnr_0_15mer():
-    run_front("1000x1000s_0_001fpr_0_05fnr_0_15mer", file_prefixes_1000x1000s_0_001fpr_0_05fnr_0_15mer)
-def run_1000x1000s_0_001fpr_0_2fnr_0_15mer():
-    run_front("1000x1000s_0_001fpr_0_2fnr_0_15mer", file_prefixes_1000x1000s_0_001fpr_0_2fnr_0_15mer)
-def run_1000x1000s_0_001fpr_0_15mer():
-    run_front("1000x1000s_0_001fpr_0_15mer", file_prefixes_1000x1000s_0_001fpr_0_15mer)
+def run_300x1000s_0_01fpp():
+    run_front("300x1000s_0_01fpp", file_prefixes_300x1000s_0_01fpp)
 
 
-def run_1000x1000s_0_01fpr_0_05fnr():
-    run_front("1000x1000s_0_01fpr_0_05fnr", file_prefixes_1000x1000s_0_01fpr_0_05fnr)
-def run_1000x1000s_0_01fpr_0_2fnr():
-    run_front("1000x1000s_0_01fpr_0_2fnr", file_prefixes_1000x1000s_0_01fpr_0_2fnr)
-def run_1000x1000s_0_01fpr():
-    run_front("1000x1000s_0_01fpr", file_prefixes_1000x1000s_0_01fpr)
+def run_1000x1000s_0_001fpp_0_05fnp():
+    run_front("1000x1000s_0_001fpp_0_05fnp", file_prefixes_1000x1000s_0_001fpp_0_05fnp)
+def run_1000x1000s_0_001fpp_0_2fnp():
+    run_front("1000x1000s_0_001fpp_0_2fnp", file_prefixes_1000x1000s_0_001fpp_0_2fnp)
+def run_1000x1000s_0_001fpp():
+    run_front("1000x1000s_0_001fpp", file_prefixes_1000x1000s_0_001fpp)
 
-def run_1000x1000s_0_01fpr_0_05fnr_0_1mer():
-    run_front("1000x1000s_0_01fpr_0_05fnr_0_1mer", file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_1mer)
-def run_1000x1000s_0_01fpr_0_2fnr_0_1mer():
-    run_front("1000x1000s_0_01fpr_0_2fnr_0_1mer", file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_1mer)
-def run_1000x1000s_0_01fpr_0_1mer():
-    run_front("1000x1000s_0_01fpr_0_1mer", file_prefixes_1000x1000s_0_01fpr_0_1mer)
+def run_1000x1000s_0_001fpp_0_05fnp_0_1mep():
+    run_front("1000x1000s_0_001fpp_0_05fnp_0_1mep", file_prefixes_1000x1000s_0_001fpp_0_05fnp_0_1mep)
+def run_1000x1000s_0_001fpp_0_2fnp_0_1mep():
+    run_front("1000x1000s_0_001fpp_0_2fnp_0_1mep", file_prefixes_1000x1000s_0_001fpp_0_2fnp_0_1mep)
+def run_1000x1000s_0_001fpp_0_1mep():
+    run_front("1000x1000s_0_001fpp", file_prefixes_1000x1000s_0_001fpp_0_1mep)
 
-def run_1000x1000s_0_01fpr_0_05fnr_0_15mer():
-    run_front("1000x1000s_0_01fpr_0_05fnr_0_15mer", file_prefixes_1000x1000s_0_01fpr_0_05fnr_0_15mer)
-def run_1000x1000s_0_01fpr_0_2fnr_0_15mer():
-    run_front("1000x1000s_0_01fpr_0_2fnr_0_15mer", file_prefixes_1000x1000s_0_01fpr_0_2fnr_0_15mer)
-def run_1000x1000s_0_01fpr_0_15mer():
-    run_front("1000x1000s_0_01fpr_0_15mer", file_prefixes_1000x1000s_0_01fpr_0_15mer)
-
-
-def run_5000x500s_0_001fpr():
-    run_front("5000x500s_0_001fpr", file_prefixes_5000x500s_0_001fpr)
+def run_1000x1000s_0_001fpp_0_05fnp_0_15mep():
+    run_front("1000x1000s_0_001fpp_0_05fnp_0_15mep", file_prefixes_1000x1000s_0_001fpp_0_05fnp_0_15mep)
+def run_1000x1000s_0_001fpp_0_2fnp_0_15mep():
+    run_front("1000x1000s_0_001fpp_0_2fnp_0_15mep", file_prefixes_1000x1000s_0_001fpp_0_2fnp_0_15mep)
+def run_1000x1000s_0_001fpp_0_15mep():
+    run_front("1000x1000s_0_001fpp_0_15mep", file_prefixes_1000x1000s_0_001fpp_0_15mep)
 
 
-def run_1000x10000s_0_001fpr():
-    run_front("1000x10000s_0_001fpr", file_prefixes_1000x10000s_0_001fpr)
+def run_1000x1000s_0_01fpp_0_05fnp():
+    run_front("1000x1000s_0_01fpp_0_05fnp", file_prefixes_1000x1000s_0_01fpp_0_05fnp)
+def run_1000x1000s_0_01fpp_0_2fnp():
+    run_front("1000x1000s_0_01fpp_0_2fnp", file_prefixes_1000x1000s_0_01fpp_0_2fnp)
+def run_1000x1000s_0_01fpp():
+    run_front("1000x1000s_0_01fpp", file_prefixes_1000x1000s_0_01fpp)
+
+def run_1000x1000s_0_01fpp_0_05fnp_0_1mep():
+    run_front("1000x1000s_0_01fpp_0_05fnp_0_1mep", file_prefixes_1000x1000s_0_01fpp_0_05fnp_0_1mep)
+def run_1000x1000s_0_01fpp_0_2fnp_0_1mep():
+    run_front("1000x1000s_0_01fpp_0_2fnp_0_1mep", file_prefixes_1000x1000s_0_01fpp_0_2fnp_0_1mep)
+def run_1000x1000s_0_01fpp_0_1mep():
+    run_front("1000x1000s_0_01fpp_0_1mep", file_prefixes_1000x1000s_0_01fpp_0_1mep)
+
+def run_1000x1000s_0_01fpp_0_05fnp_0_15mep():
+    run_front("1000x1000s_0_01fpp_0_05fnp_0_15mep", file_prefixes_1000x1000s_0_01fpp_0_05fnp_0_15mep)
+def run_1000x1000s_0_01fpp_0_2fnp_0_15mep():
+    run_front("1000x1000s_0_01fpp_0_2fnp_0_15mep", file_prefixes_1000x1000s_0_01fpp_0_2fnp_0_15mep)
+def run_1000x1000s_0_01fpp_0_15mep():
+    run_front("1000x1000s_0_01fpp_0_15mep", file_prefixes_1000x1000s_0_01fpp_0_15mep)
 
 
-def run_2000x20000s_0_001fpr():
-    run_front("2000x20000s_0_001fpr", file_prefixes_2000x20000s_0_001fpr)
+def run_5000x500s_0_001fpp():
+    run_front("5000x500s_0_001fpp", file_prefixes_5000x500s_0_001fpp)
 
 
-def run_20000x2000s_0_001fpr():
-    run_front("20000x2000s_0_001fpr", file_prefixes_20000x2000s_0_001fpr)
+def run_1000x10000s_0_001fpp():
+    run_front("1000x10000s_0_001fpp", file_prefixes_1000x10000s_0_001fpp)
+
+
+def run_2000x20000s_0_001fpp():
+    run_front("2000x20000s_0_001fpp", file_prefixes_2000x20000s_0_001fpp)
+
+
+def run_20000x2000s_0_001fpp():
+    run_front("20000x2000s_0_001fpp", file_prefixes_20000x2000s_0_001fpp)
 
 
 def test():
     pass
-    # corrupt_data()
-    # run_300x300s_0_001fpr()
-    # run_300x300s_0_001fpr_0_1mer()
-    # run_300x300s_0_001fpr_0_15mer()
-    # corrupt_data()
-    # run_300x300s_0_001fpr(alg)
-    # run_300x300s_0_003fpr(alg)
-    # run_300x300s_0_01fpr(alg)
-
-    # run_300x1000s_0_001fpr(alg)
-    # run_300x1000s_0_01fpr(alg)
-
-    # run_1000x300s_0_001fpr(alg)
-
-    # run_1000x1000s_0_001fpr(alg)
-    # run_1000x1000s_0_01fpr(alg)
-
-    # run_20000x2000s_0_001fpr(alg)
-
-    # run_2000x20000s_0_001fpr(alg)
-
-    # run_5000x500s_0_001fpr(alg)
-
 
 #     for file in reversed(files):
 #         file = 'data/metrics/' + file

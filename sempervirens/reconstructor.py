@@ -5,9 +5,9 @@
 # Can be used from the commandline or as a library from other code.
 #
 # Commandline usage:
-# python reconstructor.py noisy_matrix_filename fpr fnr mer
+# python reconstructor.py noisy_matrix_filename fpp fnp mep
 # The output file defaults to noisy_matrix_filename.CFMatrix.
-# Can specify output file with the "-o" flag: python reconstructor.py noisy_matrix_filename fpr fnr mer -o output_filename.
+# Can specify output file with the "-o" flag: python reconstructor.py noisy_matrix_filename fpp fnp mep -o output_filename.
 # To get help information, run: python reconstructor.py -h 
 # Dependencies: numpy, and pandas.
 #
@@ -21,16 +21,16 @@
 #
 # Example:
 # from reconstructor import reconstruct
-# reconstruction = reconstruct(noisy_mat, fpr, fnr, mer)
+# reconstruction = reconstruct(noisy_mat, fpp, fnp, mep)
 
 
 ###### Reconstructor code ######
 
 import numpy as np
 
-def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
+def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpp, fnp):
     """Finds all columns of mat that ocurr in the subtree of the pivot_col column,
-    assuming that each entry of mat is subject to fpr and fnr, and pivot_col is correct.
+    assuming that each entry of mat is subject to fpp and fnp, and pivot_col is correct.
     """
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
@@ -38,17 +38,17 @@ def correct_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
     cols_mask = K_11 >= K_01
     return cols_sorted[cols_mask]
 
-def noisy_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
+def noisy_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpp, fnp):
     """Finds all columns of mat that ocurr in the same subtree as the pivot_col column,
-    assuming that each entry of mat and pivot_col is subject to fpr and fnr.
+    assuming that each entry of mat and pivot_col is subject to fpp and fnp.
     """
     mat_cols = mat[:, cols_sorted]
     K_11 = pivot_col @ mat_cols
     K_01 = (1 - pivot_col) @ mat_cols
     K_10 = pivot_col @ (1 - mat_cols)
-    if fnr >= fpr:
-        c0 = np.log((1-fnr)/fpr)
-        c1 = np.log((1-fpr)/fnr)
+    if fnp >= fpp:
+        c0 = np.log((1-fnp)/fpp)
+        c1 = np.log((1-fpp)/fnp)
         cols_mask = np.logical_or(
             K_11 * c0 >= K_01 * c1,
             K_11 * c0 >= K_10 * c1,
@@ -60,11 +60,11 @@ def noisy_pivot_subtree_columns(pivot_col, cols_sorted, mat, fpr, fnr):
         )
     return cols_sorted[cols_mask]
 
-def reconstruct_root(cols_in_subtree, mat, fnr):
+def reconstruct_root(cols_in_subtree, mat, fnp):
     """Reconstructs the root row for the subtree consisting of the columns in cols_in_subtree."""
     counts = np.sum(mat[:, cols_in_subtree], axis = 0)
     root = np.zeros(mat.shape[1])
-    root[cols_in_subtree] = (counts >= np.max(counts)*(1 - fnr)).astype(int)
+    root[cols_in_subtree] = (counts >= np.max(counts)*(1 - fnp)).astype(int)
     return root
 
 def reconstruct_pivot(cols_in_subtree, cols_sorted, mat):
@@ -84,7 +84,7 @@ def count_based_max_likelihood(pivot, col_set, mat):
     """Returns the index of the column in mat (of columns in col_set) that is most similar to pivot."""
     return col_set[np.argmax(pivot.T @ mat[:, col_set])]
 
-def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpr, fnr, mer):
+def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpp, fnp, mep):
     """Create and return a refined matrix from the columns in reconstructed_mat by, 
     for each column in the noisy matrix, selecting the column in reconstructed_mat 
     that maximizes the likelihood of measuring the noisy column.
@@ -96,14 +96,14 @@ def column_max_likelihood_refinement(reconstructed_mat, noisy_mat, fpr, fnr, mer
     K_01 = noisy0T @ reconstructed_mat
     K_10 = noisy1T @ (1 - reconstructed_mat)
     K_11 = noisy1T @ reconstructed_mat
-    log_probs = np.log(1 - fpr - mer) * K_00 \
-                + np.log(fnr) * K_01 \
-                + np.log(fpr) * K_10 \
-                + np.log(1 - fnr - mer) * K_11
+    log_probs = np.log(1 - fpp - mep) * K_00 \
+                + np.log(fnp) * K_01 \
+                + np.log(fpp) * K_10 \
+                + np.log(1 - fnp - mep) * K_11
     refinement = reconstructed_mat[:, log_probs.argmax(axis = 1)]
     return refinement
 
-def split_part(part, mat, fpr, fnr):
+def split_part(part, mat, fpp, fnp):
     """Finds the largest maximal subtree in a set of columns, determines and removes the pivot,
     enforces column relationships, and returns the subtree, remaining columns, pivot,
     and non-reconstructed column most similar to the pivot.
@@ -114,7 +114,7 @@ def split_part(part, mat, fpr, fnr):
     while temp_part.size > 0:
         candidate_pivot_col_i = temp_part[0]
         candidate_pivot = mat[:, candidate_pivot_col_i]
-        candidate_cols_in_subtree = noisy_pivot_subtree_columns(candidate_pivot, temp_part, mat, fpr, fnr)
+        candidate_cols_in_subtree = noisy_pivot_subtree_columns(candidate_pivot, temp_part, mat, fpp, fnp)
         partition.append((candidate_pivot_col_i, candidate_cols_in_subtree))
         temp_part = np.setdiff1d(temp_part, candidate_cols_in_subtree, assume_unique = True)
     part_lengths = [part[1].size for part in partition]
@@ -123,7 +123,7 @@ def split_part(part, mat, fpr, fnr):
     pivot_col_i, cols_in_subtree = partition.pop(part_i)
 
     # Adjust mat to ensure that rows which should be in the subtree are supersets of the subtree root.
-    root = reconstruct_root(cols_in_subtree, mat, fnr)
+    root = reconstruct_root(cols_in_subtree, mat, fnp)
     rows_in_subtree_mask2 = mat @ root > np.sum(root) / 2
     rows_in_subtree2 = np.flatnonzero(rows_in_subtree_mask2)
     mat[rows_in_subtree2, :] = np.logical_or(mat[rows_in_subtree2, :], root).astype(int)
@@ -132,7 +132,7 @@ def split_part(part, mat, fpr, fnr):
     reconstructed_pivot = reconstruct_pivot(cols_in_subtree, part, mat)
     
     # Find columns in subtree of the reconstructed pivot assuming the reconstructed pivot is correct.
-    final_cols_in_subtree = correct_pivot_subtree_columns(reconstructed_pivot, part, mat, fpr, fnr)
+    final_cols_in_subtree = correct_pivot_subtree_columns(reconstructed_pivot, part, mat, fpp, fnp)
 
     if final_cols_in_subtree.size > 0:
         # Find the columns which haven't been reconstructed yet, but are outside the reconstructed pivot's subtree.
@@ -163,7 +163,7 @@ def split_part(part, mat, fpr, fnr):
         return ([split_b], reconstructed_pivot, col_placement_i)
 
 
-def reconstruct(noisy, fpr, fnr, mer):
+def reconstruct(noisy, fpp, fnp, mep):
     """Reconstructs a phylogenetic tree from the noisy matrix.
 
     Args:
@@ -171,9 +171,9 @@ def reconstruct(noisy, fpr, fnr, mer):
             Elements are of values 0, 1, or 3. 
             Zero represents mutation absent, 1 represents mutation present,
             and 3 represents missing entry.
-        fpr: scalar. False positive rate.
-        fnr: scalar. False negative rate.
-        mer: scalar. Missing entry rate.
+        fpp: scalar. False positive probability.
+        fnp: scalar. False negative probability.
+        mep: scalar. Missing entry probability.
     
     Returns:
       N x M matrix that represents the reconstructed phylogenetic tree.
@@ -181,7 +181,7 @@ def reconstruct(noisy, fpr, fnr, mer):
     """
     assert np.all(np.logical_or(noisy == 0, np.logical_or(noisy == 1, noisy == 3))), \
         "noisy matrix must contain only 0s, 1s, and 3s."
-    assert 0 <= fpr <= 1 and 0 <= fnr <= 1 and 0 <= mer <= 1, "fpr, fnr, and mer must be in [0, 1]."
+    assert 0 <= fpp <= 1 and 0 <= fnp <= 1 and 0 <= mep <= 1, "fpp, fnp, and mep must be in [0, 1]."
 
     mat = noisy.copy()
 
@@ -198,7 +198,7 @@ def reconstruct(noisy, fpr, fnr, mer):
     while len(partition) > 0:
         # Take a part and split into two
         part = partition.pop(0)
-        subpartition, reconstructed_pivot, col_i = split_part(part, mat, fpr, fnr)
+        subpartition, reconstructed_pivot, col_i = split_part(part, mat, fpp, fnp)
         # Place reconstructed pivot in matrix
         mat[:, col_i] = reconstructed_pivot
         # Replace part in partition with the new parts
@@ -207,9 +207,9 @@ def reconstruct(noisy, fpr, fnr, mer):
                 partition.append(subpart)
 
     # Row maximum likelihood
-    mat = column_max_likelihood_refinement(mat.T, noisy.T, fpr, fnr, mer).T
+    mat = column_max_likelihood_refinement(mat.T, noisy.T, fpp, fnp, mep).T
     # Column maximum likelihood
-    mat = column_max_likelihood_refinement(mat, noisy, fpr, fnr, mer)
+    mat = column_max_likelihood_refinement(mat, noisy, fpp, fnp, mep)
 
     assert np.all(np.logical_or(mat == 0, mat == 1))
     return mat
@@ -232,25 +232,25 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument("in_file", type = str, help = "Input file to read noisy matrix from.")
-    parser.add_argument("fpr", type = float_closed_unit_interval, help = "False positive rate.")
-    parser.add_argument("fnr", type = float_closed_unit_interval, help = "False negative rate.")
-    parser.add_argument("mer", type = float_closed_unit_interval, help = "Missing entry rate.")
+    parser.add_argument("fpp", type = float_closed_unit_interval, help = "False positive probability.")
+    parser.add_argument("fnp", type = float_closed_unit_interval, help = "False negative probability.")
+    parser.add_argument("mep", type = float_closed_unit_interval, help = "Missing entry probability.")
     parser.add_argument("-o", "--out_file", type = str, help = "Output file to write conflict-free matrix to. Defaults to IN_FILE.CFMatrix.")
     parser.add_argument("-v", "--verbose", action = "store_true")
     args = parser.parse_args()
 
-    assert args.fpr + args.mer <= 1.0, "fpr + mer must be in [0.0, 1.0]"
-    assert args.fnr + args.mer <= 1.0, "fnr + mer must be in [0.0, 1.0]"
+    assert args.fpp + args.mep <= 1.0, "fpp + mep must be in [0.0, 1.0]"
+    assert args.fnp + args.mep <= 1.0, "fnp + mep must be in [0.0, 1.0]"
     if args.out_file is None:
         args.out_file = args.in_file + ".CFMatrix"
 
     if args.verbose:
-        print(f"Reading noisy matrix from {args.in_file} with false positive rate {args.fpr}, false negative rate {args.fnr}, and missing entry rate {args.mer}.")
+        print(f"Reading noisy matrix from {args.in_file} with false positive probability {args.fpp}, false negative probability {args.fnp}, and missing entry probability {args.mep}.")
         print(f"Conflict-free matrix will be written to {args.out_file}.")
 
     noisy_df = pd.read_csv(args.in_file, sep = '\t', index_col = 0)
 
-    reconstructed_mat = reconstruct(noisy_df.to_numpy(), args.fpr, args.fnr, args.mer)
+    reconstructed_mat = reconstruct(noisy_df.to_numpy(), args.fpp, args.fnp, args.mep)
 
     reconstructed_df = pd.DataFrame(reconstructed_mat)
     reconstructed_df.columns = noisy_df.columns

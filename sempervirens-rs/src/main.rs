@@ -11,14 +11,14 @@ struct Args {
     /// Input file to read noisy matrix from.
     in_file: String,
 
-    /// False positive rate.
-    fpr: f64,
+    /// False positive probability.
+    fpp: f64,
 
-    /// False negative rate.
-    fnr: f64,
+    /// False negative probability.
+    fnp: f64,
 
-    /// Missing entry rate.
-    mer: f64,
+    /// Missing entry probability.
+    mep: f64,
 
     /// Output file to write conflict-free matrix to. Defaults to IN_FILE.CFMatrix.
     #[arg(short, long)]
@@ -39,16 +39,16 @@ fn main() {
 
     let in_file = args.in_file;
 
-    let fpr = args.fpr;
-    let fnr = args.fnr;
-    let mer = args.mer;
+    let fpp = args.fpp;
+    let fnp = args.fnp;
+    let mep = args.mep;
 
-    // Basic checks on fpr, fnr, and mer.
-    assert!(0.0 <= fpr && fpr <= 1.0, "FPR must be in [0, 1].");
-    assert!(0.0 <= fnr && fnr <= 1.0, "FNR must be in [0, 1].");
-    assert!(0.0 <= mer && mer <= 1.0, "MER must be in [0, 1].");
-    assert!(fpr + mer <= 1.0, "FPR + MER must be in [0, 1].");
-    assert!(fnr + mer <= 1.0, "FNR + MER must be in [0, 1].");
+    // Basic checks on fpp, fnp, and mep.
+    assert!(0.0 <= fpp && fpp <= 1.0, "FPP must be in [0, 1].");
+    assert!(0.0 <= fnp && fnp <= 1.0, "FNP must be in [0, 1].");
+    assert!(0.0 <= mep && mep <= 1.0, "MEP must be in [0, 1].");
+    assert!(fpp + mep <= 1.0, "FPP + MEP must be in [0, 1].");
+    assert!(fnp + mep <= 1.0, "FNP + MEP must be in [0, 1].");
 
     let out_file = args.out_file.unwrap_or(in_file.clone() + ".CFMatrix");
     let mut write_file = std::fs::File::create(&out_file).expect("Could not open OUT_FILE to write to.");
@@ -61,7 +61,7 @@ fn main() {
     if verbose {
         println!("Number of threads: {}.", current_num_threads());
         println!("Reading from: {in_file}.");
-        println!("False positive rate: {fpr}, false negative rate: {fnr}, missing entry rate: {mer}.");
+        println!("False positive probability: {fpp}, false negative probability: {fnp}, missing entry probability: {mep}.");
         println!("Will output reconstruction to {out_file}.");
     }
 
@@ -71,7 +71,7 @@ fn main() {
     let noisy_mat = noisy_df.drop(&col_name).unwrap().to_ndarray::<Float64Type>(IndexOrder::C).unwrap();
 
     // Reconstruct matrix.
-    let reconstruction = reconstruct(&noisy_mat, fpr, fnr, mer);
+    let reconstruction = reconstruct(&noisy_mat, fpp, fnp, mep);
 
     // Write reconstructed matrix to file.
     let seriess: Vec<Series> = std::iter::once(noisy_df.column(col_name).unwrap().to_owned()) // Add first column.
