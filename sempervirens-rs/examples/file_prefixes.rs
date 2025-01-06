@@ -1,7 +1,7 @@
-// # (file prefix, n, m, false positive rate (fpr), false negative rate (fnr), missing entry rate (mer))
+// # (file prefix, n, m, false positive probability (fpp), false negative probability (fnp), missing entry probability (mep))
 
 // # 300 x 300s
-pub const FILE_PREFIXES_300X300S_0_05FNR: [(&'static str, i64, i64, f64, f64, f64); 10] = [
+pub const FILE_PREFIXES_300X300S_0_05FNP: [(&'static str, i64, i64, f64, f64, f64); 10] = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
@@ -13,7 +13,7 @@ pub const FILE_PREFIXES_300X300S_0_05FNR: [(&'static str, i64, i64, f64, f64, f6
     ("fp_0_001/simNo_4-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
 ];
-pub const FILE_PREFIXES_300X300S_0_2FNR: [(&'static str, i64, i64, f64, f64, f64); 10] = [
+pub const FILE_PREFIXES_300X300S_0_2FNP: [(&'static str, i64, i64, f64, f64, f64); 10] = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
@@ -26,7 +26,7 @@ pub const FILE_PREFIXES_300X300S_0_2FNR: [(&'static str, i64, i64, f64, f64, f64
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
 ];
 
-pub const FILE_PREFIXES_300X300S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_300X300S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 1e-3, 0.05, 0.05),
@@ -49,7 +49,7 @@ pub const FILE_PREFIXES_300X300S_0_001FPR: [(&'static str, i64, i64, f64, f64, f
     ("fp_0_001/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 1e-3, 0.2,  0.05),
 ]; 
 
-pub const FILE_PREFIXES_300X300S_0_003FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_300X300S_0_003FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_003/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.003, 0.05, 0.05),
     ("fp_0_003/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.2,  0.05),
     ("fp_0_003/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.003, 0.05, 0.05),
@@ -72,7 +72,7 @@ pub const FILE_PREFIXES_300X300S_0_003FPR: [(&'static str, i64, i64, f64, f64, f
     ("fp_0_003/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.003-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.003, 0.2,  0.05),
 ];
 
-pub const FILE_PREFIXES_300X300S_0_01FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_300X300S_0_01FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_01/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.01, 0.05, 0.05),
@@ -95,7 +95,7 @@ pub const FILE_PREFIXES_300X300S_0_01FPR: [(&'static str, i64, i64, f64, f64, f6
     ("fp_0_01/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.01, 0.2,  0.05)
 ];
 
-// file_prefixes_300x300s_0_03fpr = [
+// file_prefixes_300x300s_0_03fpp = [
 //     ("fp_0_03/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.03, 0.05, 0.05),
 //     ("fp_0_03/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.05, 0.05),
 //     ("fp_0_03/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.03, 0.05, 0.05),
@@ -118,7 +118,7 @@ pub const FILE_PREFIXES_300X300S_0_01FPR: [(&'static str, i64, i64, f64, f64, f6
 //     ("fp_0_03/simNo_9-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 300, 0.03, 0.2,  0.05),
 // ]
 
-// file_prefixes_300x300s_0_05fpr = [
+// file_prefixes_300x300s_0_05fpp = [
 //     ("fp_0_05/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000", 300, 300, 0.05, 0.05, 0.05),
 //     ("fp_0_05/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.05, 0.05),
 //     ("fp_0_05/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 300, 0.05, 0.05, 0.05),
@@ -142,7 +142,7 @@ pub const FILE_PREFIXES_300X300S_0_01FPR: [(&'static str, i64, i64, f64, f64, f6
 // ]
 
 // # 1000 x 300s
-pub const FILE_PREFIXES_1000X300S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_1000X300S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_300-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 300, 1e-3, 0.05, 0.05),
@@ -166,7 +166,7 @@ pub const FILE_PREFIXES_1000X300S_0_001FPR: [(&'static str, i64, i64, f64, f64, 
 ];
 
 // # 300 x 1000s
-pub const FILE_PREFIXES_300X1000S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_300X1000S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 1e-3, 0.05, 0.05),
@@ -189,7 +189,7 @@ pub const FILE_PREFIXES_300X1000S_0_001FPR: [(&'static str, i64, i64, f64, f64, 
     ("fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 1e-3, 0.2,  0.05),
 ];
 
-pub const FILE_PREFIXES_300X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_300X1000S_0_01FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.01, 0.05, 0.05),
@@ -212,7 +212,7 @@ pub const FILE_PREFIXES_300X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, f
     ("fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.01, 0.2,  0.05),
 ];
 
-// file_prefixes_300x1000s_0_03fpr = [
+// file_prefixes_300x1000s_0_03fpp = [
 //     ("fp_0_03/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.03, 0.05, 0.05),
 //     ("fp_0_03/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.05, 0.05),
 //     ("fp_0_03/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.03, 0.05, 0.05),
@@ -235,7 +235,7 @@ pub const FILE_PREFIXES_300X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, f
 //     ("fp_0_03/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.03-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.03, 0.2,  0.05),
 // ]
 
-// file_prefixes_300x1000s_0_05fpr = [
+// file_prefixes_300x1000s_0_05fpp = [
 //     ("fp_0_05/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.05, 0.05, 0.05),
 //     ("fp_0_05/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.05, 0.05),
 //     ("fp_0_05/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.05, 0.05, 0.05),
@@ -258,7 +258,7 @@ pub const FILE_PREFIXES_300X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, f
 //     ("fp_0_05/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.05-fn_0.2-na_0.05-d_0-l_1000000",   300, 1000, 0.05, 0.2,  0.05),
 // ]
 
-// pub const file_prefixes_300x1000s_0_1fpr: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+// pub const file_prefixes_300x1000s_0_1fpp: [(&'static str, i64, i64, f64, f64, f64); 20] = [
 //     ("fp_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000", 300, 1000, 0.1, 0.05, 0.05),
 //     ("fp_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.05, 0.05),
 //     ("fp_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_300-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  300, 1000, 0.1, 0.05, 0.05),
@@ -282,7 +282,7 @@ pub const FILE_PREFIXES_300X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, f
 // ];
 
 // # 1000 x 1000s
-pub const FILE_PREFIXES_1000X1000S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_1000X1000S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.05, 0.05),
     ("fp_0_001/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 1e-3, 0.05, 0.05),
@@ -304,9 +304,9 @@ pub const FILE_PREFIXES_1000X1000S_0_001FPR: [(&'static str, i64, i64, f64, f64,
     ("fp_0_001/simNo_4-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 1e-3, 0.2,  0.05),
     ("fp_0_001/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 1e-3, 0.2,  0.05),
 ];
-// file_prefixes_1000x1000s_0_001fpr = file_prefixes_1000x1000s_0_05fnr + file_prefixes_1000x1000s_0_2fnr
+// file_prefixes_1000x1000s_0_001fpp = file_prefixes_1000x1000s_0_05fnp + file_prefixes_1000x1000s_0_2fnp
 
-pub const FILE_PREFIXES_1000X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_1000X1000S_0_01FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000", 1000, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.05),
     ("fp_0_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.01, 0.05, 0.05),
@@ -329,7 +329,7 @@ pub const FILE_PREFIXES_1000X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, 
     ("fp_0_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.01-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.01, 0.2,  0.05),
 ];
 
-// file_prefixes_1000x1000s_0_1fpr = [
+// file_prefixes_1000x1000s_0_1fpp = [
 //     ("fp_01/simNo_10-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000", 1000, 1000, 0.1, 0.05, 0.05),
 //     ("fp_01/simNo_5-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.05, 0.05),
 //     ("fp_01/simNo_1-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.05-na_0.05-d_0-l_1000000",  1000, 1000, 0.1, 0.05, 0.05),
@@ -351,7 +351,7 @@ pub const FILE_PREFIXES_1000X1000S_0_01FPR: [(&'static str, i64, i64, f64, f64, 
 //     ("fp_01/simNo_9-s_100-m_1000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.1-fn_0.2-na_0.05-d_0-l_1000000",   1000, 1000, 0.1, 0.2,  0.05),
 // ]
 
-pub const FILE_PREFIXES_5000X500S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_5000X500S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 5000, 500, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_10-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  5000, 500, 0.001, 0.05, 0.05),
@@ -374,7 +374,7 @@ pub const FILE_PREFIXES_5000X500S_0_001FPR: [(&'static str, i64, i64, f64, f64, 
     ("fp_0_001/simNo_9-s_100-m_500-h_1-minVAF_0.005-ISAV_0-n_5000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   5000, 500, 0.001, 0.2,  0.05),
 ];
 
-pub const FILE_PREFIXES_1000X10000S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_1000X10000S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 1000, 10000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_10-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  1000, 10000, 0.001, 0.05, 0.05),
@@ -397,7 +397,7 @@ pub const FILE_PREFIXES_1000X10000S_0_001FPR: [(&'static str, i64, i64, f64, f64
     ("fp_0_001/simNo_9-s_100-m_10000-h_1-minVAF_0.005-ISAV_0-n_1000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",   1000, 10000, 0.001, 0.2,  0.05),
 ];
 
-pub const FILE_PREFIXES_2000X20000S_0_001FPR: [(&'static str, i64, i64, f64, f64, f64); 20] = [
+pub const FILE_PREFIXES_2000X20000S_0_001FPP: [(&'static str, i64, i64, f64, f64, f64); 20] = [
     ("fp_0_001/simNo_10-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000", 2000, 20000, 0.001, 0.05, 0.05),
     ("fp_0_001/simNo_10-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.2-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.2,  0.05),
     ("fp_0_001/simNo_1-s_100-m_20000-h_1-minVAF_0.005-ISAV_0-n_2000-fp_0.001-fn_0.05-na_0.05-d_0-l_1000000",  2000, 20000, 0.001, 0.05, 0.05),

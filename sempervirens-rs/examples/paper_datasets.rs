@@ -100,13 +100,13 @@ fn print_metrics(metrics_df: DataFrame) {
     let ns = metrics_df.column("n").unwrap().unique().unwrap().rechunk();
     let ms = metrics_df.column("m").unwrap().unique().unwrap().rechunk();
     let fprs = metrics_df.column("fpr").unwrap().unique().unwrap().rechunk();
-    let fnrs = metrics_df.column("fnr").unwrap().unique().unwrap().rechunk();
-    let mers = metrics_df.column("mer").unwrap().unique().unwrap().rechunk();
+    let fnps = metrics_df.column("fnr").unwrap().unique().unwrap().rechunk();
+    let meps = metrics_df.column("mer").unwrap().unique().unwrap().rechunk();
     for n in ns.iter().map(|n| n.try_extract::<i64>().unwrap()) {
         for m in ms.iter().map(|m| m.try_extract::<i64>().unwrap()) {
             for fpr in fprs.iter().map(|fpr| fpr.try_extract::<f64>().unwrap()) {
-                for fnr in fnrs.iter().map(|fnr| fnr.try_extract::<f64>().unwrap()) {
-                    for mer in mers.iter().map(|mer| mer.try_extract::<f64>().unwrap()) {
+                for fnr in fnps.iter().map(|fnr| fnr.try_extract::<f64>().unwrap()) {
+                    for mer in meps.iter().map(|mer| mer.try_extract::<f64>().unwrap()) {
                         // println!("{n}, {m}, {fpr}, {fnr}, {mer}");
                         let df = metrics_df.clone().lazy()
                             .filter(col("n").eq(lit(n)))
@@ -146,19 +146,20 @@ fn print_metrics(metrics_df: DataFrame) {
 }
 
 fn run(file_prefixes: &[(&'static str, i64, i64, f64, f64, f64)]) {
+    // fpr, fnr, mer used in files for backwards compatibility.
     let mut files = vec![];
     let mut ns = vec![];
     let mut ms = vec![];
-    let mut fprs = vec![];
-    let mut fnrs = vec![];
-    let mut mers = vec![];
+    let mut fpps = vec![];
+    let mut fnps = vec![];
+    let mut meps = vec![];
     let mut times = vec![];
     let mut is_conflict_frees: Vec<bool> = vec![];
     let mut ad_scores: Vec<f64> = vec![];
     let mut dl_scores: Vec<f64> = vec![];
     let mut frac_corrects: Vec<f64> = vec![];
 
-    for &(file_prefix, n, m, fpr, fnr, mer) in file_prefixes {
+    for &(file_prefix, n, m, fpp, fnp, mep) in file_prefixes {
         println!("Running: {file_prefix}");
 
         let true_filename = "../data/".to_string() + file_prefix + ".SC.before_FP_FN_NA";
@@ -170,7 +171,7 @@ fn run(file_prefixes: &[(&'static str, i64, i64, f64, f64, f64)]) {
         let noisy_mat = noisy_df.to_ndarray::<Int32Type>(IndexOrder::C).unwrap().mapv(f64::from);
 
         let t0 = std::time::Instant::now();
-        let reconstruction = reconstruct(&noisy_mat, fpr, fnr, mer);
+        let reconstruction = reconstruct(&noisy_mat, fpp, fnp, mep);
         let tf = std::time::Instant::now();
 
         let is_cf = is_conflict_free(&reconstruction);
@@ -182,9 +183,9 @@ fn run(file_prefixes: &[(&'static str, i64, i64, f64, f64, f64)]) {
         files.push(file_prefix);
         ns.push(n);
         ms.push(m);
-        fprs.push(fpr);
-        fnrs.push(fnr);
-        mers.push(mer);
+        fpps.push(fpp);
+        fnps.push(fnp);
+        meps.push(mep);
         times.push(time);
         is_conflict_frees.push(is_cf);
         ad_scores.push(ad_score);
@@ -195,7 +196,7 @@ fn run(file_prefixes: &[(&'static str, i64, i64, f64, f64, f64)]) {
     }
 
     let metrics_df = df!(
-        "file" => &files, "n" => &ns, "m" => &ms, "fpr" => &fprs, "fnr" => &fnrs, "mer" => &mers, "time" => &times,
+        "file" => &files, "n" => &ns, "m" => &ms, "fpr" => &fpps, "fnr" => &fnps, "mer" => &meps, "time" => &times,
         "is_ptree" => &is_conflict_frees, "ad_score" => &ad_scores, "dl_score" => &dl_scores, "fraction_correct" => &frac_corrects
     ).unwrap();
 
@@ -205,15 +206,15 @@ fn run(file_prefixes: &[(&'static str, i64, i64, f64, f64, f64)]) {
 
 fn main() {
     let mut files = vec![];
-    files.extend_from_slice(&FILE_PREFIXES_300X300S_0_001FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_003FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_01FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_1000X300S_0_001FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_300X1000S_0_001FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_300X1000S_0_01FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_1000X1000S_0_001FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_1000X1000S_0_01FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_1000X10000S_0_001FPR);
-    // files.extend_from_slice(&FILE_PREFIXES_2000X20000S_0_001FPR);
+    files.extend_from_slice(&FILE_PREFIXES_300X300S_0_001FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_003FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_300X300S_0_01FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_1000X300S_0_001FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_300X1000S_0_001FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_300X1000S_0_01FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_1000X1000S_0_001FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_1000X1000S_0_01FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_1000X10000S_0_001FPP);
+    // files.extend_from_slice(&FILE_PREFIXES_2000X20000S_0_001FPP);
     run(&files);
 }

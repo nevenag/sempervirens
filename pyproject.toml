@@ -7,34 +7,44 @@ readme = "README.md"
 
 [tool.poetry.scripts]
 test = 'tests.main:test'
+table = 'tests.table_formatting:main'
 
-fnr0_05_300x300s = 'tests.main:run_300x300s_0_05fnr'
-fnr0_2_300x300s = 'tests.main:run_300x300s_0_2fnr'
-fpr0_001_300x300s = 'tests.main:run_300x300s_0_001fpr'
-fpr0_003_300x300s = 'tests.main:run_300x300s_0_003fpr'
-fpr0_01_300x300s = 'tests.main:run_300x300s_0_01fpr'
+fpp0_001_fnp0_05_300x300s = 'tests.main:run_300x300s_0_001fpp_0_05fnp'
+fpp0_001_fnp0_2_300x300s = 'tests.main:run_300x300s_0_001fpp_0_2fnp'
+fpp0_001_300x300s = 'tests.main:run_300x300s_0_001fpp'
+fpp0_003_300x300s = 'tests.main:run_300x300s_0_003fpp'
+fpp0_01_fnp0_05_300x300s = 'tests.main:run_300x300s_0_01fpp_0_05fnp'
+fpp0_01_fnp0_2_300x300s = 'tests.main:run_300x300s_0_01fpp_0_2fnp'
+fpp0_01_300x300s = 'tests.main:run_300x300s_0_01fpp'
 
-fnr0_05_1000x300s = 'tests.main:run_1000x300s_0_05fnr'
-fnr0_2_1000x300s = 'tests.main:run_1000x300s_0_2fnr'
-fpr0_001_1000x300s = 'tests.main:run_1000x300s_0_001fpr'
+fpp0_001_fnp0_05_1000x300s = 'tests.main:run_1000x300s_0_001fpp_0_05fnp'
+fpp0_001_fnp0_2_1000x300s = 'tests.main:run_1000x300s_0_001fpp_0_2fnp'
+fpp0_001_1000x300s = 'tests.main:run_1000x300s_0_001fpp'
 
-fnr0_05_300x1000s = 'tests.main:run_300x1000s_0_05fnr'
-fnr0_2_300x1000s = 'tests.main:run_300x1000s_0_2fnr'
-fpr0_001_300x1000s = 'tests.main:run_300x1000s_0_001fpr'
-fpr0_01_300x1000s = 'tests.main:run_300x1000s_0_01fpr'
+fpp0_001_fnp0_05_300x1000s = 'tests.main:run_300x1000s_0_001fpp_0_05fnp'
+fpp0_001_fnp0_2_300x1000s = 'tests.main:run_300x1000s_0_001fpp_0_2fnp'
+fpp0_001_300x1000s = 'tests.main:run_300x1000s_0_001fpp'
+fpp0_01_300x1000s = 'tests.main:run_300x1000s_0_01fpp'
 
-fnr0_05_1000x1000s = 'tests.main:run_1000x1000s_0_05fnr'
-fnr0_2_1000x1000s = 'tests.main:run_1000x1000s_0_2fnr'
-fpr0_001_1000x1000s = 'tests.main:run_1000x1000s_0_001fpr'
-fpr0_01_1000x1000s = 'tests.main:run_1000x1000s_0_01fpr'
+fpp0_001_fnp0_05_1000x1000s = 'tests.main:run_1000x1000s_0_001fpp_0_05fnp'
+fpp0_001_fnp0_2_1000x1000s = 'tests.main:run_1000x1000s_0_001fpp_0_2fnp'
+fpp0_001_1000x1000s = 'tests.main:run_1000x1000s_0_001fpp'
+fpp0_001_0_1mep_1000x1000s = 'tests.main:run_1000x1000s_0_001fpp_0_1mep'
+fpp0_001_0_15mep_1000x1000s = 'tests.main:run_1000x1000s_0_001fpp_0_15mep'
 
-fpr0_001_5000x500s = 'tests.main:run_5000x500s_0_001fpr'
+fpp0_01_fnp0_05_1000x1000s = 'tests.main:run_1000x1000s_0_01fpp_0_05fnp'
+fpp0_01_fnp0_2_1000x1000s = 'tests.main:run_1000x1000s_0_01fpp_0_2fnp'
+fpp0_01_1000x1000s = 'tests.main:run_1000x1000s_0_01fpp'
+fpp0_01_0_1mep_1000x1000s = 'tests.main:run_1000x1000s_0_01fpp_0_1mep'
+fpp0_01_0_15mep_1000x1000s = 'tests.main:run_1000x1000s_0_01fpp_0_15mep'
 
-fpr0_001_1000x10000s = 'tests.main:run_1000x10000s_0_001fpr'
+fpp0_001_5000x500s = 'tests.main:run_5000x500s_0_001fpp'
 
-fpr0_001_2000x20000s = 'tests.main:run_2000x20000s_0_001fpr'
+fpp0_001_1000x10000s = 'tests.main:run_1000x10000s_0_001fpp'
 
-fpr0_001_20000x2000s = 'tests.main:run_20000x2000s_0_001fpr'
+fpp0_001_2000x20000s = 'tests.main:run_2000x20000s_0_001fpp'
+
+fpp0_001_20000x2000s = 'tests.main:run_20000x2000s_0_001fpp'
 
 [tool.poetry.dependencies]
 python = "^3.10"
